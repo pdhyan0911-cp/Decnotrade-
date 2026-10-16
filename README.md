@@ -65,3 +65,13 @@ Import **this repository** (`pdhyan0911-cp/Decnotrade-`) as its own Vercel proje
 - Confirm the deployed URL serves `index.html`, `styles.css`, `script.js`, `manifest.webmanifest`, and `sw.js`.
 - On a compatible browser, check the install option and test a reload while offline.
 - Test navigation, a virtual order, backup export/import, and mobile layout on the deployed build before sharing publicly.
+
+## Run the static smoke tests
+
+With Node.js installed, run this from the repository root before publishing changes:
+
+```sh
+node tests/smoke-test.js
+```
+
+The script checks required files, manifest JSON and icon paths, JavaScript syntax, duplicate HTML IDs, navigation-to-view mappings, service-worker registration, reduced-motion styling, and cached app-shell paths. It does not replace testing the website in a real browser.
