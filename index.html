@@ -107,7 +107,7 @@
     <div class="auth-divider"><span>or use phone or email</span></div>
     <form id="phoneAuthForm" class="email-auth-form">
       <label for="authPhone">Phone number with country code</label>
-      <input id="authPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 9876543210" pattern="^\\+[1-9]\\d{7,14}$" required>
+      <input id="authPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 9876543210" pattern="^\+[1-9]\d{7,14}$" required>
       <div id="recaptcha-container"></div>
       <button class="btn btn-outline auth-submit" id="sendPhoneCode" type="button">Send verification code</button>
       <div id="phoneCodeSection" hidden>
