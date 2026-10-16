@@ -21,12 +21,43 @@ const glossary=[
 const blank=()=>({cash:1000000,positions:{},orders:[],realized:0,watchlist:["NIFTY","RELIANCE","TCS","INFY"],completed:[],journal:[],alerts:[],challengeCompleted:[],profile:{name:"Decnotrade learner",goal:"foundations"}});
 function load(){try{const s=JSON.parse(localStorage.getItem("decnotrade_v1"));if(s&&typeof s.cash==="number")return {...blank(),...s};}catch{}return blank()}
 let state=load(),activeSymbol="NIFTY",activeRange="1D",toastTimer;
+ let candleSymbol="RELIANCE",candleRange="1m",candleSeries=[],candleTimer=null;
 const save=()=>{try{localStorage.setItem("decnotrade_v1",JSON.stringify(state))}catch{}};
-const price=s=>instruments.find(x=>x.symbol===s)?.price||0;
+const simulatedPrices=Object.fromEntries(instruments.map(x=>[x.symbol,x.price]));
+ const price=s=>simulatedPrices[s]??(instruments.find(x=>x.symbol===s)?.price||0);
 const item=s=>instruments.find(x=>x.symbol===s)||instruments[0];
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2400)}
 function go(view){const target=$("#view-"+view);if(!target)return;$$(".view").forEach(v=>v.classList.toggle("active",v===target));$$(".nav-link[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));$("#pageTitle").textContent=({overview:"Overview",markets:"Market explorer",practice:"Paper portfolio",analytics:"Performance lab",strategy:"Strategy studio",academy:"Learning paths",assistant:"Dec AI guide",journal:"Decision journal",alerts:"Watch & risk",challenges:"Daily challenges",rewards:"Rewards & progress",referrals:"Invite & share",profile:"My profile",admin:"Owner console",monetization:"Monetization",settings:"Preferences"})[view]||view;$("#sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"});if(view==="markets")renderMarkets();if(view==="analytics")renderAnalytics();if(view==="academy")renderLessons();if(view==="journal")renderJournal();if(view==="alerts")renderAlerts();if(["challenges","rewards","profile"].includes(view))renderProductExtras()}
 function renderChart(symbol=activeSymbol,range=activeRange){activeSymbol=symbol;activeRange=range;const x=item(symbol);$("#chartName").textContent=x.name;$("#chartValue").textContent=x.price.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});const n=({"1D":34,"1W":38,"1M":42,"1Y":48})[range]||34;let vals=[],v=100;for(let i=0;i<n;i++){v+=Math.sin(i*.62)*1.45+Math.cos(i*.25)*.95+(x.change>=0?.15:-.1)+(i%7===0?-.55:.08);vals.push(v)}vals[n-1]=v+(x.change>=0?1.8:-1.8);const lo=Math.min(...vals)-2,hi=Math.max(...vals)+2;const pts=vals.map((z,i)=>[10+i*700/(n-1),190-(z-lo)/(hi-lo)*165]);const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" ");$("#chartPath").setAttribute("d",d);$("#chartPath").setAttribute("stroke",x.change>=0?"#47866c":"#b65f55");$("#chartArea").setAttribute("d",d+" L 710 203 L 10 203 Z");$("#chartArea").setAttribute("fill",x.change>=0?"url(#fillChart)":"#b65f5510");$$(".index-tile").forEach(b=>b.classList.toggle("selected",b.dataset.symbol===symbol));$$(".range").forEach(b=>b.classList.toggle("active",b.dataset.range===range))}
+
+function seedCandles(symbol){
+ const base=price(symbol);let last=base;candleSeries=[];
+ for(let i=0;i<64;i++){const open=last,close=Math.max(.01,open+(Math.random()-.48)*base*.003),high=Math.max(open,close)+Math.random()*base*.0012,low=Math.max(.01,Math.min(open,close)-Math.random()*base*.0012);candleSeries.push({open,high,low,close});last=close}
+ simulatedPrices[symbol]=last;drawCandles();updateCandleReadout()
+}
+function drawCandles(){
+ const canvas=$("#candleCanvas");if(!canvas)return;const rect=canvas.getBoundingClientRect();if(!rect.width)return;
+ const dpr=window.devicePixelRatio||1;canvas.width=Math.floor(rect.width*dpr);canvas.height=Math.floor(300*dpr);
+ const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);const w=rect.width,h=300,pad={l:12,r:68,t:14,b:24},plotW=w-pad.l-pad.r,plotH=h-pad.t-pad.b;
+ ctx.clearRect(0,0,w,h);const vals=candleSeries.flatMap(c=>[c.high,c.low]);let lo=Math.min(...vals),hi=Math.max(...vals);const extra=(hi-lo)*.12||1;lo-=extra;hi+=extra;
+ const y=v=>pad.t+(hi-v)/(hi-lo)*plotH;ctx.font="10px sans-serif";ctx.strokeStyle="#e7ebe5";ctx.fillStyle="#778279";ctx.lineWidth=1;
+ for(let i=0;i<=4;i++){const yy=pad.t+i*plotH/4;ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r+5,yy);ctx.stroke();ctx.fillText((hi-i*(hi-lo)/4).toLocaleString("en-IN",{maximumFractionDigits:2}),w-pad.r+9,yy+3)}
+ const step=plotW/candleSeries.length,cw=Math.max(2,Math.min(10,step*.58));
+ candleSeries.forEach((c,i)=>{const x=pad.l+i*step+step/2,color=c.close>=c.open?"#27865c":"#c55252";ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(x,y(c.high));ctx.lineTo(x,y(c.low));ctx.stroke();ctx.fillRect(x-cw/2,y(Math.max(c.open,c.close)),cw,Math.max(1,Math.abs(y(c.open)-y(c.close))))});
+ const last=candleSeries[candleSeries.length-1];ctx.strokeStyle=last.close>=last.open?"#27865c":"#c55252";ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(pad.l,y(last.close));ctx.lineTo(w-pad.r+3,y(last.close));ctx.stroke();ctx.setLineDash([])
+}
+function updateCandleReadout(){
+ const c=candleSeries[candleSeries.length-1];if(!c)return;const base=item(candleSymbol).price,move=c.close-base,pct=move/base*100;
+ $("#candleLast").textContent=money(c.close);$("#candleMove").textContent=(move>=0?"+":"")+money(move)+" ("+(pct>=0?"+":"")+pct.toFixed(2)+"%)";
+ $("#candleMove").className=move>=0?"positive":"negative";$("#candleOhlc").textContent="O "+money(c.open)+"   H "+money(c.high)+"   L "+money(c.low)+"   C "+money(c.close)
+}
+function candleTick(){
+ if(!candleSeries.length)return;const prev=candleSeries[candleSeries.length-1],old=prev.close,delta=(Math.random()-.49)*old*(candleRange==="1m"?.0008:candleRange==="5m"?.0012:candleRange==="15m"?.0018:.0025),next=Math.max(.01,old+delta);
+ prev.close=next;prev.high=Math.max(prev.high,next);prev.low=Math.min(prev.low,next);
+ if(Math.random()>.35){candleSeries.push({open:next,high:next,low:next,close:next});if(candleSeries.length>64)candleSeries.shift()}
+ simulatedPrices[candleSymbol]=next;drawCandles();updateCandleReadout();updateEstimate();renderPortfolio()
+}
+function startCandleFeed(){if(candleTimer)clearInterval(candleTimer);candleTimer=setInterval(candleTick,2500)}
 function renderWatchlist(target="#overviewWatchlist"){const root=$(target);if(!root)return;root.innerHTML=state.watchlist.length?state.watchlist.map(s=>{const x=item(s);return '<div class="watch-row"><span class="ticker-icon">'+safe(s.slice(0,3))+'</span><div class="watch-name"><strong>'+safe(x.name)+'</strong><small>'+safe(s)+' · '+x.kind+'</small></div><div class="watch-price"><strong>'+x.price.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})+'</strong><small class="'+(x.change>=0?"positive":"negative")+'">'+(x.change>=0?"+":"")+x.change.toFixed(2)+'%</small></div><span class="watch-change '+(x.change>=0?"positive":"negative")+'">'+(x.change>=0?"↗":"↘")+'</span></div>'}).join(""):'<div class="empty-state"><b>Your watchlist is empty</b><p>Add instruments from Market explorer.</p></div>'}
 function renderMarkets(){const q=($("#marketSearch")?.value||"").toLowerCase().trim();const rows=instruments.filter(x=>(x.name+" "+x.symbol+" "+x.kind).toLowerCase().includes(q));$("#marketCount").textContent=rows.length+" instruments";$("#marketRows").innerHTML=rows.map(x=>'<tr><td><div class="instrument-cell"><span class="ticker-icon">'+safe(x.symbol.slice(0,3))+'</span><div><strong>'+safe(x.name)+'</strong><small>'+safe(x.symbol)+' · '+x.kind+'</small></div></div></td><td>'+x.price.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td class="'+(x.change>=0?"positive":"negative")+'">'+(x.change>=0?"+":"")+x.change.toFixed(2)+'%</td><td><button class="star-button '+(state.watchlist.includes(x.symbol)?"is-starred":"")+'" data-star="'+x.symbol+'" aria-label="Toggle watchlist for '+x.symbol+'">'+(state.watchlist.includes(x.symbol)?"★":"☆")+'</button></td><td><button class="table-action" data-practice="'+x.symbol+'" '+(x.kind==="Index"?'disabled title="Index orders are not available in this practice ticket"':'')+'>Practise</button></td></tr>').join("")||'<tr><td colspan="5" class="empty-table">No matching instruments. Try another search.</td></tr>'}
 function positions(){return Object.entries(state.positions).filter(([,p])=>p.qty>0)}
@@ -77,7 +108,7 @@ $("#dismissDisclaimer").addEventListener("click",()=>$(".disclaimer").remove());
 $$(".index-tile").forEach(b=>b.addEventListener("click",()=>renderChart(b.dataset.symbol,activeRange)));$$(".range").forEach(b=>b.addEventListener("click",()=>renderChart(activeSymbol,b.dataset.range)));
 $("#marketSearch").addEventListener("input",renderMarkets);
 $("#marketRows").addEventListener("click",e=>{const star=e.target.closest("[data-star]"),trade=e.target.closest("[data-practice]");if(star){const s=star.dataset.star;state.watchlist=state.watchlist.includes(s)?state.watchlist.filter(x=>x!==s):[...state.watchlist,s];save();renderMarkets();renderWatchlist();toast(state.watchlist.includes(s)?"Added to watchlist.":"Removed from watchlist.");}if(trade){$("#tradeSymbol").value=trade.dataset.practice;updateEstimate();go("practice")}});
-$("#tradeSymbol").addEventListener("change",updateEstimate);$("#tradeQty").addEventListener("input",updateEstimate);
+$("#candleSymbol").addEventListener("change",()=>{candleSymbol=$("#candleSymbol").value;$("#tradeSymbol").value=candleSymbol;seedCandles(candleSymbol);updateEstimate()});$$(".candle-range").forEach(b=>b.addEventListener("click",()=>{$$(".candle-range").forEach(x=>x.classList.toggle("active",x===b));candleRange=b.dataset.candleRange;seedCandles(candleSymbol)}));window.addEventListener("resize",drawCandles);$("#tradeSymbol").addEventListener("change",updateEstimate);$("#tradeQty").addEventListener("input",updateEstimate);
 function updateEstimate(){const s=$("#tradeSymbol").value,q=Math.max(0,Number($("#tradeQty").value)||0);$("#orderPrice").textContent=money(price(s));$("#orderEstimate").textContent=money(price(s)*q)}
 $("#orderForm").addEventListener("submit",e=>{e.preventDefault();order("BUY",$("#tradeSymbol").value,Number($("#tradeQty").value))});
 $("#sellSelected").addEventListener("click",()=>order("SELL",$("#tradeSymbol").value,Number($("#tradeQty").value)));
@@ -99,6 +130,6 @@ $("#copyReferral").addEventListener("click",async()=>{const message="Join me on 
 $("#shareReferral").addEventListener("click",async()=>{const data={title:"Decnotrade",text:"Explore market concepts and virtual practice with Decnotrade.",url:window.location.href};if(navigator.share){try{await navigator.share(data)}catch(e){if(e.name!=="AbortError")toast("Sharing is not available right now.")}}else{try{await navigator.clipboard.writeText(data.text+" "+data.url);toast("Share link copied.")}catch{toast("Use your browser's address bar to share the website.")}}});
 $("#resetAll").addEventListener("click",clearAll);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#sidebar").classList.remove("open")});
-function init(){renderChart();renderPortfolio();renderLessons();renderAnalytics();renderProductExtras();updateEstimate();calcRisk();runScenario();$("#statLessons").innerHTML=state.completed.length+' <small>/ 6</small>'}
+function init(){renderChart();renderPortfolio();renderLessons();renderAnalytics();renderProductExtras();updateEstimate();calcRisk();runScenario();seedCandles(candleSymbol);startCandleFeed();$("#statLessons").innerHTML=state.completed.length+' <small>/ 6</small>'}
 init();
 })();
