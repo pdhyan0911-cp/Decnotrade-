@@ -1,6 +1,8 @@
 (() => {
 "use strict";
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+// Keep section navigation available even if an unrelated widget fails during startup.
+document.addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(!b)return;e.preventDefault();try{go(b.dataset.view)}catch(err){console.error("Decnotrade navigation error:",err)}});
 const money=n=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0);
 const whole=n=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(Number(n)||0);
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -125,7 +127,7 @@ function renderProductExtras(){
  if($("#profilePoints"))$("#profilePoints").textContent=points;
 }
 function clearAll(){if(!confirm("Reset all Decnotrade data saved in this browser? This clears your practice balance, orders, notes, reminders and lesson progress."))return;state=blank();save();renderPortfolio();renderLessons();renderAnalytics();renderJournal();renderAlerts();toast("Local practice data reset.")}
-$$("[data-view]").forEach(b=>b.addEventListener("click",e=>{e.preventDefault();go(b.dataset.view)}));
+
 $("#menuToggle").addEventListener("click",()=>{const open=$("#sidebar").classList.toggle("open");$("#sidebarBackdrop").classList.toggle("is-visible",open);$("#menuToggle").setAttribute("aria-expanded",String(open))});$("#sidebarBackdrop").addEventListener("click",()=>{$("#sidebar").classList.remove("open");$("#sidebarBackdrop").classList.remove("is-visible");$("#menuToggle").setAttribute("aria-expanded","false")});
 $("#helpBtn").addEventListener("click",()=>$("#helpDialog").showModal());$("#closeHelp").addEventListener("click",()=>$("#helpDialog").close());$("#helpDone").addEventListener("click",()=>$("#helpDialog").close());
 $("#dismissDisclaimer").addEventListener("click",()=>$(".disclaimer").remove());
