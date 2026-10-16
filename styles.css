@@ -117,3 +117,53 @@
 /* Local workspace backup controls */
 .backup-actions{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
 .backup-actions .btn{cursor:pointer}
+
+/* Mobile-first finishing pass: chart, order ticket and data tables */
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+.app,main,.main-content,.view{min-width:0;max-width:100%}
+img,canvas,svg{max-width:100%}
+.table-scroll{-webkit-overflow-scrolling:touch}
+.table-scroll table{min-width:620px}
+button,select,input,textarea{max-width:100%}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #47866c;outline-offset:2px}
+.candle-toolbar select{min-width:0;max-width:100%}
+.candle-ranges{display:flex;gap:4px;flex-wrap:wrap}
+.candle-range{min-width:38px;min-height:36px}
+.candle-readout{min-width:0}
+.candle-readout small{overflow-wrap:anywhere}
+.candle-canvas-wrap{min-width:0;touch-action:pan-y}
+#candleCanvas{max-width:100%}
+.order-panel form select,.order-panel form input{width:100%;min-width:0}
+.order-buttons .btn{min-height:44px;white-space:normal}
+@media(max-width:600px){
+ .page-intro{gap:12px}
+ .live-practice-chart{margin:12px 0 16px;padding:12px}
+ .live-practice-chart .panel-title{align-items:flex-start;gap:10px}
+ .live-practice-chart .panel-title h2{font-size:18px}
+ .feed-status{flex-shrink:0}
+ .candle-toolbar{align-items:stretch;gap:8px}
+ .candle-toolbar label{align-self:center}
+ .candle-toolbar select{flex:1;min-height:40px}
+ .candle-ranges{width:100%;margin-left:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+ .candle-range{width:100%;padding:8px 4px}
+ .candle-readout{gap:7px 10px;align-items:center}
+ .candle-readout strong{font-size:20px}
+ .candle-readout small{width:100%;font-size:10px}
+ .candle-canvas-wrap{min-height:210px}
+ .candle-canvas-wrap canvas{height:250px}
+ .practice-grid{grid-template-columns:minmax(0,1fr)}
+ .order-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .order-buttons .btn{padding:11px 7px;font-size:12px}
+ .positions-panel,.order-panel,.order-history{min-width:0}
+ .position-row{gap:8px;flex-wrap:wrap}
+ .position-value{margin-left:auto}
+ .order-history .panel-title{align-items:flex-start;gap:8px}
+ .backup-actions .btn{flex:1 1 145px;min-height:42px}
+}
+@media(max-width:360px){
+ .candle-readout strong{font-size:18px}
+ .candle-legend{gap:8px}
+ .candle-canvas-wrap canvas{height:220px}
+ .order-buttons{grid-template-columns:minmax(0,1fr)}
+}
