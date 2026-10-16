@@ -1,28 +1,32 @@
 # Decrotrade
 
-A responsive, static trading-education website built with HTML, CSS, and vanilla JavaScript.
+A polished, responsive static website for trading education, chart literacy and risk awareness.
 
-## Website files
+## Included files
 
-- `index.html` — page structure and content
-- `styles.css` — responsive visual design
-- `script.js` — navigation and interactive learning-guide dialogs
-- `favicon.svg` — browser icon
+- `index.html` — homepage, learning paths, illustrated chart, searchable glossary and FAQs
+- `styles.css` — responsive visual system and layouts
+- `script.js` — mobile navigation, lesson dialogs, glossary search and interactions
+- `favicon.svg` — custom browser icon
+- `privacy.html` — basic privacy notice template
+- `disclaimer.html` — educational and financial-risk disclaimer
+- `404.html` — custom not-found page
 
 ## Run locally
 
-Open `index.html` in a browser. No build step or package installation is required.
+Open `index.html` in a browser. There is no build step and no package installation is required.
 
 ## Deploy to Vercel
 
-1. Sign in to [Vercel](https://vercel.com/) and choose **Add New → Project**.
-2. Import the GitHub repository `pdhyan0911-cp/Decnotrade-`.
-3. For this static HTML project, leave the framework preset as **Other** and do not set a build command.
-4. Deploy. Vercel will provide a hosted URL when its deployment succeeds.
+1. Sign in to [Vercel](https://vercel.com/) with GitHub.
+2. Choose **Add New → Project** and import `pdhyan0911-cp/Decnotrade-`.
+3. Use the **Other** framework preset if asked. Leave the build command empty and keep the project root as the repository root.
+4. Deploy and wait for Vercel to report success before sharing the URL.
 
-## Important notes
+## Important scope notes
 
-- The candlestick graphic is illustrative, not live market data.
-- This project is for education only and is not financial advice.
-- No real-money trading, user-account system, or payment processing is implemented.
-- AdSense approval and any advertising integration are separate steps and are not included yet.
+- The chart graphic is illustrative and is not live market data.
+- The website is educational and does not provide personal financial advice.
+- There is no trading execution, broker connection, real-money or demo trading, login/account system, payment processing, or server-side database.
+- The privacy and disclaimer pages are starter templates; review and adapt them to your actual hosting and services.
+- AdSense is not integrated and approval is not guaranteed.
