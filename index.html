@@ -13,7 +13,35 @@
 <script src="firebase-config.js" defer></script><script src="auth.js" defer></script>
 </head>
 <body>
-<div class="app">
+<section id="welcomeScreen" class="welcome-screen" aria-labelledby="welcomeTitle">
+  <div class="welcome-grid" aria-hidden="true"></div>
+  <header class="welcome-top">
+    <a class="welcome-brand" href="#" aria-label="Decnotrade home"><span class="welcome-brand-mark">d<span>↗</span></span><span><b>decnotrade</b><small>MARKET LEARNING STUDIO</small></span></a>
+    <span class="welcome-top-note"><i></i> A calmer way to learn markets</span>
+  </header>
+  <main class="welcome-content">
+    <div class="welcome-copy">
+      <span class="welcome-kicker"><span></span> LEARN · PRACTISE · REFLECT</span>
+      <h1 id="welcomeTitle">Understand the market.<br><em>Build your process.</em></h1>
+      <p class="welcome-description">A thoughtfully designed space to explore market concepts, learn at your own pace, and practise with virtual funds — without real-money trading.</p>
+      <div class="welcome-highlights"><span><b>01</b> Learn the basics</span><span><b>02</b> Practise virtually</span><span><b>03</b> Track your progress</span></div>
+      <button id="startButton" class="welcome-start" type="button"><span>Start learning</span><span class="welcome-start-arrow">↗</span></button>
+      <p class="welcome-footnote"><span>✳</span> Free to explore · No broker connected · Educational use only</p>
+    </div>
+    <div class="welcome-visual" aria-label="Illustration of a market learning dashboard">
+      <div class="visual-glow"></div><div class="visual-orbit orbit-a"></div><div class="visual-orbit orbit-b"></div>
+      <div class="visual-card visual-card-main"><div class="visual-card-head"><span><i></i> YOUR LEARNING JOURNEY</span><span class="visual-dots">•••</span></div><div class="visual-chart-label"><span>Progress over prediction</span><b>Keep building.</b></div>
+        <svg class="welcome-chart" viewBox="0 0 460 190" role="img" aria-label="Decorative illustrative chart"><defs><linearGradient id="welcomeChartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#91b69b" stop-opacity=".32"/><stop offset="100%" stop-color="#91b69b" stop-opacity="0"/></linearGradient></defs><path d="M0 145 C28 135 34 153 59 124 S95 130 119 100 S153 118 178 88 S217 104 239 72 S278 93 302 58 S344 79 366 47 S407 62 460 20 L460 190 L0 190Z" fill="url(#welcomeChartFill)"/><path d="M0 145 C28 135 34 153 59 124 S95 130 119 100 S153 118 178 88 S217 104 239 72 S278 93 302 58 S344 79 366 47 S407 62 460 20" fill="none" stroke="#7eaa8b" stroke-width="3" stroke-linecap="round"/><circle cx="366" cy="47" r="5" fill="#f3f4e9" stroke="#7eaa8b" stroke-width="3"/><path d="M0 48H460 M0 94H460 M0 140H460" stroke="#dce6db" stroke-dasharray="3 7" stroke-width="1"/></svg>
+        <div class="visual-chart-bottom"><span>Concepts become clearer with practice.</span><span class="visual-trend">↗</span></div>
+      </div>
+      <div class="visual-float visual-float-top"><span class="float-icon">✳</span><span><b>Learn with purpose</b><small>One concept at a time</small></span></div>
+      <div class="visual-float visual-float-bottom"><span class="float-icon float-icon-soft">✓</span><span><b>Virtual practice</b><small>No real money involved</small></span></div>
+      <div class="visual-stamp">D<span>↗</span></div>
+    </div>
+  </main>
+  <footer class="welcome-footer"><span>© 2026 Decnotrade</span><span><a href="privacy.html">Privacy</a><a href="disclaimer.html">Learning disclaimer</a></span></footer>
+</section>
+<div class="app" id="appShell" hidden>
 <aside class="sidebar" id="sidebar">
 <a class="brand" href="#overview" data-view="overview"><span class="brand-symbol">d<span>↗</span></span><span><b>decnotrade</b><small>MARKET LEARNING STUDIO</small></span></a>
 <div class="side-label">YOUR WORKSPACE</div>
@@ -67,10 +95,10 @@
 <!-- Adsterra native banner removed to prevent inappropriate ads -->
 <footer class="site-footer"><span>© 2026 Decnotrade · Built for learning.</span><span><a href="about.html">About</a> · <a href="guides/index.html">Learning guides</a> · <a href="privacy.html">Privacy</a> · <a href="disclaimer.html">Disclaimer</a> · Sample data · Simulation only</span></footer>
 </div></main></div>
-<dialog id="authDialog" class="auth-dialog" aria-labelledby="authTitle">
+<section id="authDialog" class="auth-page" aria-labelledby="authTitle" hidden>
   <div class="auth-shell">
-    <div class="auth-brand"><span class="brand-symbol">d<span>↗</span></span><div><b>decnotrade</b><small>YOUR LEARNING WORKSPACE</small></div><button id="authClose" class="auth-close" type="button" aria-label="Close sign in">×</button></div>
-    <div class="auth-intro"><span class="eyebrow">WELCOME TO DECNOTRADE</span><h2 id="authTitle">Your progress, your space.</h2><p>Sign in to keep your learning journey connected across devices, or try the workspace as a guest for 2 days.</p></div>
+    <div class="auth-brand"><span class="brand-symbol">d<span>↗</span></span><div><b>decnotrade</b><small>YOUR LEARNING WORKSPACE</small></div><button id="authClose" class="auth-close" type="button" aria-label="Back to welcome page">← <span>Back</span></button></div>
+    <div class="auth-intro"><span class="eyebrow">WELCOME TO DECNOTRADE</span><h2 id="authTitle">Welcome back.</h2><p>Choose how you’d like to continue. Sign in to save your progress, or explore as a guest for 2 days.</p></div>
     <div class="auth-providers">
       <button type="button" class="auth-provider" id="googleSignIn"><span class="provider-mark google-mark">G</span>Continue with Google</button>
       <button type="button" class="auth-provider" id="facebookSignIn"><span class="provider-mark facebook-mark">f</span>Continue with Facebook</button>
@@ -88,7 +116,7 @@
     <p class="auth-status" id="authStatus" role="status" aria-live="polite">Guest activity is saved on this device. Secure sign-in activates after Firebase is configured.</p>
     <p class="auth-legal">By continuing, you agree to use Decnotrade for educational practice only. <a href="privacy.html">Privacy notice</a></p>
   </div>
-</dialog>
+</section>
 <div id="toast" class="toast" role="status" aria-live="polite"></div><dialog id="helpDialog"><div class="dialog-head"><b>Welcome to Decnotrade</b><button id="closeHelp" aria-label="Close">×</button></div><p>Decnotrade is a learning and practice workspace. Explore sample market values, use virtual funds, complete beginner lessons and reflect in your journal.</p><p><b>Remember:</b> sample values are not live quotes; simulated results are not real returns; and no real-money orders are possible here.</p><button class="btn btn-primary" id="helpDone">Got it</button></dialog>
 <!-- Popunder removed: prevents click-triggered ads -->
 <!-- Adsterra Social Bar removed to prevent inappropriate ads -->
