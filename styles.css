@@ -353,3 +353,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  .welcome-visual{min-height:260px}
  .auth-shell{padding:20px 16px}
 }
+
+/* Phone OTP sign-in */
+#phoneAuthForm{margin-bottom:8px}
+#recaptcha-container{margin:8px 0;min-height:0;overflow-x:auto}
+#phoneCodeSection[hidden]{display:none!important}
+#phoneCodeSection{display:flex;flex-direction:column;gap:9px;margin-top:10px}
+#phoneAuthForm input{width:100%;min-height:48px;border:1px solid #e0e6dd;background:#fcfdfb;border-radius:10px;padding:12px 14px;font-size:14px;color:var(--ink)}
+#phoneAuthForm input:focus{outline:0;border-color:#91b29a;box-shadow:0 0 0 3px #dceade66}
