@@ -18,6 +18,20 @@
     !Object.values(config).some(v => typeof v === "string" && v.startsWith("YOUR_")));
   let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null, authInitialized = false, recaptchaVerifier = null, phoneConfirmation = null;
 
+
+  // On the login screen, always tell the visitor when a control was tapped.
+  document.addEventListener("click", e => {
+    const control = e.target.closest("#authDialog button, #authDialog [role='button']");
+    if (!control || control.disabled) return;
+    const statusNode = $("#authStatus");
+    if (!statusNode) return;
+    const label = (control.innerText || control.getAttribute("aria-label") || "Button").replace(/\s+/g, " ").trim();
+    statusNode.textContent = "Tapped: " + label + ". If nothing else happens, check the sign-in setup or deployment.";
+    statusNode.style.display = "block";
+    statusNode.style.visibility = "visible";
+    statusNode.style.opacity = "1";
+  }, true);
+
   function setStatus(message, error = false) {
     status.textContent = message;
     status.dataset.error = error ? "true" : "false";
