@@ -27,3 +27,10 @@ After committing the real Firebase web config and publishing Firestore rules, wa
 - The guest timer is browser-side and is not tamper-proof; a static website cannot securely enforce time limits against someone who clears browser storage.
 - Cloud workspace data is stored under the authenticated Firebase user ID. Review and publish the included Firestore rules before enabling cloud sync.
 - Firebase web config is designed to be public. Never commit Firebase service-account credentials, private API secrets, or OAuth client secrets to this repository.
+
+## OTP / two-step verification
+
+- Google sign-in redirects to Google's own secure sign-in page. Google decides whether to ask for a password, passkey, authenticator prompt or one-time code based on the Google account's security settings. Decnotrade must never imitate Google's password or OTP screen or collect a Google OTP.
+- If you require a second verification step for every Decnotrade account, configure Firebase Authentication with Identity Platform multi-factor authentication and enable phone SMS MFA. Phone MFA needs a real phone number, SMS delivery, reCAPTCHA/anti-abuse controls, and project billing/limits may apply.
+- Do not add a homemade OTP field that accepts any code. It would look like verification but would not verify anyone. The current code sends users through real provider sign-in and opens the workspace after Firebase confirms the signed-in account; MFA enforcement must be enabled in Firebase for a mandatory second factor.
+- After provider setup, verify the whole flow on the deployed domain: select a provider → finish the provider's real sign-in/verification → return to Decnotrade → confirm the workspace opens. Do not test using private OAuth secrets committed to the repository.
