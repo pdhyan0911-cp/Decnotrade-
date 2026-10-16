@@ -170,16 +170,22 @@ $("#backupFile").addEventListener("change",async e=>{
   if(parsed?.app!=="Decnotrade"||parsed?.formatVersion!==1||!data||typeof data.cash!=="number"||!Number.isFinite(data.cash)||data.cash<0||!data.positions||typeof data.positions!=="object"||Array.isArray(data.positions)||!Array.isArray(data.orders)||!Array.isArray(data.completed)||!Array.isArray(data.journal)||!Array.isArray(data.watchlist)||!Array.isArray(data.alerts))throw new Error("This is not a valid Decnotrade backup.");
   if(!confirm("Import this Decnotrade backup? It will replace the workspace data saved in this browser."))return;
   const base=blank();
-  state={...base,...data,
-   cash:Math.max(0,data.cash),
-   positions:Object.fromEntries(Object.entries(data.positions).filter(([k,p])=>instruments.some(x=>x.symbol===k)&&p&&Number.isFinite(p.qty)&&p.qty>0&&Number.isFinite(p.avg)&&p.avg>=0).map(([k,p])=>[k,{qty:Math.floor(p.qty),avg:p.avg}])),
-   orders:data.orders.filter(o=>o&&instruments.some(x=>x.symbol===o.symbol)&&["BUY","SELL"].includes(o.side)&&Number.isInteger(o.qty)&&o.qty>0&&Number.isFinite(o.price)&&typeof o.date==="string").slice(0,100),
-   completed:data.completed.filter(id=>lessons.some(l=>l.id===id)),
+  const validEquities=new Set(instruments.filter(x=>x.kind==="Equity").map(x=>x.symbol));
+  const validGoals=new Set(["foundations","charts","risk","discipline"]);
+  const completedChallenges=[...new Set((Array.isArray(data.challengeCompleted)?data.challengeCompleted:[]).filter(id=>challenges.some(c=>c.id===id)))];
+  const requestedChallenge=data.challengeStarted;
+  state={...base,
+   cash:data.cash,
+   positions:Object.fromEntries(Object.entries(data.positions).filter(([k,p])=>validEquities.has(k)&&p&&Number.isInteger(p.qty)&&p.qty>0&&p.qty<=1000000&&Number.isFinite(p.avg)&&p.avg>0).map(([k,p])=>[k,{qty:p.qty,avg:p.avg}])),
+   orders:data.orders.filter(o=>o&&validEquities.has(o.symbol)&&["BUY","SELL"].includes(o.side)&&Number.isInteger(o.qty)&&o.qty>0&&o.qty<=100000&&Number.isFinite(o.price)&&o.price>0&&typeof o.date==="string").slice(0,100),
+   realized:Number.isFinite(data.realized)?data.realized:0,
+   completed:[...new Set(data.completed.filter(id=>lessons.some(l=>l.id===id)))],
    journal:data.journal.filter(x=>x&&typeof x.title==="string"&&typeof x.thesis==="string").slice(0,100),
    watchlist:[...new Set(data.watchlist.filter(s=>instruments.some(x=>x.symbol===s)))],
-   alerts:data.alerts.filter(a=>a&&instruments.some(x=>x.symbol===a.symbol)&&["above","below"].includes(a.condition)&&Number.isFinite(a.level)&&a.level>0).slice(0,100),
-   challengeCompleted:(Array.isArray(data.challengeCompleted)?data.challengeCompleted:[]).filter(id=>challenges.some(c=>c.id===id)),
-   profile:{...base.profile,...(data.profile&&typeof data.profile==="object"?data.profile:{})}
+   alerts:data.alerts.filter(a=>a&&instruments.some(x=>x.symbol===a.symbol)&&["above","below"].includes(a.condition)&&Number.isFinite(a.level)&&a.level>0).slice(0,100).map(a=>({...a,triggered:typeof a.triggered==="boolean"?a.triggered:false})),
+   challengeCompleted:completedChallenges,
+   challengeStarted:challenges.some(c=>c.id===requestedChallenge)&&!completedChallenges.includes(requestedChallenge)?requestedChallenge:null,
+   profile:{name:typeof data.profile?.name==="string"?data.profile.name.slice(0,40):base.profile.name,goal:validGoals.has(data.profile?.goal)?data.profile.goal:base.profile.goal}
   };
   save();renderPortfolio();renderLessons();renderAnalytics();renderJournal();renderAlerts();renderProductExtras();updateEstimate();
   toast("Backup imported successfully.");
