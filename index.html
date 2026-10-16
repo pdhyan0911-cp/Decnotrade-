@@ -3,125 +3,101 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f7f3">
-  <meta name="description" content="Decrotrade makes market concepts easier to understand with practical trading education, clear lessons, and risk-first learning.">
-  <title>Decrotrade — Learn the market, build your method</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="theme-color" content="#f5f5f0">
+  <meta name="description" content="Decrotrade combines paper trading, trading education and an AI learning assistant in one workspace.">
+  <title>Decrotrade — Learn. Practice. Understand.</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="announcement"><span class="announcement-dot"></span> Learn first. Manage risk always. <a href="#learn">Explore learning paths <span aria-hidden="true">↗</span></a></div>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="Decrotrade home">
-      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 29V11h9c7 0 11 3 11 9s-4 9-11 9H5Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M27 9v22M31 14v13M35 18v5" stroke="#bd6a43" stroke-width="3" stroke-linecap="round"/></svg></span>
-      <span>decro<span>trade</span></span>
-    </a>
-    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="main-nav"><span></span><span></span></button>
-    <nav id="main-nav" class="main-nav" aria-label="Main navigation">
-      <a href="#learn">Learn</a><a href="#market">Market basics</a><a href="#library">Glossary</a><a href="#about">Our approach</a>
-      <a class="nav-cta" href="#learn">Start learning <span aria-hidden="true">↗</span></a>
-    </nav>
-  </header>
-  <main id="home">
-    <section class="hero section-wrap">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-line"></span> A clearer way to learn trading</div>
-        <h1>Understand the market.<br><span>Build your method.</span></h1>
-        <p class="hero-description">A calmer, more structured place to learn charts, market behaviour and risk management—one concept at a time.</p>
-        <div class="hero-actions"><a class="button button-dark" href="#learn">Explore learning paths <span aria-hidden="true">↗</span></a><a class="text-link" href="#about">How we teach <span aria-hidden="true">→</span></a></div>
-        <div class="trust-row"><div class="avatar-stack" aria-hidden="true"><span>D</span><span>C</span><span>+</span></div><p><strong>Learn at your own pace</strong><br><small>Built for curious beginners</small></p></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" data-view="overview" aria-label="Decrotrade home">
+        <span class="brand-mark">D<span>↗</span></span>
+        <span class="brand-copy"><strong>decrotrade</strong><small>LEARN · PRACTICE · GROW</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">▦</span> Overview</button>
+        <button class="nav-item" data-view="markets"><span class="nav-icon">⌁</span> Markets <span class="nav-pill">Explore</span></button>
+        <button class="nav-item" data-view="paper"><span class="nav-icon">↗</span> Paper trading</button>
+        <button class="nav-item" data-view="academy"><span class="nav-icon">▤</span> Trading academy</button>
+        <button class="nav-item" data-view="ai"><span class="nav-icon">✳</span> Dec AI <span class="nav-dot"></span></button>
+        <button class="nav-item" data-view="journal"><span class="nav-icon">☷</span> Trade journal</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="learning-tip"><span class="tip-icon">✦</span><strong>Small steps. Better habits.</strong><p>Practice your process before risking capital.</p><button data-view="academy" class="text-link">Continue learning <span>↗</span></button></div>
+        <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span> Settings</button>
+        <div class="profile-row"><div class="avatar">D</div><div class="profile-copy"><strong>Practice account</strong><small>Local device profile</small></div><span class="profile-menu">•••</span></div>
       </div>
-      <div class="hero-visual" aria-label="Illustrative candlestick chart">
-        <div class="chart-topline"><div><span class="tiny-label">MARKET STUDY</span><h2>Read the movement</h2></div><span class="chart-tag"><span></span> EDUCATIONAL VIEW</span></div>
-        <div class="chart-stats"><div><span>Price action</span><strong>Learn the pattern</strong></div><div><span>Focus</span><strong>Structure &amp; context</strong></div></div>
-        <div class="chart-area">
-          <div class="chart-grid"><i></i><i></i><i></i><i></i><i></i></div>
-          <svg class="candles" viewBox="0 0 540 250" role="img" aria-label="Decorative example candlestick chart">
-            <defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5b806e" stop-opacity=".19"/><stop offset="100%" stop-color="#5b806e" stop-opacity="0"/></linearGradient></defs>
-            <path d="M0 208 C35 198 40 175 76 184 S119 153 151 164 S192 110 222 129 S260 145 286 107 S330 119 353 82 S391 102 414 63 S451 83 476 42 S510 58 540 20 L540 250 L0 250Z" fill="url(#areaFill)"/>
-            <path d="M0 208 C35 198 40 175 76 184 S119 153 151 164 S192 110 222 129 S260 145 286 107 S330 119 353 82 S391 102 414 63 S451 83 476 42 S510 58 540 20" fill="none" stroke="#658876" stroke-width="2.5" stroke-linecap="round"/>
-            <g stroke-linecap="round" stroke-width="2">
-              <path d="M27 150V206M19 166H35V192H19Z" stroke="#bd6a43" fill="#bd6a43"/><path d="M65 143V191M57 151H73V173H57Z" stroke="#658876" fill="#658876"/>
-              <path d="M103 136V180M95 145H111V166H95Z" stroke="#bd6a43" fill="#bd6a43"/><path d="M141 120V175M133 132H149V155H133Z" stroke="#658876" fill="#658876"/>
-              <path d="M179 97V148M171 112H187V132H171Z" stroke="#658876" fill="#658876"/><path d="M217 102V153M209 116H225V139H209Z" stroke="#bd6a43" fill="#bd6a43"/>
-              <path d="M255 82V143M247 94H263V121H247Z" stroke="#658876" fill="#658876"/><path d="M293 69V120M285 80H301V103H285Z" stroke="#658876" fill="#658876"/>
-              <path d="M331 49V103M323 63H339V86H323Z" stroke="#bd6a43" fill="#bd6a43"/><path d="M369 42V91M361 51H377V73H361Z" stroke="#658876" fill="#658876"/>
-              <path d="M407 26V79M399 37H415V61H399Z" stroke="#658876" fill="#658876"/><path d="M445 30V72M437 39H453V58H437Z" stroke="#bd6a43" fill="#bd6a43"/>
-              <path d="M483 8V57M475 18H491V39H475Z" stroke="#658876" fill="#658876"/><path d="M521 5V48M513 12H529V32H513Z" stroke="#658876" fill="#658876"/>
-            </g>
-          </svg>
-          <div class="chart-axis"><span>EXAMPLE ONLY</span><span>Concept illustration · not live data</span></div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong id="pageName">Overview</strong></div>
+        <div class="topbar-actions"><span class="market-status"><span class="status-dot"></span> Practice mode</span><button class="icon-button" id="helpButton" aria-label="Help">?</button><button class="top-avatar">D</button></div>
+      </header>
+
+      <section class="view active-view" id="view-overview">
+        <div class="welcome-row"><div><p class="eyebrow">FRIDAY, OCTOBER 16, 2026 · YOUR WORKSPACE</p><h1>Build skill, not just screen time.</h1><p class="subhead">One place to explore markets, practice with virtual funds and learn at your own pace.</p></div><button class="button button-dark" data-view="paper">Open paper trading <span>↗</span></button></div>
+        <div class="notice-strip"><span class="notice-icon">ⓘ</span><span><strong>Practice environment.</strong> Prices and chart movements on this build are illustrative sample data, not live quotes or financial advice.</span><button id="dismissNotice" aria-label="Dismiss notice">×</button></div>
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-top"><span>Virtual account balance</span><span class="metric-symbol">₹</span></div><strong id="overviewBalance">₹10,00,000</strong><div class="metric-foot"><span class="soft-tag">Virtual funds</span><span>Reset any time</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Open positions</span><span class="metric-symbol">⌁</span></div><strong id="overviewPositions">0</strong><div class="metric-foot"><span>Paper portfolio</span><span id="overviewHoldingsValue">₹0 invested</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Realized P&amp;L</span><span class="metric-symbol">↗</span></div><strong id="overviewPnl">₹0.00</strong><div class="metric-foot"><span class="soft-tag">From closed practice trades</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Learning progress</span><span class="metric-symbol">◎</span></div><strong id="overviewProgress">0 / 6</strong><div class="progress-track"><span id="overviewProgressBar"></span></div><div class="metric-foot"><span>Lessons completed</span><button class="inline-link" data-view="academy">Keep going →</button></div></article>
         </div>
-        <div class="chart-footer"><div class="footer-icon">↗</div><p><strong>Context before signals</strong><span>Learn to ask better questions of a chart.</span></p><span class="footer-arrow">↗</span></div>
-        <span class="decorative-orbit orbit-one"></span><span class="decorative-orbit orbit-two"></span>
-      </div>
-      <div class="hero-bottom-note"><span>01 / LEARN</span><span>Clarity over hype</span><span>Made for steady progress ↓</span></div>
-    </section>
-    <section class="principles section-wrap" id="about">
-      <div class="section-intro"><span class="eyebrow">THE DECROTRADE APPROACH</span><h2>Less noise.<br><span>More understanding.</span></h2></div>
-      <div class="principle-grid">
-        <article class="principle-card"><span class="card-number">01</span><div class="principle-icon">⌁</div><h3>Learn the foundations</h3><p>Start with chart types, candles, trends and market vocabulary before moving into complex ideas.</p><a href="#learn" class="card-link">Explore basics <span>↗</span></a></article>
-        <article class="principle-card"><span class="card-number">02</span><div class="principle-icon">◎</div><h3>Think in context</h3><p>Understand why a pattern matters, where it appears and why one signal is never a guarantee.</p><a href="#market" class="card-link">Study concepts <span>↗</span></a></article>
-        <article class="principle-card"><span class="card-number">03</span><div class="principle-icon">◇</div><h3>Respect risk</h3><p>Build risk awareness, patience and a learning process—not promises of quick profits.</p><a href="#risk" class="card-link">Risk-first learning <span>↗</span></a></article>
-      </div>
-    </section>
-    <section class="learning-section" id="learn">
-      <div class="section-wrap learning-inner">
-        <div class="learning-heading"><div><span class="eyebrow">YOUR LEARNING DESK</span><h2>Build your knowledge,<br><span>step by step.</span></h2></div><p>Choose a starting point. Each topic opens a short guide you can use to study at your own pace.</p></div>
-        <div class="learning-grid">
-          <button class="learning-card" data-topic="candles"><span class="learning-meta">PATH 01 <span>5 MIN READ</span></span><span class="learning-art art-candles"><i></i><i></i><i></i><i></i><i></i></span><span class="learning-title">Candlestick basics <span>↗</span></span><span class="learning-description">Open, high, low, close—and what each candle can tell you.</span></button>
-          <button class="learning-card" data-topic="trends"><span class="learning-meta">PATH 02 <span>6 MIN READ</span></span><span class="learning-art art-trend"><svg viewBox="0 0 240 74" aria-hidden="true"><path d="M8 61L47 49L77 54L113 29L146 38L185 12L231 19" fill="none" stroke="#668a76" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="185" cy="12" r="5" fill="#668a76"/></svg></span><span class="learning-title">Trends &amp; structure <span>↗</span></span><span class="learning-description">Explore higher highs, lower lows and changing market structure.</span></button>
-          <button class="learning-card" data-topic="risk"><span class="learning-meta">PATH 03 <span>7 MIN READ</span></span><span class="learning-art art-risk"><span class="risk-ring">RISK<br><b>FIRST</b></span></span><span class="learning-title">Risk management <span>↗</span></span><span class="learning-description">Learn about uncertainty, position sizing concepts and discipline.</span></button>
+        <div class="content-grid overview-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><p class="eyebrow">MARKET SNAPSHOT</p><h2>Market overview</h2></div><button class="inline-link" data-view="markets">Explore markets ↗</button></div><div class="index-cards"><button class="index-card selected" data-symbol="NIFTY"><span>NIFTY 50</span><strong>24,985.40</strong><small class="positive">+0.62% today</small></button><button class="index-card" data-symbol="SENSEX"><span>SENSEX</span><strong>81,640.20</strong><small class="positive">+0.48% today</small></button><button class="index-card" data-symbol="BANKNIFTY"><span>BANK NIFTY</span><strong>56,210.75</strong><small class="negative">−0.16% today</small></button></div><div class="chart-title-row"><div><span class="chart-symbol" id="chartSymbol">NIFTY 50</span><span class="chart-price" id="chartPrice">24,985.40</span></div><div class="range-tabs"><button class="range-tab active" data-range="1D">1D</button><button class="range-tab" data-range="1W">1W</button><button class="range-tab" data-range="1M">1M</button><button class="range-tab" data-range="1Y">1Y</button></div></div><div class="chart-wrap"><svg id="marketChart" viewBox="0 0 720 220" role="img" aria-label="Illustrative sample market chart"><defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#347c63" stop-opacity=".20"/><stop offset="100%" stop-color="#347c63" stop-opacity="0"/></linearGradient></defs><path id="chartArea" d="" fill="url(#chartFill)"></path><path id="chartLine" d="" fill="none" stroke="#347c63" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><div class="chart-axis"><span>09:15</span><span>11:00</span><span>13:00</span><span>15:30</span></div><span class="chart-watermark">ILLUSTRATIVE DATA</span></div></article>
+          <article class="panel watchlist-panel"><div class="panel-heading"><div><p class="eyebrow">KEEP AN EYE ON</p><h2>Watchlist</h2></div><button class="inline-link" data-view="markets">View all ↗</button></div><div class="watchlist" id="overviewWatchlist"></div><button class="button button-outline full-button" data-view="markets">Explore instruments</button></article>
         </div>
-        <div class="learning-bottom"><span>New to charts? Start with Path 01.</span><a href="#market" class="text-link">Browse market basics <span>→</span></a></div>
-      </div>
-    </section>
-    <section class="market-section section-wrap" id="market">
-      <div class="market-copy"><span class="eyebrow">MARKET BASICS</span><h2>Understand what<br>you're looking at.</h2><p>Charts are a way to visualise how price has moved over time. They help organise information, but they cannot predict the future with certainty.</p><button class="button button-outline" data-topic="chart-reading">Read chart-reading guide <span>↗</span></button></div>
-      <div class="market-list">
-        <button class="market-row" data-topic="candles"><span class="market-row-icon">▥</span><span><strong>Candlesticks</strong><small>Four key prices in one visual</small></span><span class="row-arrow">↗</span></button>
-        <button class="market-row" data-topic="trends"><span class="market-row-icon">⌁</span><span><strong>Trends &amp; ranges</strong><small>How price can move in context</small></span><span class="row-arrow">↗</span></button>
-        <button class="market-row" data-topic="volume"><span class="market-row-icon">▤</span><span><strong>Volume basics</strong><small>What activity can—and can't—show</small></span><span class="row-arrow">↗</span></button>
-        <button class="market-row" data-topic="risk"><span class="market-row-icon">◇</span><span><strong>Risk &amp; uncertainty</strong><small>Why no setup is guaranteed</small></span><span class="row-arrow">↗</span></button>
-      </div>
-    </section>
-    <section class="library-section" id="library">
-      <div class="section-wrap">
-        <div class="library-heading"><div><span class="eyebrow">THE LEARNING LIBRARY</span><h2>Make market language<br><span>feel less complicated.</span></h2></div><p>Look up a term, get a plain-language definition, and keep building your foundations.</p></div>
-        <label class="glossary-search"><span aria-hidden="true">⌕</span><input id="glossary-search" type="search" placeholder="Search terms like trend, volume, candle…" autocomplete="off" aria-label="Search market glossary"><kbd>SEARCH</kbd></label>
-        <div class="glossary-grid" id="glossary-grid">
-          <article class="glossary-card" data-term="candlestick candle open close high low wick body"><span class="glossary-letter">C</span><div><h3>Candlestick</h3><p>A chart symbol showing open, high, low and close for a selected period.</p><button data-topic="candles" class="glossary-more">Explore concept <span>↗</span></button></div></article>
-          <article class="glossary-card" data-term="trend uptrend downtrend swing high low market structure"><span class="glossary-letter">T</span><div><h3>Trend</h3><p>A broad direction inferred from a sequence of price swings over time.</p><button data-topic="trends" class="glossary-more">Explore concept <span>↗</span></button></div></article>
-          <article class="glossary-card" data-term="volume activity traded units market data"><span class="glossary-letter">V</span><div><h3>Volume</h3><p>A measure of trading activity, defined by the market and data provider.</p><button data-topic="volume" class="glossary-more">Explore concept <span>↗</span></button></div></article>
-          <article class="glossary-card" data-term="risk uncertainty loss probability risk management"><span class="glossary-letter">R</span><div><h3>Risk</h3><p>The uncertainty of outcomes, including the possibility of losing money.</p><button data-topic="risk" class="glossary-more">Explore concept <span>↗</span></button></div></article>
-          <article class="glossary-card" data-term="timeframe interval minute hour daily weekly chart"><span class="glossary-letter">T</span><div><h3>Timeframe</h3><p>The interval represented by each candle or data point on a chart.</p><button data-topic="chart-reading" class="glossary-more">Explore concept <span>↗</span></button></div></article>
-          <article class="glossary-card" data-term="range sideways support resistance price zone"><span class="glossary-letter">M</span><div><h3>Trading range</h3><p>A period when price moves within a broad zone instead of a clear direction.</p><button data-topic="trends" class="glossary-more">Explore concept <span>↗</span></button></div></article>
+        <div class="section-heading"><div><p class="eyebrow">YOUR NEXT STEP</p><h2>Make progress in three ways</h2></div></div>
+        <div class="feature-grid">
+          <button class="feature-card" data-view="paper"><span class="feature-icon green-icon">↗</span><span class="feature-tag">PRACTICE</span><strong>Paper trading</strong><p>Test a plan with virtual funds, track positions and review your decisions.</p><span class="feature-cta">Open practice desk <b>↗</b></span></button>
+          <button class="feature-card" data-view="academy"><span class="feature-icon peach-icon">▤</span><span class="feature-tag">LEARN</span><strong>Trading academy</strong><p>Build your understanding with bite-sized lessons and knowledge checks.</p><span class="feature-cta">Explore lessons <b>↗</b></span></button>
+          <button class="feature-card" data-view="ai"><span class="feature-icon lavender-icon">✳</span><span class="feature-tag">UNDERSTAND</span><strong>Dec AI assistant</strong><p>Ask questions about indicators, market vocabulary and trading risk.</p><span class="feature-cta">Ask Dec AI <b>↗</b></span></button>
         </div>
-        <p class="glossary-empty" id="glossary-empty" hidden>No matching terms. Try a shorter search, such as “risk” or “trend”.</p>
-      </div>
-    </section>
-    <section class="faq-section section-wrap" id="faq">
-      <div class="faq-intro"><span class="eyebrow">GOOD QUESTIONS, CLEAR ANSWERS</span><h2>Before you begin.</h2><p>What Decrotrade does—and what it doesn't.</p></div>
-      <div class="faq-list">
-        <details><summary>Is Decrotrade suitable for beginners?<span>+</span></summary><p>Yes. The lessons start with basic chart vocabulary and explain concepts in plain language. Learn at your own pace and revisit topics as needed.</p></details>
-        <details><summary>Does this website show live prices or trading signals?<span>+</span></summary><p>No. The chart is illustrative, not connected to live market feeds. Decrotrade does not provide trade signals or execute trades.</p></details>
-        <details><summary>Can I make trades or deposit money here?<span>+</span></summary><p>No. This website is for education only. It does not accept deposits, connect to a broker, or support real-money or demo trading.</p></details>
-        <details><summary>Does Decrotrade guarantee profits?<span>+</span></summary><p>No. Markets are uncertain. Educational material cannot guarantee results and is not personal financial advice.</p></details>
-      </div>
-    </section>
-    <section class="risk-banner section-wrap" id="risk"><div class="risk-banner-mark">!</div><div><span class="eyebrow">A NOTE WORTH REMEMBERING</span><h2>Knowledge first. Risk always.</h2><p>Decrotrade is an educational project, not financial advice. Examples are illustrative, markets involve risk, and learning content does not guarantee results. No real-money trading is provided here.</p></div><a href="#learn" class="text-link">Keep learning <span>→</span></a></section>
-  </main>
-  <footer class="site-footer"><div class="footer-main"><a class="brand footer-brand" href="#home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 29V11h9c7 0 11 3 11 9s-4 9-11 9H5Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M27 9v22M31 14v13M35 18v5" stroke="#bd6a43" stroke-width="3" stroke-linecap="round"/></svg></span><span>decro<span>trade</span></span></a><p>Learn the market with clarity, curiosity and care.</p><div class="footer-links"><a href="#learn">Learning paths</a><a href="#about">Our approach</a><a href="#faq">FAQs</a><a href="disclaimer.html">Disclaimer</a><a href="privacy.html">Privacy</a><a href="mailto:hello@decrotrade.com">Contact</a></div></div><div class="footer-bottom"><span>© <span id="year"></span> Decrotrade. Learn responsibly.</span><span>Educational content only · No live market data</span></div></footer>
-  <div class="modal-backdrop" id="lesson-modal" hidden>
-    <section class="lesson-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button class="modal-close" aria-label="Close lesson">×</button>
-      <span class="eyebrow" id="modal-kicker">LEARNING PATH</span><h2 id="modal-title">Learn the basics</h2><div id="modal-body"></div><button class="button button-dark modal-done">Got it <span>✓</span></button>
-    </section>
+      </section>
+
+      <section class="view" id="view-markets">
+        <div class="page-intro"><p class="eyebrow">EXPLORE</p><h1>Markets &amp; watchlist</h1><p class="subhead">Explore a sample instrument list. Prices shown here are placeholders for interface practice, not live market data.</p></div>
+        <div class="panel"><div class="toolbar"><label class="search-box"><span>⌕</span><input id="marketSearch" type="search" placeholder="Search symbol or company..." aria-label="Search markets"></label><span class="muted-copy" id="marketCount">6 instruments</span></div><div class="table-scroll"><table><thead><tr><th>Instrument</th><th>Sample price</th><th>Change</th><th>Watchlist</th><th>Practice</th></tr></thead><tbody id="marketRows"></tbody></table></div></div>
+      </section>
+
+      <section class="view" id="view-paper">
+        <div class="page-intro page-intro-split"><div><p class="eyebrow">SIMULATED EXECUTION</p><h1>Paper trading desk</h1><p class="subhead">Practice order decisions using virtual funds only. No broker is connected and no real orders are placed.</p></div><button class="button button-outline" id="resetAccount">↻ Reset virtual account</button></div>
+        <div class="paper-banner"><div><span class="paper-badge">VIRTUAL ACCOUNT</span><h2>Practice without risking real money.</h2><p>Starting balance: ₹10,00,000 virtual funds. Trades are simulated at the sample prices shown.</p></div><div class="paper-banner-value"><small>Available virtual cash</small><strong id="paperCash">₹10,00,000</strong></div></div>
+        <div class="paper-layout"><div class="panel order-panel"><div class="panel-heading"><div><p class="eyebrow">ORDER TICKET</p><h2>Place practice order</h2></div><span class="soft-tag">No real money</span></div><form id="orderForm"><label class="field-label" for="orderSymbol">Instrument</label><select id="orderSymbol"><option value="RELIANCE">RELIANCE · Sample ₹1,421.50</option><option value="TCS">TCS · Sample ₹3,845.00</option><option value="INFY">INFY · Sample ₹1,612.25</option><option value="HDFCBANK">HDFC BANK · Sample ₹1,748.80</option><option value="ITC">ITC · Sample ₹438.60</option><option value="TATAMOTORS">TATA MOTORS · Sample ₹714.20</option></select><div class="field-label">Order side</div><div class="side-toggle"><label><input type="radio" name="orderSide" value="buy" checked><span>Buy</span></label><label><input type="radio" name="orderSide" value="sell"><span>Sell</span></label></div><label class="field-label" for="orderQty">Quantity</label><div class="quantity-control"><button type="button" id="qtyMinus" aria-label="Decrease quantity">−</button><input id="orderQty" type="number" min="1" max="100000" value="1" required><button type="button" id="qtyPlus" aria-label="Increase quantity">+</button></div><div class="order-estimate"><span>Estimated order value</span><strong id="orderEstimate">₹1,421.50</strong></div><p class="form-note" id="orderHint">Buy orders use your virtual cash balance.</p><button class="button button-dark full-button" type="submit" id="submitOrder">Place virtual buy order</button><p class="form-error" id="orderError" role="alert"></p></form></div><div class="panel positions-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR PORTFOLIO</p><h2>Open positions</h2></div><span class="soft-tag" id="positionCount">0 positions</span></div><div id="positionsContainer" class="empty-state"><span class="empty-icon">⌁</span><strong>No open positions yet</strong><p>Your practice holdings will appear here after a simulated buy order.</p></div><div class="portfolio-summary"><div><span>Invested value</span><strong id="investedValue">₹0.00</strong></div><div><span>Unrealized P&amp;L</span><strong id="unrealizedPnl">₹0.00</strong></div></div></div></div>
+        <div class="panel order-history-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR ACTIVITY</p><h2>Order history</h2></div><span class="muted-copy">Saved on this device</span></div><div class="table-scroll"><table><thead><tr><th>Time</th><th>Instrument</th><th>Side</th><th>Qty</th><th>Sample price</th><th>Total</th><th>Status</th></tr></thead><tbody id="orderHistoryRows"></tbody></table></div><div id="historyEmpty" class="table-empty">Your practice orders will appear here.</div></div>
+      </section>
+
+      <section class="view" id="view-academy">
+        <div class="page-intro"><p class="eyebrow">TRADING ACADEMY</p><h1>Learn the language of markets.</h1><p class="subhead">Start with foundations, practise reading charts, and build a thoughtful risk-management process.</p></div>
+        <div class="academy-progress panel"><div class="academy-progress-icon">◎</div><div class="academy-progress-copy"><strong id="academyProgressText">Your learning journey</strong><span>Complete a lesson and answer its knowledge check to track progress.</span></div><div class="academy-progress-number" id="academyProgressNumber">0 / 6</div><div class="progress-track"><span id="academyProgressBar"></span></div></div>
+        <div class="lesson-grid" id="lessonGrid"></div>
+        <div class="panel glossary-panel"><div class="panel-heading"><div><p class="eyebrow">QUICK REFERENCE</p><h2>Trading glossary</h2></div><label class="search-box glossary-search"><span>⌕</span><input id="glossarySearch" type="search" placeholder="Search a term..." aria-label="Search glossary"></label></div><div class="glossary-grid" id="glossaryGrid"></div></div>
+      </section>
+
+      <section class="view" id="view-ai">
+        <div class="page-intro"><p class="eyebrow">DEC AI · LEARNING ASSISTANT</p><h1>Make complex ideas clearer.</h1><p class="subhead">Ask about chart terminology, indicators, market mechanics or risk. Responses in this preview are a built-in educational demo, not live AI analysis.</p></div>
+        <div class="ai-layout"><div class="panel chat-panel"><div class="chat-heading"><div class="ai-avatar">✳</div><div><strong>Dec AI</strong><span><i></i> Educational preview</span></div><button id="clearChat" class="inline-link">Clear chat</button></div><div class="chat-messages" id="chatMessages" aria-live="polite"><div class="chat-message assistant-message"><div class="message-avatar">✳</div><div><strong>Hi, I’m Dec AI.</strong><p>I can help explain trading concepts and risk-management basics. What would you like to understand today?</p><span class="message-time">Educational preview</span></div></div></div><div class="suggestion-row"><button class="suggestion-chip" data-prompt="Explain RSI in simple terms">Explain RSI</button><button class="suggestion-chip" data-prompt="What is risk management?">Risk management</button><button class="suggestion-chip" data-prompt="How do candlesticks work?">Candlesticks</button><button class="suggestion-chip" data-prompt="Explain support and resistance">Support &amp; resistance</button></div><form class="chat-compose" id="chatForm"><textarea id="chatInput" rows="1" maxlength="500" placeholder="Ask a trading or learning question..." aria-label="Ask Dec AI"></textarea><button class="send-button" type="submit" aria-label="Send message">↑</button></form><div class="chat-disclaimer">Demo responses only · Not financial advice · No live market analysis</div></div><aside class="panel ai-side-panel"><div class="ai-side-illustration">✳</div><p class="eyebrow">ASK BETTER QUESTIONS</p><h2>Your learning companion</h2><p>Use Dec AI to understand concepts, not to outsource financial decisions.</p><div class="ai-prompt-example"><span>01</span><div><strong>Learn a concept</strong><p>“Explain moving averages like I’m a beginner.”</p></div></div><div class="ai-prompt-example"><span>02</span><div><strong>Understand a risk</strong><p>“What can go wrong with leverage?”</p></div></div><div class="ai-prompt-example"><span>03</span><div><strong>Review a process</strong><p>“What should a trading journal record?”</p></div></div><div class="ai-connection-note"><span>ⓘ</span><p>A real AI model requires a secure backend connection. Never place a secret API key in browser code.</p></div></aside></div>
+      </section>
+
+      <section class="view" id="view-journal">
+        <div class="page-intro"><p class="eyebrow">REFLECT &amp; IMPROVE</p><h1>Trade journal</h1><p class="subhead">Review your simulated orders and note the thinking behind each practice decision.</p></div>
+        <div class="journal-layout"><div class="panel journal-form-panel"><div class="panel-heading"><div><p class="eyebrow">NEW ENTRY</p><h2>Record a reflection</h2></div></div><form id="journalForm"><label class="field-label" for="journalTitle">Entry title</label><input id="journalTitle" required maxlength="90" placeholder="e.g. Waited for confirmation"><label class="field-label" for="journalMood">Mindset</label><select id="journalMood"><option>Calm and patient</option><option>Uncertain</option><option>Too eager</option><option>Focused on the plan</option></select><label class="field-label" for="journalNotes">What did you learn?</label><textarea id="journalNotes" rows="5" maxlength="1200" required placeholder="What was your plan? What would you change next time?"></textarea><button class="button button-dark full-button" type="submit">Save reflection</button></form></div><div class="panel journal-entries-panel"><div class="panel-heading"><div><p class="eyebrow">PERSONAL NOTES</p><h2>Your reflections</h2></div></div><div id="journalEntries" class="journal-entries"><div class="empty-state"><span class="empty-icon">☷</span><strong>No reflections yet</strong><p>Your notes will be stored in this browser.</p></div></div></div></div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="page-intro"><p class="eyebrow">PREFERENCES</p><h1>Settings</h1><p class="subhead">Manage this browser's practice data and understand what this preview supports.</p></div>
+        <div class="settings-grid"><article class="panel settings-card"><div class="settings-icon">₹</div><h2>Virtual account</h2><p>Reset practice cash, positions and order history to the starting balance. This cannot affect a real brokerage account.</p><button class="button button-outline" id="settingsReset">Reset virtual account</button></article><article class="panel settings-card"><div class="settings-icon">⌂</div><h2>Local browser data</h2><p>Practice positions, completed lessons and journal notes are saved in this browser using local storage. They do not sync between devices.</p><button class="button button-outline" id="exportData">Export my practice data</button></article><article class="panel settings-card"><div class="settings-icon">✳</div><h2>AI connection</h2><p>Dec AI is currently a built-in educational preview. A secure server-side AI integration has not been configured.</p><button class="button button-outline" data-view="ai">Open Dec AI</button></article><article class="panel settings-card"><div class="settings-icon">ⓘ</div><h2>Data &amp; risk</h2><p>Sample market values are illustrative. This app does not connect to an exchange, broker, or real-money order system.</p><a class="button button-outline" href="disclaimer.html">Read disclaimer</a></article></div>
+      </section>
+
+      <footer class="app-footer"><span>© <span id="currentYear">2026</span> Decrotrade</span><span>Learn thoughtfully. Practise responsibly.</span><div><a href="privacy.html">Privacy</a><a href="disclaimer.html">Disclaimer</a></div></footer>
+    </main>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog class="lesson-dialog" id="lessonDialog"><button class="dialog-close" id="closeLesson" aria-label="Close lesson">×</button><div id="lessonDialogContent"></div></dialog>
 </body>
 </html>
