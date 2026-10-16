@@ -49,7 +49,7 @@
     window.scrollTo({ top: 0, behavior: "auto" });
     setStatus(configured
       ? "Choose a sign-in method, or continue as a guest for 2 days."
-      : "You are on the login page. Guest mode works now; Google, Facebook, GitHub and email sign-in need the real Firebase project configuration before they can authenticate.", !configured);
+      : "You are on the login page. Guest mode works now; Google, Facebook and email sign-in need the real Firebase project configuration before they can authenticate.", !configured);
   }
   function closeDialog() {
     if (!(currentUser || guestInfo().valid)) return;
@@ -134,20 +134,19 @@
     return true;
   }
   let providerBusy = false;
-  const providerButtons = ["#googleSignIn", "#facebookSignIn", "#githubSignIn"];
+  const providerButtons = ["#googleSignIn", "#facebookSignIn"];
   async function signInProvider(providerName) {
     if (!providerReady() || providerBusy) return;
     let provider;
     if (providerName === "google") provider = new firebase.auth.GoogleAuthProvider();
     if (providerName === "facebook") provider = new firebase.auth.FacebookAuthProvider();
-    if (providerName === "github") provider = new firebase.auth.GithubAuthProvider();
     if (!provider) { setStatus("This sign-in option is not available.", true); return; }
     providerBusy = true;
     providerButtons.forEach(sel => { const button = $(sel); button.disabled = true; button.setAttribute("aria-busy", "true"); });
-    const labels = { google: "Google", facebook: "Facebook", github: "GitHub" };
+    const labels = { google: "Google", facebook: "Facebook" };
     try {
-      setStatus("Connecting securely to " + labels[providerName] + "…");
-      // Redirect is more reliable than popups on mobile browsers and Android webviews.
+      setStatus("Opening " + labels[providerName] + " sign-in…");
+      // Redirect works reliably on mobile browsers; if it fails, the catch handler reports the cause.
       await auth.signInWithRedirect(provider);
     } catch (e) {
       providerBusy = false;
@@ -240,7 +239,6 @@
 
   $("#googleSignIn").addEventListener("click", () => signInProvider("google"));
   $("#facebookSignIn").addEventListener("click", () => signInProvider("facebook"));
-  $("#githubSignIn").addEventListener("click", () => signInProvider("github"));
   $("#authClose").addEventListener("click", returnToWelcome);
   $("#accountBtn").addEventListener("click", () => currentUser ? auth && auth.signOut() : showDialog());
   $("#guestContinue").addEventListener("click", () => {
@@ -335,6 +333,6 @@
     welcome.hidden = false;
     dialog.hidden = true;
     appShell.hidden = true;
-    setStatus("Secure account login is prepared, but it needs your Firebase project configuration before Google, Facebook, GitHub and email sign-in can work.", true);
+    setStatus("Secure account login is prepared, but it needs your Firebase project configuration before Google, Facebook and email sign-in can work.", true);
   }
 })();
