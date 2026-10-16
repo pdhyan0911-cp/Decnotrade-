@@ -46,7 +46,7 @@ function load(){
 }
 let state=load(),activeSymbol="NIFTY",activeRange="1D",toastTimer;
  let candleSymbol="RELIANCE",candleRange="1m",candleSeries=[],candleTimer=null;
-const save=()=>{try{localStorage.setItem("decnotrade_v1",JSON.stringify(state))}catch{}};
+const save=()=>{try{localStorage.setItem("decnotrade_v1",JSON.stringify(state));window.dispatchEvent(new CustomEvent("decnotrade:state",{detail:state}))}catch{}};
 const simulatedPrices=Object.fromEntries(instruments.map(x=>[x.symbol,x.price]));
  const price=s=>simulatedPrices[s]??(instruments.find(x=>x.symbol===s)?.price||0);
 const item=s=>instruments.find(x=>x.symbol===s)||instruments[0];
