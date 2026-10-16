@@ -6,7 +6,11 @@
 <meta name="theme-color" content="#101f1b">
 <meta name="description" content="Decnotrade — a smarter space to learn market concepts, practise with virtual funds, and understand your decisions."><meta property="og:type" content="website"><meta property="og:site_name" content="Decnotrade"><meta property="og:title" content="Decnotrade — Learn markets with clarity"><meta property="og:description" content="Explore market concepts, practise with virtual funds, and turn your process into a repeatable habit."><meta name="twitter:card" content="summary">
 <title>Decnotrade — Learn markets with clarity</title>
-<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"><script src="auth.js" defer></script><script src="script.js" defer></script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css">
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js" defer></script><script src="auth.js" defer></script><script src="script.js" defer></script>
 </head>
 <body>
 <section id="welcomeScreen" class="welcome-screen" aria-labelledby="welcomeTitle">
@@ -21,7 +25,7 @@
       <h1 id="welcomeTitle">Understand the market.<br><em>Build your process.</em></h1>
       <p class="welcome-description">A thoughtfully designed space to explore market concepts, learn at your own pace, and practise with virtual funds — without real-money trading.</p>
       <div class="welcome-highlights"><span><b>01</b> Learn the basics</span><span><b>02</b> Practise virtually</span><span><b>03</b> Track your progress</span></div>
-      <button id="startButton" class="welcome-start" type="button" onclick="window.location.href='/#dashboard'"><span>Start learning</span><span class="welcome-start-arrow">↗</span></button>
+      <button id="startButton" class="welcome-start" type="button" ><span>Start learning</span><span class="welcome-start-arrow">↗</span></button>
       <p class="welcome-footnote"><span>✳</span> Free to explore · No broker connected · Educational use only</p>
     </div>
     <div class="welcome-visual" aria-label="Illustration of a market learning dashboard">
@@ -111,6 +115,40 @@
 </div>
 <footer class="site-footer"><span>© 2026 Decnotrade · Built for learning.</span><span><a href="about.html">About</a> · <a href="guides/index.html">Learning guides</a> · <a href="privacy.html">Privacy</a> · <a href="disclaimer.html">Disclaimer</a> · Sample data · Simulation only</span></footer>
 </div></main></div>
+<section id="authDialog" class="auth-page" aria-labelledby="authTitle" hidden>
+  <div class="auth-shell">
+    <div class="auth-brand"><span class="brand-symbol">d<span>↗</span></span><div><b>decnotrade</b><small>YOUR LEARNING WORKSPACE</small></div><button id="authClose" class="auth-close" type="button" aria-label="Back to welcome page">← <span>Back</span></button></div>
+    <div class="auth-intro"><span class="eyebrow">YOUR LEARNING WORKSPACE</span><h2 id="authTitle">Sign in to continue.</h2><p>Use your phone number for a verification code, continue with Google, or sign in with email. Your practice account never places real-money trades.</p></div>
+    <div class="auth-divider"><span>sign in with your phone</span></div>
+    <form id="phoneAuthForm" class="email-auth-form">
+      <label for="authPhone">Phone number with country code</label>
+      <input id="authPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 9876543210" pattern="^\+[1-9]\d{7,14}$" required>
+      <div id="recaptcha-container"></div>
+      <button class="btn btn-outline auth-submit" id="sendPhoneCode" type="button">Send verification code</button>
+      <div id="phoneCodeSection" hidden>
+        <label for="authPhoneCode">SMS verification code</label>
+        <input id="authPhoneCode" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter the code" maxlength="10">
+        <button class="btn btn-primary auth-submit" id="verifyPhoneCode" type="button">Verify and sign in</button>
+      </div>
+    </form>
+    <div class="auth-divider"><span>or continue with Google</span></div>
+    <div class="auth-providers">
+      <button type="button" class="auth-provider" id="googleSignIn"><span class="provider-mark google-mark">G</span>Continue with Google</button>
+      <button type="button" class="auth-provider" id="facebookSignIn"><span class="provider-mark facebook-mark">f</span>Continue with Facebook</button>
+    </div>
+    <div class="auth-divider"><span>or use email</span></div>
+    <form id="emailAuthForm" class="email-auth-form">
+      <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+      <label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters" required>
+      <button class="btn btn-primary auth-submit" id="emailAuthSubmit" type="submit">Sign in with email</button>
+      <button type="button" id="forgotPassword" class="forgot-password">Forgot password?</button>
+    </form>
+    <div class="auth-secondary"><span id="authModePrompt">New to Decnotrade?</span> <button id="authModeToggle" type="button">Create account</button></div>
+    <button id="guestContinue" class="guest-button" type="button">Continue as guest for 2 days <span>→</span></button>
+    <p class="auth-status" id="authStatus" role="status" aria-live="polite">Guest activity is saved on this device. Secure sign-in activates after Firebase is configured.</p>
+    <p class="auth-legal">By continuing, you agree to use Decnotrade for educational practice only. <a href="privacy.html">Privacy notice</a></p>
+  </div>
+</section>
 <div id="toast" class="toast" role="status" aria-live="polite"></div><dialog id="helpDialog"><div class="dialog-head"><b>Welcome to Decnotrade</b><button id="closeHelp" aria-label="Close">×</button></div><p>Decnotrade is a learning and practice workspace. Explore sample market values, use virtual funds, complete beginner lessons and reflect in your journal.</p><p><b>Remember:</b> sample values are not live quotes; simulated results are not real returns; and no real-money orders are possible here.</p><button class="btn btn-primary" id="helpDone">Got it</button></dialog>
 <!-- Popunder removed: prevents click-triggered ads -->
 <!-- Adsterra Social Bar removed to prevent inappropriate ads -->
