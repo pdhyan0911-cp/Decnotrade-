@@ -1,32 +1,27 @@
 # Decrotrade
 
-A polished, responsive static website for trading education, chart literacy and risk awareness.
+Decrotrade is a responsive learning and paper-trading interface combining three areas:
 
-## Included files
+- **Paper trading:** virtual cash, simulated buy/sell orders, positions, portfolio P&L, watchlists and order history.
+- **Trading academy:** beginner-friendly lessons, knowledge checks, progress tracking and a searchable glossary.
+- **Dec AI:** built-in educational response preview for trading concepts. It is **not connected to a live AI model** until a secure backend is configured.
 
-- `index.html` — homepage, learning paths, illustrated chart, searchable glossary and FAQs
-- `styles.css` — responsive visual system and layouts
-- `script.js` — mobile navigation, lesson dialogs, glossary search and interactions
-- `favicon.svg` — custom browser icon
-- `privacy.html` — basic privacy notice template
-- `disclaimer.html` — educational and financial-risk disclaimer
-- `404.html` — custom not-found page
+Also includes a local-device trade journal, sample market overview, settings, privacy notice, disclaimer and custom 404 page.
 
 ## Run locally
 
-Open `index.html` in a browser. There is no build step and no package installation is required.
+Open `index.html` in a modern browser. The site is a static HTML/CSS/JavaScript project and requires no build command.
+
+## Important limitations
+
+- Market values and chart movements are illustrative sample data, **not live quotes**.
+- Paper trades are simulations only. No broker or exchange is connected; no real-money orders are placed.
+- Account state, lesson progress and journal notes use browser local storage and do not sync across devices.
+- Dec AI responses are built-in educational explanations, not generative AI or personalized financial advice. A real AI integration needs a server-side endpoint and secret management.
+- Authentication, cloud persistence, real-time market data, owner-only analytics, payments and advertising integrations are not included in this static preview.
 
 ## Deploy to Vercel
 
-1. Sign in to [Vercel](https://vercel.com/) with GitHub.
-2. Choose **Add New → Project** and import `pdhyan0911-cp/Decnotrade-`.
-3. Use the **Other** framework preset if asked. Leave the build command empty and keep the project root as the repository root.
-4. Deploy and wait for Vercel to report success before sharing the URL.
+Import the GitHub repository into Vercel. Select **Other** as the framework preset and leave the build command empty. Deploy, then test the deployed URL on desktop and mobile.
 
-## Important scope notes
-
-- The chart graphic is illustrative and is not live market data.
-- The website is educational and does not provide personal financial advice.
-- There is no trading execution, broker connection, real-money or demo trading, login/account system, payment processing, or server-side database.
-- The privacy and disclaimer pages are starter templates; review and adapt them to your actual hosting and services.
-- AdSense is not integrated and approval is not guaranteed.
+Review and update the privacy notice, disclaimer, and product behaviour before public launch or monetization.
