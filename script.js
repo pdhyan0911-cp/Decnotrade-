@@ -165,6 +165,7 @@
     const trade=e.target.closest("[data-practice]");if(trade){$("#orderSymbol").value=trade.dataset.practice;switchView("paper");updateEstimate();return}
     const sell=e.target.closest("[data-sell]");if(sell){const p=state.positions[sell.dataset.sell];if(p)submitOrder(sell.dataset.sell,"SELL",p.qty);return}
     const lesson=e.target.closest("[data-lesson]");if(lesson){openLesson(Number(lesson.dataset.lesson));return}
+    const finish=e.target.closest("#finishLesson");if(finish&&activeQuiz){if(!state.completed.includes(activeQuiz.i))state.completed.push(activeQuiz.i);save();renderLessons();$("#lessonDialog").close();toast("Lesson progress saved on this device.");return}
     const answer=e.target.closest("[data-answer]");if(answer&&activeQuiz&&!activeQuiz.answered){activeQuiz.answered=true;const l=lessons[activeQuiz.i],correct=Number(answer.dataset.answer)===l.answer;$$("[data-answer]").forEach(b=>{b.disabled=true;if(Number(b.dataset.answer)===l.answer)b.classList.add("correct")});if(!correct)answer.classList.add("incorrect");const fb=$("#quizFeedback");fb.className="quiz-feedback "+(correct?"correct":"incorrect");fb.textContent=(correct?"Correct. ":"Not quite. ")+l.why;$("#finishLesson").disabled=false;$("#finishLesson").textContent=state.completed.includes(activeQuiz.i)?"Lesson already completed":"Mark lesson complete";return}
     const range=e.target.closest("[data-range]");if(range){$$("[data-range]").forEach(b=>b.classList.toggle("active",b===range));renderChart($("#chartSymbol").textContent==="SENSEX"?"SENSEX":$("#chartSymbol").textContent==="BANK NIFTY"?"BANKNIFTY":"NIFTY",range.dataset.range);return}
     const index=e.target.closest("[data-symbol]");if(index){renderChart(index.dataset.symbol,$("[data-range].active")?.dataset.range||"1D");return}
@@ -176,7 +177,6 @@
   $("#marketSearch").addEventListener("input",renderMarkets);
   $("#glossarySearch").addEventListener("input",renderGlossary);
   $("#closeLesson").addEventListener("click",()=>$("#lessonDialog").close());
-  $("#finishLesson").addEventListener("click",()=>{if(!activeQuiz)return;if(!state.completed.includes(activeQuiz.i))state.completed.push(activeQuiz.i);save();renderLessons();$("#lessonDialog").close();toast("Lesson progress saved on this device.")});
   function updateEstimate(){
     const symbol=$("#orderSymbol").value,qty=Math.max(1,Math.floor(Number($("#orderQty").value)||1)),side=$('input[name="orderSide"]:checked').value;
     $("#orderEstimate").textContent=money(priceOf(symbol)*qty);
