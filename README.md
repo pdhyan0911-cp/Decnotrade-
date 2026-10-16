@@ -2,6 +2,12 @@
 
 Decnotrade is a standalone, responsive market-learning website with its own brand, navigation and product experience. It is not the Decrotrade website. This repository is intended to be deployed as a separate site.
 
+## Public learning library
+
+- **About:** explains the purpose, limitations, and local-first nature of the project.
+- **Learning guides:** original beginner articles on market basics, risk concepts, and candlestick charts.
+- Guides are educational content, not live market analysis or personal financial advice.
+
 ## Product areas
 
 - **Overview:** virtual portfolio summary, illustrative chart, watchlist and learning progress.
@@ -52,6 +58,13 @@ Import **this repository** (`pdhyan0911-cp/Decnotrade-`) as its own Vercel proje
 - The referral share label does not track signups or issue rewards.
 - There is no secure login, backend database, protected owner analytics, payment processing, AdSense tag, or global leaderboard in this static build.
 - The website is educational and is not financial advice. Review all policy pages before public launch or monetization.
+
+## Public launch and advertising readiness
+
+- The site includes an About page, a learning-guides hub with original educational articles, a privacy notice, and an educational disclaimer.
+- These additions improve clarity and give visitors substantive content, but they do not guarantee AdSense approval. Review the live site for quality, navigation, accuracy, and compliance before applying.
+- No AdSense code has been added. Add the publisher code only after the account/site process and ownership steps are completed. Keep ads clearly distinct from navigation and practice controls.
+- This is a static site; do not claim that it has secure accounts, private owner analytics, cloud sync, live market data, or real AI.
 
 ## Install and offline support
 
