@@ -1,10 +1,12 @@
 "use strict";
-const CACHE_NAME = "decnotrade-static-v5";
+const CACHE_NAME = "decnotrade-static-v6";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./script.js",
+  "./auth.js",
+  "./firebase-config.js",
   "./favicon.svg",
   "./manifest.webmanifest",
   "./privacy.html",
