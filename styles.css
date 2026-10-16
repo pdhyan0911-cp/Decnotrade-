@@ -187,3 +187,39 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .view.active { animation: none; }
   .main, .page-wrap, .view { backface-visibility: hidden; }
 }
+
+
+/* Account sign-in */
+.account-btn{border:1px solid #d8e2d5;background:#fff;color:var(--green-dark);border-radius:9px;padding:9px 13px;font-size:11px;font-weight:750;white-space:nowrap}
+.account-btn:hover{background:var(--green-soft)}
+.auth-dialog{width:min(94vw,460px);max-width:460px;max-height:92vh;padding:0;border:1px solid #e2e8df;border-radius:20px;background:#fff;color:var(--ink);box-shadow:0 25px 100px #10231935;overflow:auto}
+.auth-dialog::backdrop{background:#0c1b14a8;backdrop-filter:blur(4px)}
+.auth-shell{padding:25px}
+.auth-brand{display:flex;align-items:center;gap:11px;position:relative;margin-bottom:25px}
+.auth-brand>div{display:flex;flex-direction:column;gap:4px}
+.auth-brand b{font:800 18px Manrope;letter-spacing:-.7px}
+.auth-brand small{font-size:8px;letter-spacing:1px;color:#89948a;font-weight:700}
+.auth-close{margin-left:auto;width:32px;height:32px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:22px;color:#677469}
+.auth-intro h2{font:800 25px Manrope;letter-spacing:-1px;margin:9px 0}
+.auth-intro p{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:18px}
+.auth-providers{display:grid;gap:9px}
+.auth-provider{display:flex;align-items:center;justify-content:center;gap:10px;min-height:43px;width:100%;border:1px solid #e0e6dd;border-radius:10px;background:#fff;color:#2b382f;font-weight:700;font-size:12px}
+.auth-provider:hover{background:#f7f9f5;border-color:#c9d7c5}
+.provider-mark{display:grid;place-items:center;width:22px;height:22px;font-weight:800;font-size:15px}
+.google-mark{color:#4285f4}.facebook-mark{color:#1877f2;font-size:22px}.github-mark{color:#24292f}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:17px 0;color:#929b91;font-size:10px}
+.auth-divider:before,.auth-divider:after{content:"";height:1px;flex:1;background:#e8ece5}
+.email-auth-form{display:grid;gap:7px}
+.email-auth-form label{font-size:11px;font-weight:750;color:#46554a;margin-top:3px}
+.email-auth-form input{width:100%;min-height:42px;border:1px solid #dfe6dc;border-radius:9px;padding:10px 12px;background:#fbfcfa;color:var(--ink);outline:none}
+.email-auth-form input:focus{border-color:#72987c;box-shadow:0 0 0 3px #326b5215}
+.auth-submit{width:100%;margin-top:7px;min-height:43px;justify-content:center}
+.auth-secondary{text-align:center;font-size:11px;color:var(--muted);margin:15px 0}
+.auth-secondary button{border:0;background:none;color:var(--green);font-weight:800;padding:4px}
+.guest-button{width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid #dce7d7;border-radius:10px;background:#eff5eb;color:#355b3f;padding:13px;font-size:12px;font-weight:800}
+.guest-button:hover{background:#e5efdf}
+.auth-status{font-size:10px;line-height:1.55;color:#778279;background:#f6f8f3;border-radius:8px;padding:10px;margin:12px 0}
+.auth-status[data-error="true"]{color:#a23d35;background:#fff1ef}
+.auth-legal{font-size:9px;line-height:1.6;text-align:center;color:#8b958a;margin:14px 0 0}
+.auth-legal a{color:var(--green);text-decoration:underline}
+@media(max-width:560px){.top-actions{gap:8px}.account-btn{padding:8px 9px}.auth-shell{padding:20px}.auth-intro h2{font-size:23px}}
