@@ -167,3 +167,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  .candle-canvas-wrap canvas{height:220px}
  .order-buttons{grid-template-columns:minmax(0,1fr)}
 }
+
+
+/* Respect reduced-motion preferences and improve keyboard navigation comfort */
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
