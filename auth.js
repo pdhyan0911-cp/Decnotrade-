@@ -5,6 +5,10 @@
   const welcome = $("#welcomeScreen");
   const appShell = $("#appShell");
   if (!dialog || !welcome || !appShell) return;
+  // Always begin new/unsigned visitors on the designed welcome screen; Start opens the separate login page.
+  welcome.hidden = false;
+  dialog.hidden = true;
+  appShell.hidden = true;
   const status = $("#authStatus");
   const guestKey = "decnotrade_guest_started_v1";
   const localKey = "decnotrade_v1";
@@ -45,7 +49,7 @@
     window.scrollTo({ top: 0, behavior: "auto" });
     setStatus(configured
       ? "Choose a sign-in method, or continue as a guest for 2 days."
-      : "Guest mode works now. Google, Facebook, GitHub and email accounts activate after Firebase setup.", !configured);
+      : "You are on the login page. Guest mode works now; Google, Facebook, GitHub and email sign-in need the real Firebase project configuration before they can authenticate.", !configured);
   }
   function closeDialog() {
     if (!(currentUser || guestInfo().valid)) return;
@@ -124,7 +128,7 @@
   }
   function providerReady() {
     if (!configured || !window.firebase || !firebase.apps || !firebase.apps.length || !auth) {
-      setStatus("Secure sign-in is not connected yet. Firebase project settings must be added before account login can work.", true);
+      setStatus("This sign-in button is ready, but account login cannot start until the real Firebase web configuration is added and the provider is enabled. No fake login or password collection is used.", true);
       return false;
     }
     return true;
