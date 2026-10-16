@@ -22,9 +22,12 @@
         <button class="nav-item active" data-view="overview"><span class="nav-icon">▦</span> Overview</button>
         <button class="nav-item" data-view="markets"><span class="nav-icon">⌁</span> Markets <span class="nav-pill">Explore</span></button>
         <button class="nav-item" data-view="paper"><span class="nav-icon">↗</span> Paper trading</button>
+        <button class="nav-item" data-view="analytics"><span class="nav-icon">▥</span> Analytics</button>
+        <button class="nav-item" data-view="strategy"><span class="nav-icon">⌘</span> Strategy lab</button>
         <button class="nav-item" data-view="academy"><span class="nav-icon">▤</span> Trading academy</button>
         <button class="nav-item" data-view="ai"><span class="nav-icon">✳</span> Dec AI <span class="nav-dot"></span></button>
         <button class="nav-item" data-view="journal"><span class="nav-icon">☷</span> Trade journal</button>
+        <button class="nav-item" data-view="alerts"><span class="nav-icon">♧</span> Alerts & risk</button>
       </nav>
       <div class="sidebar-bottom">
         <div class="learning-tip"><span class="tip-icon">✦</span><strong>Small steps. Better habits.</strong><p>Practice your process before risking capital.</p><button data-view="academy" class="text-link">Continue learning <span>↗</span></button></div>
@@ -70,6 +73,58 @@
         <div class="paper-banner"><div><span class="paper-badge">VIRTUAL ACCOUNT</span><h2>Practice without risking real money.</h2><p>Starting balance: ₹10,00,000 virtual funds. Trades are simulated at the sample prices shown.</p></div><div class="paper-banner-value"><small>Available virtual cash</small><strong id="paperCash">₹10,00,000</strong></div></div>
         <div class="paper-layout"><div class="panel order-panel"><div class="panel-heading"><div><p class="eyebrow">ORDER TICKET</p><h2>Place practice order</h2></div><span class="soft-tag">No real money</span></div><form id="orderForm"><label class="field-label" for="orderSymbol">Instrument</label><select id="orderSymbol"><option value="RELIANCE">RELIANCE · Sample ₹1,421.50</option><option value="TCS">TCS · Sample ₹3,845.00</option><option value="INFY">INFY · Sample ₹1,612.25</option><option value="HDFCBANK">HDFC BANK · Sample ₹1,748.80</option><option value="ITC">ITC · Sample ₹438.60</option><option value="TATAMOTORS">TATA MOTORS · Sample ₹714.20</option></select><div class="field-label">Order side</div><div class="side-toggle"><label><input type="radio" name="orderSide" value="buy" checked><span>Buy</span></label><label><input type="radio" name="orderSide" value="sell"><span>Sell</span></label></div><label class="field-label" for="orderQty">Quantity</label><div class="quantity-control"><button type="button" id="qtyMinus" aria-label="Decrease quantity">−</button><input id="orderQty" type="number" min="1" max="100000" value="1" required><button type="button" id="qtyPlus" aria-label="Increase quantity">+</button></div><div class="order-estimate"><span>Estimated order value</span><strong id="orderEstimate">₹1,421.50</strong></div><p class="form-note" id="orderHint">Buy orders use your virtual cash balance.</p><button class="button button-dark full-button" type="submit" id="submitOrder">Place virtual buy order</button><p class="form-error" id="orderError" role="alert"></p></form></div><div class="panel positions-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR PORTFOLIO</p><h2>Open positions</h2></div><span class="soft-tag" id="positionCount">0 positions</span></div><div id="positionsContainer" class="empty-state"><span class="empty-icon">⌁</span><strong>No open positions yet</strong><p>Your practice holdings will appear here after a simulated buy order.</p></div><div class="portfolio-summary"><div><span>Invested value</span><strong id="investedValue">₹0.00</strong></div><div><span>Unrealized P&amp;L</span><strong id="unrealizedPnl">₹0.00</strong></div></div></div></div>
         <div class="panel order-history-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR ACTIVITY</p><h2>Order history</h2></div><span class="muted-copy">Saved on this device</span></div><div class="table-scroll"><table><thead><tr><th>Time</th><th>Instrument</th><th>Side</th><th>Qty</th><th>Sample price</th><th>Total</th><th>Status</th></tr></thead><tbody id="orderHistoryRows"></tbody></table></div><div id="historyEmpty" class="table-empty">Your practice orders will appear here.</div></div>
+      </section>
+
+      <section class="view" id="view-analytics">
+        <div class="page-intro"><p class="eyebrow">PRACTICE PERFORMANCE</p><h1>Your progress, explained.</h1><p class="subhead">Analytics are calculated from your local simulated orders only. No real account or live market data is connected.</p></div>
+        <div class="metric-grid analytics-metrics">
+          <article class="metric-card"><div class="metric-top"><span>Orders recorded</span><span class="metric-symbol">↗</span></div><strong id="analyticsOrders">0</strong><div class="metric-foot"><span>Virtual orders</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Closed-trade P&amp;L</span><span class="metric-symbol">₹</span></div><strong id="analyticsRealized">₹0.00</strong><div class="metric-foot"><span>Realized simulation result</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Open positions</span><span class="metric-symbol">▦</span></div><strong id="analyticsPositions">0</strong><div class="metric-foot"><span>Current virtual holdings</span></div></article>
+          <article class="metric-card"><div class="metric-top"><span>Virtual cash</span><span class="metric-symbol">◎</span></div><strong id="analyticsCash">₹10,00,000</strong><div class="metric-foot"><span>Available practice balance</span></div></article>
+        </div>
+        <div class="content-grid analytics-grid">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">ACTIVITY MIX</p><h2>Practice activity</h2></div><span class="soft-tag">Local data</span></div><div id="analyticsActivity" class="analytics-activity"></div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">PORTFOLIO CHECK</p><h2>Risk snapshot</h2></div></div><div id="analyticsRisk" class="risk-snapshot"></div></article>
+        </div>
+        <article class="panel analytics-table-panel"><div class="panel-heading"><div><p class="eyebrow">RECENT PRACTICE</p><h2>Latest orders</h2></div><button class="inline-link" data-view="paper">Open paper desk ↗</button></div><div class="table-scroll"><table><thead><tr><th>Time</th><th>Symbol</th><th>Side</th><th>Quantity</th><th>Sample price</th><th>Value</th></tr></thead><tbody id="analyticsOrderRows"></tbody></table></div><div id="analyticsOrdersEmpty" class="table-empty">Place a virtual order to begin tracking practice activity.</div></article>
+      </section>
+
+      <section class="view" id="view-strategy">
+        <div class="page-intro"><p class="eyebrow">STRATEGY WORKBENCH</p><h1>Plan the risk before the trade.</h1><p class="subhead">Use educational calculators to explore position sizing and hypothetical strategy outcomes. These are not market predictions or historical backtests.</p></div>
+        <div class="strategy-layout">
+          <article class="panel calculator-panel"><div class="panel-heading"><div><p class="eyebrow">POSITION SIZING</p><h2>Risk calculator</h2></div><span class="soft-tag">Educational</span></div>
+            <label class="field-label" for="riskAccount">Practice account value (₹)</label><input id="riskAccount" type="number" min="1" max="1000000000" value="1000000">
+            <div class="calculator-two"><div><label class="field-label" for="riskPercent">Planned risk (%)</label><input id="riskPercent" type="number" min="0.1" max="5" step="0.1" value="1"></div><div><label class="field-label" for="riskEntry">Entry price (₹)</label><input id="riskEntry" type="number" min="0.01" step="0.01" value="100"></div></div>
+            <label class="field-label" for="riskStop">Planned invalidation / stop level (₹)</label><input id="riskStop" type="number" min="0.01" step="0.01" value="95">
+            <button class="button button-dark full-button" id="calculateRisk" type="button">Calculate example size</button>
+            <div id="riskResult" class="calculator-result" aria-live="polite"><span>Illustrative quantity</span><strong>2,000 units</strong><p>Before fees, slippage, gaps or other constraints.</p></div>
+          </article>
+          <article class="panel scenario-panel"><div class="panel-heading"><div><p class="eyebrow">SCENARIO EXPLORER</p><h2>Test assumptions</h2></div><span class="soft-tag">Not a backtest</span></div>
+            <p class="muted-copy scenario-intro">Change assumptions to see how win rate, average win/loss and sample size affect a hypothetical series.</p>
+            <label class="field-label" for="scenarioTrades">Number of hypothetical trades</label><input id="scenarioTrades" type="number" min="1" max="1000" value="50">
+            <div class="calculator-two"><div><label class="field-label" for="scenarioWin">Win rate (%)</label><input id="scenarioWin" type="number" min="0" max="100" value="45"></div><div><label class="field-label" for="scenarioReward">Reward / risk ratio</label><input id="scenarioReward" type="number" min="0.1" max="10" step="0.1" value="2"></div></div>
+            <label class="field-label" for="scenarioRisk">Risk per trade (₹)</label><input id="scenarioRisk" type="number" min="1" max="100000000" value="1000">
+            <button class="button button-outline full-button" id="runScenario" type="button">Run hypothetical scenario</button>
+            <div id="scenarioResult" class="scenario-result" aria-live="polite"><span>Expected value per trade</span><strong>₹350.00</strong><p>Mathematical expectation only; actual results can differ significantly.</p></div>
+          </article>
+        </div>
+        <div class="panel strategy-note"><span class="notice-icon">ⓘ</span><div><strong>Understand the limits</strong><p>These tools use only the assumptions you enter. They do not load historical prices, account for all trading costs, or establish that a strategy has an edge. Virtual practice is for learning, not proof of future performance.</p></div></div>
+      </section>
+
+      <section class="view" id="view-alerts">
+        <div class="page-intro"><p class="eyebrow">GUARDRAILS & REMINDERS</p><h1>Make risk visible.</h1><p class="subhead">Set local price-level reminders for the sample instruments and review practical risk habits. Alerts are checked manually against illustrative placeholder prices.</p></div>
+        <div class="alerts-layout">
+          <article class="panel alert-form-panel"><div class="panel-heading"><div><p class="eyebrow">LOCAL REMINDER</p><h2>Create a price reminder</h2></div></div>
+            <form id="alertForm"><label class="field-label" for="alertSymbol">Instrument</label><select id="alertSymbol"><option value="RELIANCE">RELIANCE</option><option value="TCS">TCS</option><option value="INFY">INFY</option><option value="HDFCBANK">HDFC BANK</option><option value="ITC">ITC</option><option value="TATAMOTORS">TATA MOTORS</option><option value="NIFTY">NIFTY 50</option><option value="SENSEX">SENSEX</option><option value="BANKNIFTY">BANK NIFTY</option></select>
+            <label class="field-label" for="alertCondition">Condition</label><select id="alertCondition"><option value="above">At or above level</option><option value="below">At or below level</option></select>
+            <label class="field-label" for="alertLevel">Sample price level (₹ / points)</label><input id="alertLevel" type="number" min="0.01" step="0.01" required placeholder="Enter a level">
+            <button class="button button-dark full-button" type="submit">Save local reminder</button></form>
+            <p class="form-note">No background monitoring or push notifications. Reminders are stored in this browser and only checked when you press the check button.</p>
+          </article>
+          <article class="panel alert-list-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR REMINDERS</p><h2>Price levels</h2></div><button class="button button-outline" id="checkAlerts" type="button">Check now</button></div><div id="alertList" class="alert-list"></div></article>
+        </div>
+        <div class="panel risk-habits"><div class="panel-heading"><div><p class="eyebrow">PRE-TRADE CHECKLIST</p><h2>Pause before every practice order</h2></div></div><div class="risk-checklist"><label><input type="checkbox"> I can explain why this is a practice trade.</label><label><input type="checkbox"> I know the level that would invalidate my idea.</label><label><input type="checkbox"> I have considered costs, gaps and uncertainty.</label><label><input type="checkbox"> I will record the decision in my journal.</label></div></div>
       </section>
 
       <section class="view" id="view-academy">
