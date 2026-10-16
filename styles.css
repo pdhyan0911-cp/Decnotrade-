@@ -376,3 +376,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 button,[role="button"]{pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:rgba(50,107,82,.18)}
 button:active:not(:disabled),[role="button"]:active:not([aria-disabled="true"]){filter:brightness(.94)}
 .tap-ack{outline:2px solid #83a98b!important;outline-offset:2px!important}
+
+/* Adsterra placements: reserve space and keep them separate from the welcome/start controls. */
+.adsterra-slot{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;max-width:100%;min-height:30px;margin:16px auto;padding:6px;background:#fff;border:1px solid #e5e9e1;border-radius:8px;overflow:hidden;isolation:isolate;z-index:0}
+.adsterra-slot .ad-label{font-size:9px;line-height:1;color:#89948a;letter-spacing:.6px;text-transform:uppercase;align-self:flex-start}
+.adsterra-leaderboard{width:min(100%,500px);min-height:80px}
+.adsterra-banner-468{width:min(100%,480px);min-height:80px}
+.adsterra-banner-320{width:min(100%,340px);min-height:68px}
+.adsterra-skyscraper{width:min(100%,180px);min-height:320px}
+.welcome-start{position:relative;z-index:5;pointer-events:auto;touch-action:manipulation}
+.welcome-copy,.welcome-content{position:relative;z-index:2}
