@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME = "decnotrade-static-v11";
+const CACHE_NAME = "decnotrade-static-v12";
 const APP_SHELL = [
   "./",
   "./index.html",
