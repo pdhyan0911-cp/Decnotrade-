@@ -63,7 +63,8 @@ Import **this repository** (`pdhyan0911-cp/Decnotrade-`) as its own Vercel proje
 
 - The site includes an About page, a learning-guides hub with original educational articles, a privacy notice, and an educational disclaimer.
 - These additions improve clarity and give visitors substantive content, but they do not guarantee AdSense approval. Review the live site for quality, navigation, accuracy, and compliance before applying.
-- No AdSense code has been added. Add the publisher code only after the account/site process and ownership steps are completed. Keep ads clearly distinct from navigation and practice controls.
+- The supplied Google AdSense publisher script for `ca-pub-2233181491065002` is included in the head of the main site and educational/policy pages. This only installs the publisher script; it does not prove site approval, guarantee that ads will show, or confirm consent-message configuration. Keep any ad placements clearly distinct from navigation and practice controls.
+- Review the privacy notice and configure Google's required privacy/consent messaging for the regions you serve before enabling ads. Check Google AdSense for any further site-verification or `ads.txt` instructions.
 - This is a static site; do not claim that it has secure accounts, private owner analytics, cloud sync, live market data, or real AI.
 
 ## Install and offline support
