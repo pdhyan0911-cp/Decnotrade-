@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME = "decnotrade-static-v1";
+const CACHE_NAME = "decnotrade-static-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -9,7 +9,12 @@ const APP_SHELL = [
   "./manifest.webmanifest",
   "./privacy.html",
   "./disclaimer.html",
-  "./404.html"
+  "./404.html",
+  "./about.html",
+  "./guides/index.html",
+  "./guides/market-basics.html",
+  "./guides/risk-management.html",
+  "./guides/candlestick-basics.html"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
