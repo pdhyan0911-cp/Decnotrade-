@@ -7,6 +7,10 @@
 <meta name="description" content="Decnotrade — a smarter space to learn market concepts, practise with virtual funds, and understand your decisions."><meta property="og:type" content="website"><meta property="og:site_name" content="Decnotrade"><meta property="og:title" content="Decnotrade — Learn markets with clarity"><meta property="og:description" content="Explore market concepts, practise with virtual funds, and turn your process into a repeatable habit."><meta name="twitter:card" content="summary">
 <title>Decnotrade — Learn markets with clarity</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"><script src="script.js" defer></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js" defer></script><script src="auth.js" defer></script>
 </head>
 <body>
 <div class="app">
@@ -35,7 +39,7 @@
 </aside>
 <button class="sidebar-backdrop" id="sidebarBackdrop" type="button" aria-label="Close navigation"></button>
 <main class="main">
-<header class="topbar"><button id="menuToggle" class="menu-toggle" aria-label="Toggle navigation" aria-controls="sidebar" aria-expanded="false">☰</button><div class="crumb"><span>Workspace</span><span>/</span><b id="pageTitle">Overview</b></div><div class="top-actions"><span class="practice-pill"><i></i> SIMULATION ONLY</span><button id="helpBtn" class="help-btn" aria-label="Help">?</button><span class="avatar avatar-small">D</span></div></header>
+<header class="topbar"><button id="menuToggle" class="menu-toggle" aria-label="Toggle navigation" aria-controls="sidebar" aria-expanded="false">☰</button><div class="crumb"><span>Workspace</span><span>/</span><b id="pageTitle">Overview</b></div><div class="top-actions"><button id="accountBtn" class="account-btn" type="button">Sign in</button><span class="practice-pill"><i></i> SIMULATION ONLY</span><button id="helpBtn" class="help-btn" aria-label="Help">?</button><span class="avatar avatar-small">D</span></div></header>
 <div class="page-wrap">
 <section class="view active" id="view-overview">
 <div class="hero"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL MARKET WORKSPACE</div><h1>Make every decision<br><span>worth learning from.</span></h1><p class="lede">Explore market concepts, practise with virtual funds, and turn your process into a repeatable habit.</p><div class="hero-actions"><button class="btn btn-primary" data-view="practice">Open practice portfolio <span>↗</span></button><button class="btn btn-quiet" data-view="academy">Continue learning <span>→</span></button></div></div><div class="hero-art" aria-label="Abstract chart illustration"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-card"><span>LEARNING MOMENTUM</span><strong>Build <i>consistency.</i></strong><div class="mini-bars"><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></div><small>Small steps compound into understanding.</small></div><div class="art-stamp">D<span>↗</span></div></div></div>
@@ -62,7 +66,29 @@
 <section class="view" id="view-settings"><div class="page-intro"><div><span class="eyebrow">YOUR WORKSPACE</span><h1>Preferences</h1><p class="lede">Manage your local practice workspace and understand how this version stores data.</p></div></div><div class="settings-grid"><article class="panel"><span class="eyebrow">PRACTICE ACCOUNT</span><h2>Reset local activity</h2><p class="muted">Resetting clears virtual holdings, orders, journal entries, reminders and lesson progress saved in this browser.</p><button class="btn btn-outline" id="resetAll">Reset all local data</button></article><article class="panel"><span class="eyebrow">BACKUP & PRIVACY</span><h2>Back up your workspace</h2><p class="muted">Export a backup of your local practice data before changing devices or clearing browser data. The backup can contain your journal entries and activity, so keep the file private.</p><div class="backup-actions"><button class="btn btn-primary" id="exportBackup" type="button">Export backup ↓</button><button class="btn btn-outline" id="importBackup" type="button">Import backup ↑</button><input id="backupFile" type="file" accept="application/json,.json" hidden></div><p class="tiny muted">Backups stay on your device unless you choose to share the downloaded file. Import replaces this browser workspace after confirmation.</p></article><article class="panel"><span class="eyebrow">DATA & PRIVACY</span><h2>Local-first by design</h2><p class="muted">This static build stores practice state in your browser. Online sign-in, cloud sync, secure owner analytics and a backend database are not connected.</p><p class="muted">Avoid entering sensitive personal information in journal entries.</p><a class="inline-link" href="privacy.html">Read privacy notice ↗</a></article><article class="panel"><span class="eyebrow">PRODUCT STATUS</span><h2>What this build includes</h2><ul class="feature-list"><li>Virtual portfolio and simulated order history</li><li>Practice analytics and educational calculators</li><li>Learning modules, glossary and built-in guide</li><li>Local journal, reminders, challenges, rewards and profile</li><li>Owner-console and monetization setup checklists</li></ul><p class="tiny muted">No live market feed, secure accounts, owner-only analytics, payment processing, referral tracking or live AI endpoint is configured.</p></article></div></section>
 <!-- Adsterra native banner removed to prevent inappropriate ads -->
 <footer class="site-footer"><span>© 2026 Decnotrade · Built for learning.</span><span><a href="about.html">About</a> · <a href="guides/index.html">Learning guides</a> · <a href="privacy.html">Privacy</a> · <a href="disclaimer.html">Disclaimer</a> · Sample data · Simulation only</span></footer>
-</div></main></div><div id="toast" class="toast" role="status" aria-live="polite"></div><dialog id="helpDialog"><div class="dialog-head"><b>Welcome to Decnotrade</b><button id="closeHelp" aria-label="Close">×</button></div><p>Decnotrade is a learning and practice workspace. Explore sample market values, use virtual funds, complete beginner lessons and reflect in your journal.</p><p><b>Remember:</b> sample values are not live quotes; simulated results are not real returns; and no real-money orders are possible here.</p><button class="btn btn-primary" id="helpDone">Got it</button></dialog>
+</div></main></div>
+<dialog id="authDialog" class="auth-dialog" aria-labelledby="authTitle">
+  <div class="auth-shell">
+    <div class="auth-brand"><span class="brand-symbol">d<span>↗</span></span><div><b>decnotrade</b><small>YOUR LEARNING WORKSPACE</small></div><button id="authClose" class="auth-close" type="button" aria-label="Close sign in">×</button></div>
+    <div class="auth-intro"><span class="eyebrow">WELCOME TO DECNOTRADE</span><h2 id="authTitle">Your progress, your space.</h2><p>Sign in to keep your learning journey connected across devices, or try the workspace as a guest for 2 days.</p></div>
+    <div class="auth-providers">
+      <button type="button" class="auth-provider" id="googleSignIn"><span class="provider-mark google-mark">G</span>Continue with Google</button>
+      <button type="button" class="auth-provider" id="facebookSignIn"><span class="provider-mark facebook-mark">f</span>Continue with Facebook</button>
+      <button type="button" class="auth-provider" id="githubSignIn"><span class="provider-mark github-mark">⌘</span>Continue with GitHub</button>
+    </div>
+    <div class="auth-divider"><span>or use email</span></div>
+    <form id="emailAuthForm" class="email-auth-form">
+      <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+      <label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" placeholder="At least 6 characters" required>
+      <button class="btn btn-primary auth-submit" id="emailAuthSubmit" type="submit">Sign in with email</button>
+    </form>
+    <div class="auth-secondary"><span id="authModePrompt">New to Decnotrade?</span> <button id="authModeToggle" type="button">Create account</button></div>
+    <button id="guestContinue" class="guest-button" type="button">Continue as guest for 2 days <span>→</span></button>
+    <p class="auth-status" id="authStatus" role="status" aria-live="polite">Guest activity is saved on this device. Secure sign-in activates after Firebase is configured.</p>
+    <p class="auth-legal">By continuing, you agree to use Decnotrade for educational practice only. <a href="privacy.html">Privacy notice</a></p>
+  </div>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div><dialog id="helpDialog"><div class="dialog-head"><b>Welcome to Decnotrade</b><button id="closeHelp" aria-label="Close">×</button></div><p>Decnotrade is a learning and practice workspace. Explore sample market values, use virtual funds, complete beginner lessons and reflect in your journal.</p><p><b>Remember:</b> sample values are not live quotes; simulated results are not real returns; and no real-money orders are possible here.</p><button class="btn btn-primary" id="helpDone">Got it</button></dialog>
 <!-- Popunder removed: prevents click-triggered ads -->
 <!-- Adsterra Social Bar removed to prevent inappropriate ads -->
 </body></html>
