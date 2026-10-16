@@ -52,3 +52,16 @@ Import **this repository** (`pdhyan0911-cp/Decnotrade-`) as its own Vercel proje
 - The referral share label does not track signups or issue rewards.
 - There is no secure login, backend database, protected owner analytics, payment processing, AdSense tag, or global leaderboard in this static build.
 - The website is educational and is not financial advice. Review all policy pages before public launch or monetization.
+
+## Install and offline support
+
+- The site includes a web app manifest and registers a service worker on HTTPS deployments, allowing compatible browsers to offer an install option and cache the app shell.
+- Open the deployed site at least once while online before trying to reopen it offline. Offline availability depends on the browser and hosting environment.
+- Cached pages do not turn sample quotes into live data, and browser-local practice data is not cloud-synced.
+- After updating the site, refresh online so the latest app files can be downloaded.
+
+## Release verification
+
+- Confirm the deployed URL serves `index.html`, `styles.css`, `script.js`, `manifest.webmanifest`, and `sw.js`.
+- On a compatible browser, check the install option and test a reload while offline.
+- Test navigation, a virtual order, backup export/import, and mobile layout on the deployed build before sharing publicly.
