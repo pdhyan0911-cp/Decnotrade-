@@ -10,7 +10,7 @@ const failures = [];
 const pass = (label) => console.log("PASS " + label);
 const fail = (label, detail) => failures.push(label + (detail ? ": " + detail : ""));
 
-for (const file of ["index.html", "styles.css", "script.js", "manifest.webmanifest", "sw.js", "favicon.svg", "privacy.html", "disclaimer.html", "404.html"]) {
+for (const file of ["index.html", "styles.css", "script.js", "manifest.webmanifest", "sw.js", "favicon.svg", "privacy.html", "disclaimer.html", "404.html", "about.html", "guides/index.html", "guides/market-basics.html", "guides/risk-management.html", "guides/candlestick-basics.html"]) {
   if (fs.existsSync(path.join(root, file))) pass("required file exists: " + file);
   else fail("required file missing", file);
 }
