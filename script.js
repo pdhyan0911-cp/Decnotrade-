@@ -93,3 +93,26 @@ function showToast(message) {
 document.querySelectorAll(".brand").forEach(link => link.addEventListener("click", () => {
   showToast("Welcome to Decrotrade — learn responsibly.");
 }));
+
+const glossaryInput = document.querySelector("#glossary-search");
+const glossaryCards = [...document.querySelectorAll(".glossary-card")];
+const glossaryEmpty = document.querySelector("#glossary-empty");
+if (glossaryInput) {
+  glossaryInput.addEventListener("input", () => {
+    const query = glossaryInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+    glossaryCards.forEach(card => {
+      const searchable = (card.dataset.term + " " + card.innerText).toLowerCase();
+      const match = searchable.includes(query);
+      card.hidden = !match;
+      if (match) visibleCount += 1;
+    });
+    glossaryEmpty.hidden = visibleCount !== 0;
+  });
+}
+document.querySelectorAll(".faq-list details").forEach(detail => {
+  detail.addEventListener("toggle", () => {
+    const symbol = detail.querySelector("summary span");
+    if (symbol) symbol.textContent = detail.open ? "×" : "+";
+  });
+});
