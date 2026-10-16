@@ -132,6 +132,7 @@
   $("#facebookSignIn").addEventListener("click", () => signInProvider("facebook"));
   $("#githubSignIn").addEventListener("click", () => signInProvider("github"));
   $("#authClose").addEventListener("click", closeDialog);
+  dialog.addEventListener("cancel", e => { if (!currentUser && !guestInfo().valid) e.preventDefault(); });
   $("#accountBtn").addEventListener("click", () => currentUser ? auth && auth.signOut() : showDialog());
   $("#guestContinue").addEventListener("click", () => {
     const g = guestInfo();
@@ -143,6 +144,13 @@
     setStatus("Guest mode started for 2 days on this device. Create an account before it expires to keep your progress.");
     closeDialog();
     const btn = $("#accountBtn"); if (btn) btn.textContent = "Guest · 2 days";
+  });
+  $("#forgotPassword").addEventListener("click", async () => {
+    if (!providerReady()) return;
+    const email = $("#authEmail").value.trim();
+    if (!email) { setStatus("Enter your email address first, then tap Forgot password.", true); $("#authEmail").focus(); return; }
+    try { await auth.sendPasswordResetEmail(email); setStatus("If an account exists for that email, Firebase will send a password-reset link."); }
+    catch (e) { setStatus(e.message || "Could not request a password reset.", true); }
   });
   $("#authModeToggle").addEventListener("click", () => {
     createMode = !createMode;
