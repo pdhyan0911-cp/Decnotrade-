@@ -47,6 +47,12 @@ function load(){
 let state=load(),activeSymbol="NIFTY",activeRange="1D",toastTimer;
  let candleSymbol="RELIANCE",candleRange="1m",candleSeries=[],candleTimer=null;
 const save=()=>{try{localStorage.setItem("decnotrade_v1",JSON.stringify(state));window.dispatchEvent(new CustomEvent("decnotrade:state",{detail:state}))}catch{}};
+window.addEventListener("decnotrade:cloud-loaded",e=>{
+ const incoming=e.detail;
+ if(!incoming||typeof incoming!=="object")return;
+ state={...blank(),...incoming};
+ renderPortfolio();renderLessons();renderAnalytics();renderJournal();renderAlerts();renderProductExtras();updateEstimate();
+});
 const simulatedPrices=Object.fromEntries(instruments.map(x=>[x.symbol,x.price]));
  const price=s=>simulatedPrices[s]??(instruments.find(x=>x.symbol===s)?.price||0);
 const item=s=>instruments.find(x=>x.symbol===s)||instruments[0];
