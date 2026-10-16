@@ -370,3 +370,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .auth-page button:focus-visible{outline:3px solid #83a98b;outline-offset:3px}
 .auth-page button:disabled{cursor:wait;opacity:.72}
 .auth-provider,.guest-button,.auth-submit,.auth-close,.auth-secondary button,.forgot-password{position:relative;z-index:1}
+
+
+/* Reliable touch targets and visible feedback across the whole app */
+button,[role="button"]{pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:rgba(50,107,82,.18)}
+button:active:not(:disabled),[role="button"]:active:not([aria-disabled="true"]){filter:brightness(.94)}
+.tap-ack{outline:2px solid #83a98b!important;outline-offset:2px!important}
