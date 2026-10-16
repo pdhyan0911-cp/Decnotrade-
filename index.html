@@ -104,7 +104,7 @@
       <label for="authPhone">Phone number with country code</label>
       <input id="authPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 9876543210" pattern="^\+[1-9]\d{7,14}$" required>
       <div id="recaptcha-container"></div>
-      <button class="btn btn-outline auth-submit" id="sendPhoneCode" type="button">Send verification code</button>
+      <button class="btn btn-outline auth-submit" id="sendPhoneCode" type="button" onclick="document.getElementById('authStatus').textContent='Phone verification tapped. Checking Firebase connection…';">Send verification code</button>
       <div id="phoneCodeSection" hidden>
         <label for="authPhoneCode">SMS verification code</label>
         <input id="authPhoneCode" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="Enter the code" maxlength="10">
@@ -113,7 +113,7 @@
     </form>
     <div class="auth-divider"><span>or continue with Google</span></div>
     <div class="auth-providers">
-      <button type="button" class="auth-provider" id="googleSignIn"><span class="provider-mark google-mark">G</span>Continue with Google</button>
+      <button type="button" class="auth-provider" id="googleSignIn" onclick="document.getElementById('authStatus').textContent='Google sign-in tapped. Checking Firebase connection…';"><span class="provider-mark google-mark">G</span>Continue with Google</button>
       <button type="button" class="auth-provider" id="facebookSignIn"><span class="provider-mark facebook-mark">f</span>Continue with Facebook</button>
     </div>
     <div class="auth-divider"><span>or use email</span></div>
