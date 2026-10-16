@@ -361,3 +361,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #phoneCodeSection{display:flex;flex-direction:column;gap:9px;margin-top:10px}
 #phoneAuthForm input{width:100%;min-height:48px;border:1px solid #e0e6dd;background:#fcfdfb;border-radius:10px;padding:12px 14px;font-size:14px;color:var(--ink)}
 #phoneAuthForm input:focus{outline:0;border-color:#91b29a;box-shadow:0 0 0 3px #dceade66}
+
+
+/* Clear, accessible feedback for every interactive control on the login page */
+.auth-page button,.auth-page input,.auth-page a{pointer-events:auto}
+.auth-page button{cursor:pointer;touch-action:manipulation;transition:background-color .16s ease,border-color .16s ease,transform .12s ease,box-shadow .16s ease}
+.auth-page button:active:not(:disabled){transform:translateY(1px)}
+.auth-page button:focus-visible{outline:3px solid #83a98b;outline-offset:3px}
+.auth-page button:disabled{cursor:wait;opacity:.72}
+.auth-provider,.guest-button,.auth-submit,.auth-close,.auth-secondary button,.forgot-password{position:relative;z-index:1}
