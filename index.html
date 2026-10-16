@@ -98,13 +98,8 @@
 <section id="authDialog" class="auth-page" aria-labelledby="authTitle" hidden>
   <div class="auth-shell">
     <div class="auth-brand"><span class="brand-symbol">d<span>↗</span></span><div><b>decnotrade</b><small>YOUR LEARNING WORKSPACE</small></div><button id="authClose" class="auth-close" type="button" aria-label="Back to welcome page">← <span>Back</span></button></div>
-    <div class="auth-intro"><span class="eyebrow">WELCOME TO DECNOTRADE</span><h2 id="authTitle">Welcome back.</h2><p>Choose how you’d like to continue. Sign in to save your progress, or explore as a guest for 2 days.</p></div>
-    <div class="auth-providers">
-      <button type="button" class="auth-provider" id="googleSignIn"><span class="provider-mark google-mark">G</span>Continue with Google</button>
-      <button type="button" class="auth-provider" id="facebookSignIn"><span class="provider-mark facebook-mark">f</span>Continue with Facebook</button>
-      <button type="button" class="auth-provider" id="githubSignIn"><span class="provider-mark github-mark">⌘</span>Continue with GitHub</button>
-    </div>
-    <div class="auth-divider"><span>or use phone or email</span></div>
+    <div class="auth-intro"><span class="eyebrow">YOUR LEARNING WORKSPACE</span><h2 id="authTitle">Sign in to continue.</h2><p>Use your phone number for a verification code, continue with Google, or sign in with email. Your practice account never places real-money trades.</p></div>
+    <div class="auth-divider"><span>sign in with your phone</span></div>
     <form id="phoneAuthForm" class="email-auth-form">
       <label for="authPhone">Phone number with country code</label>
       <input id="authPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+91 9876543210" pattern="^\+[1-9]\d{7,14}$" required>
@@ -116,6 +111,11 @@
         <button class="btn btn-primary auth-submit" id="verifyPhoneCode" type="button">Verify and sign in</button>
       </div>
     </form>
+    <div class="auth-divider"><span>or continue with Google</span></div>
+    <div class="auth-providers">
+      <button type="button" class="auth-provider" id="googleSignIn"><span class="provider-mark google-mark">G</span>Continue with Google</button>
+      <button type="button" class="auth-provider" id="facebookSignIn"><span class="provider-mark facebook-mark">f</span>Continue with Facebook</button>
+    </div>
     <div class="auth-divider"><span>or use email</span></div>
     <form id="emailAuthForm" class="email-auth-form">
       <label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
