@@ -16,7 +16,7 @@
     {symbol:"ITC",name:"ITC Limited",price:438.60,change:-0.22,kind:"Equity"},
     {symbol:"TATAMOTORS",name:"Tata Motors",price:714.20,change:0.54,kind:"Equity"}
   ];
-  const initialState = () => ({cash:1000000,positions:{},orders:[],realized:0,watchlist:["NIFTY","RELIANCE","TCS","INFY"],completed:[],journal:[]});
+  const initialState = () => ({cash:1000000,positions:{},orders:[],realized:0,watchlist:["NIFTY","RELIANCE","TCS","INFY"],completed:[],journal:[],alerts:[]});
   const loadState = () => {try{const saved=JSON.parse(localStorage.getItem("decrotradePracticeV2"));return saved&&typeof saved.cash==="number"?{...initialState(),...saved}:initialState()}catch{return initialState()}};
   let state=loadState();
   const save = () => {try{localStorage.setItem("decrotradePracticeV2",JSON.stringify(state))}catch{}};
@@ -81,7 +81,7 @@
     $("#academyProgressBar").style.width=pct+"%";
     $("#academyProgressText").textContent=done===total?"All lessons completed — great work!":done===0?"Your learning journey":"You're building momentum";
   }
-  function renderAll(){renderWatchlist();renderMarkets();renderPositions();renderOrders();renderProgress();renderJournal()}
+  function renderAll(){renderWatchlist();renderMarkets();renderPositions();renderOrders();renderProgress();renderJournal();renderAnalytics();renderAlerts()}
   function submitOrder(symbol,side,qty){
     const price=priceOf(symbol),total=price*qty;
     if(!price||!Number.isInteger(qty)||qty<1||qty>100000){toast("Enter a valid whole-number quantity.");return false}
@@ -144,6 +144,41 @@
     const content=document.createElement("div");const strong=document.createElement("strong");strong.textContent=who==="user"?"You":"Dec AI";const p=document.createElement("p");p.textContent=text;const time=document.createElement("span");time.className="message-time";time.textContent=who==="user"?"Your message":"Educational preview";
     content.append(strong,p,time);wrap.append(avatar,content);$("#chatMessages").append(wrap);$("#chatMessages").scrollTop=$("#chatMessages").scrollHeight;
   }
+  function renderAnalytics(){
+    const el=id=>$("#"+id);if(!el("analyticsOrders"))return;
+    const orders=state.orders||[],positions=Object.entries(state.positions||{}).filter(([,p])=>p.qty>0);
+    const invested=positions.reduce((sum,[,p])=>sum+p.avg*p.qty,0);
+    const unreal=positions.reduce((sum,[symbol,p])=>sum+(priceOf(symbol)-p.avg)*p.qty,0);
+    el("analyticsOrders").textContent=String(orders.length);
+    el("analyticsRealized").textContent=(state.realized>=0?"+":"")+money(state.realized);
+    el("analyticsRealized").className=state.realized>=0?"positive":"negative";
+    el("analyticsPositions").textContent=String(positions.length);
+    el("analyticsCash").textContent=wholeMoney(state.cash);
+    const buys=orders.filter(o=>o.side==="BUY").length,sells=orders.filter(o=>o.side==="SELL").length;
+    el("analyticsActivity").innerHTML='<div class="activity-stat"><span>Buy orders</span><strong>'+buys+'</strong><div class="activity-track"><i style="width:'+(orders.length?buys/orders.length*100:0)+'%"></i></div></div><div class="activity-stat"><span>Sell orders</span><strong>'+sells+'</strong><div class="activity-track"><i class="sell-track" style="width:'+(orders.length?sells/orders.length*100:0)+'%"></i></div></div><div class="activity-stat"><span>Watchlist instruments</span><strong>'+state.watchlist.length+'</strong><p>Saved on this device</p></div><div class="activity-stat"><span>Learning lessons</span><strong>'+state.completed.length+' / '+lessons.length+'</strong><div class="activity-track"><i style="width:'+(state.completed.length/lessons.length*100)+'%"></i></div></div>';
+    el("analyticsRisk").innerHTML='<div class="risk-line"><span>Invested value</span><strong>'+money(invested)+'</strong></div><div class="risk-line"><span>Unrealized P&amp;L</span><strong class="'+(unreal>=0?"positive":"negative")+'">'+(unreal>=0?"+":"")+money(unreal)+'</strong></div><div class="risk-line"><span>Realized P&amp;L</span><strong class="'+(state.realized>=0?"positive":"negative")+'">'+(state.realized>=0?"+":"")+money(state.realized)+'</strong></div><div class="risk-line"><span>Virtual cash</span><strong>'+money(state.cash)+'</strong></div><p class="form-note">These figures are based on fixed sample prices and simulated orders, not actual market performance.</p>';
+    el("analyticsOrderRows").innerHTML=orders.slice(0,8).map(o=>'<tr><td>'+escapeHtml(o.time)+'</td><td>'+escapeHtml(o.symbol)+'</td><td class="'+(o.side==="BUY"?"positive":"negative")+'">'+escapeHtml(o.side)+'</td><td>'+o.qty+'</td><td>'+money(o.price)+'</td><td>'+money(o.total)+'</td></tr>').join("");
+    el("analyticsOrdersEmpty").hidden=orders.length>0;
+  }
+  function calculateRisk(){
+    const get=id=>$("#"+id);if(!get("riskAccount"))return;
+    const account=Number(get("riskAccount").value),pct=Number(get("riskPercent").value),entry=Number(get("riskEntry").value),stop=Number(get("riskStop").value),out=get("riskResult");
+    if(!(account>0&&pct>0&&pct<=5&&entry>0&&stop>0&&entry!==stop)){out.innerHTML='<span>Check your inputs</span><strong>Unable to calculate</strong><p>Use positive values and make entry different from the stop level.</p>';return}
+    const budget=account*pct/100,perUnit=Math.abs(entry-stop),qty=Math.floor(budget/perUnit);
+    out.innerHTML='<span>Illustrative maximum quantity</span><strong>'+qty.toLocaleString("en-IN")+' units</strong><div class="risk-line"><span>Planned risk budget</span><b>'+money(budget)+'</b></div><div class="risk-line"><span>Risk per unit</span><b>'+money(perUnit)+'</b></div><div class="risk-line"><span>Approx. position value</span><b>'+money(qty*entry)+'</b></div><p>Before fees, slippage, gaps, liquidity and affordability constraints. This is a learning calculation, not a recommendation.</p>';
+  }
+  function runScenario(){
+    const get=id=>$("#"+id);if(!get("scenarioTrades"))return;
+    const n=Number(get("scenarioTrades").value),win=Number(get("scenarioWin").value),rr=Number(get("scenarioReward").value),risk=Number(get("scenarioRisk").value),out=get("scenarioResult");
+    if(!(n>=1&&n<=1000&&win>=0&&win<=100&&rr>0&&risk>0)){out.innerHTML='<span>Check your inputs</span><strong>Unable to calculate</strong><p>Enter a valid sample size, win rate, reward/risk ratio and risk amount.</p>';return}
+    const p=win/100,expectancy=(p*rr-(1-p))*risk,total=expectancy*n,breakeven=100/(1+rr);
+    out.innerHTML='<span>Hypothetical expected value / trade</span><strong class="'+(expectancy>=0?"positive":"negative")+'">'+(expectancy>=0?"+":"")+money(expectancy)+'</strong><div class="risk-line"><span>Expected value across '+n+' trades</span><b class="'+(total>=0?"positive":"negative")+'">'+(total>=0?"+":"")+money(total)+'</b></div><div class="risk-line"><span>Break-even win rate (before costs)</span><b>'+breakeven.toFixed(1)+'%</b></div><p>Purely mathematical expectation from your assumptions. Outcomes vary; costs and changing conditions can materially alter results.</p>';
+  }
+  function renderAlerts(){
+    const root=$("#alertList");if(!root)return;
+    const alerts=state.alerts||[];
+    root.innerHTML=alerts.length?alerts.map((a,i)=>{const item=instruments.find(x=>x.symbol===a.symbol),price=item?.price||0,hit=a.condition==="above"?price>=a.level:price<=a.level;return '<article class="alert-item"><div><strong>'+escapeHtml(item?.name||a.symbol)+'</strong><p>Notify when sample price is '+(a.condition==="above"?"at or above ":"at or below ")+money(a.level)+'</p><small>Sample value: '+money(price)+(a.checked&&hit?' · Condition met on last check':'')+'</small></div><span class="alert-state '+(a.checked&&hit?"alert-hit":"")+'">'+(a.checked&&hit?"Condition met":"Local reminder")+'</span><button class="star-button" data-remove-alert="'+i+'" aria-label="Remove reminder">×</button></article>'}).join(""):'<div class="empty-state"><span class="empty-icon">♧</span><strong>No reminders saved</strong><p>Create a local reminder to keep a level in view.</p></div>';
+  }
   function renderJournal(){
     const root=$("#journalEntries");if(!root)return;
     if(!state.journal.length){root.innerHTML='<div class="empty-state"><span class="empty-icon">☷</span><strong>No reflections yet</strong><p>Your notes will be stored in this browser.</p></div>';return}
@@ -153,10 +188,10 @@
     if(!$("#view-"+view))return;
     $$(".view").forEach(v=>v.classList.toggle("active-view",v.id==="view-"+view));
     $$(".nav-item[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
-    const labels={overview:"Overview",markets:"Markets",paper:"Paper trading",academy:"Trading academy",ai:"Dec AI",journal:"Trade journal",settings:"Settings"};
+    const labels={overview:"Overview",markets:"Markets",paper:"Paper trading",analytics:"Analytics",strategy:"Strategy lab",academy:"Trading academy",ai:"Dec AI",journal:"Trade journal",alerts:"Alerts & risk",settings:"Settings"};
     $("#pageName").textContent=labels[view]||"Overview";
     $("#sidebar").classList.remove("open");
-    if(view==="markets")renderMarkets();if(view==="academy"){renderLessons();renderGlossary()}if(view==="paper"){renderPositions();renderOrders()}
+    if(view==="markets")renderMarkets();if(view==="academy"){renderLessons();renderGlossary()}if(view==="paper"){renderPositions();renderOrders()}if(view==="analytics")renderAnalytics();if(view==="strategy"){calculateRisk();runScenario()}if(view==="alerts")renderAlerts()
     window.scrollTo({top:0,behavior:"smooth"});
   }
   document.addEventListener("click",e=>{
@@ -171,6 +206,12 @@
     const index=e.target.closest("[data-symbol]");if(index){renderChart(index.dataset.symbol,$("[data-range].active")?.dataset.range||"1D");return}
     const prompt=e.target.closest("[data-prompt]");if(prompt){$("#chatInput").value=prompt.dataset.prompt;$("#chatForm").requestSubmit();return}
   });
+  $("#calculateRisk").addEventListener("click",calculateRisk);
+  ["riskAccount","riskPercent","riskEntry","riskStop"].forEach(id=>$("#"+id).addEventListener("input",calculateRisk));
+  $("#runScenario").addEventListener("click",runScenario);
+  ["scenarioTrades","scenarioWin","scenarioReward","scenarioRisk"].forEach(id=>$("#"+id).addEventListener("input",runScenario));
+  $("#alertForm").addEventListener("submit",e=>{e.preventDefault();const symbol=$("#alertSymbol").value,condition=$("#alertCondition").value,level=Number($("#alertLevel").value);if(!(level>0)){toast("Enter a positive price level.");return}state.alerts=state.alerts||[];state.alerts.unshift({symbol,condition,level,checked:false,createdAt:new Date().toISOString()});save();renderAlerts();e.target.reset();toast("Local reminder saved on this device.")});
+  $("#checkAlerts").addEventListener("click",()=>{state.alerts=(state.alerts||[]).map(a=>({...a,checked:true}));save();renderAlerts();toast("Reminders checked against sample prices only.")});
   $("#mobileMenu").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
   $("#helpButton").addEventListener("click",()=>toast("Choose Paper trading to practise, Academy to learn, or Dec AI for concept explanations."));
   $("#dismissNotice").addEventListener("click",()=>$(".notice-strip").remove());
