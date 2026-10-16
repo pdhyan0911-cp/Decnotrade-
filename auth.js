@@ -2,7 +2,9 @@
   "use strict";
   const $ = (s) => document.querySelector(s);
   const dialog = $("#authDialog");
-  if (!dialog) return;
+  const welcome = $("#welcomeScreen");
+  const appShell = $("#appShell");
+  if (!dialog || !welcome || !appShell) return;
   const status = $("#authStatus");
   const guestKey = "decnotrade_guest_started_v1";
   const localKey = "decnotrade_v1";
@@ -10,7 +12,7 @@
   const config = window.DECNOTRADE_FIREBASE_CONFIG || {};
   const configured = !!(config.apiKey && config.authDomain && config.projectId && config.appId &&
     !Object.values(config).some(v => typeof v === "string" && v.startsWith("YOUR_")));
-  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null;
+  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null, authInitialized = false;
 
   function setStatus(message, error = false) {
     status.textContent = message;
@@ -35,13 +37,31 @@
     else { b.innerHTML = 'Continue as guest for 2 days <span>→</span>'; b.disabled = false; }
   }
   function showDialog() {
+    if (currentUser) { closeDialog(); return; }
     updateGuestButton();
-    $("#authClose").hidden = !(currentUser || guestInfo().valid);
-    if (!dialog.open) dialog.showModal();
+    welcome.hidden = true;
+    appShell.hidden = true;
+    dialog.hidden = false;
+    window.scrollTo({ top: 0, behavior: "auto" });
+    setStatus(configured
+      ? "Choose a sign-in method, or continue as a guest for 2 days."
+      : "Guest mode works now. Google, Facebook, GitHub and email accounts activate after Firebase setup.", !configured);
   }
   function closeDialog() {
-    if (currentUser || guestInfo().valid) dialog.close();
+    if (!(currentUser || guestInfo().valid)) return;
+    dialog.hidden = true;
+    welcome.hidden = true;
+    appShell.hidden = false;
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
+  function returnToWelcome() {
+    if (currentUser || guestInfo().valid) { closeDialog(); return; }
+    dialog.hidden = true;
+    appShell.hidden = true;
+    welcome.hidden = false;
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+  $("#startButton").addEventListener("click", showDialog);
   function readLocalState() {
     try { return JSON.parse(localStorage.getItem(localKey) || "null"); } catch { return null; }
   }
@@ -131,8 +151,7 @@
   $("#googleSignIn").addEventListener("click", () => signInProvider("google"));
   $("#facebookSignIn").addEventListener("click", () => signInProvider("facebook"));
   $("#githubSignIn").addEventListener("click", () => signInProvider("github"));
-  $("#authClose").addEventListener("click", closeDialog);
-  dialog.addEventListener("cancel", e => { if (!currentUser && !guestInfo().valid) e.preventDefault(); });
+  $("#authClose").addEventListener("click", returnToWelcome);
   $("#accountBtn").addEventListener("click", () => currentUser ? auth && auth.signOut() : showDialog());
   $("#guestContinue").addEventListener("click", () => {
     const g = guestInfo();
@@ -194,20 +213,25 @@
           b.textContent = (user.displayName || user.email || "Account").split("@")[0].slice(0, 18);
           const g = guestInfo();
           await syncWorkspace(readLocalState(), g.valid);
-          if (dialog.open) dialog.close();
+          if (!dialog.hidden) closeDialog();
         } else {
           b.textContent = guestInfo().valid ? "Guest · " + remainingLabel(guestInfo().remaining) : "Sign in";
-          if (!guestInfo().valid) showDialog();
+          if (authInitialized && !guestInfo().valid) showDialog();
           updateGuestButton();
         }
+        authInitialized = true;
       });
     } catch {
       setStatus("Firebase configuration could not be initialized. Check firebase-config.js.", true);
-      showDialog();
+      welcome.hidden = false;
+      dialog.hidden = true;
+      appShell.hidden = true;
     }
   } else {
     $("#accountBtn").textContent = guestInfo().valid ? "Guest · " + remainingLabel(guestInfo().remaining) : "Sign in";
-    if (!guestInfo().valid) showDialog();
+    welcome.hidden = false;
+    dialog.hidden = true;
+    appShell.hidden = true;
     setStatus("Secure account login is prepared, but it needs your Firebase project configuration before Google, Facebook, GitHub and email sign-in can work.", true);
   }
 })();
