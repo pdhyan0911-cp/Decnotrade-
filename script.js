@@ -199,6 +199,21 @@ $("#backupFile").addEventListener("change",async e=>{
  finally{e.target.value=""}
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#sidebar").classList.remove("open");$("#sidebarBackdrop").classList.remove("is-visible");$("#menuToggle").setAttribute("aria-expanded","false")}});
+
+/* Global tap acknowledgement: every button gives immediate feedback, even if its feature is not wired yet. */
+document.addEventListener("click", e => {
+ const control=e.target.closest("button, [role='button']");
+ if(!control || control.disabled || control.getAttribute("aria-disabled")==="true") return;
+ const label=(control.innerText||control.getAttribute("aria-label")||control.title||"Button").replace(/\s+/g," ").trim().slice(0,60)||"Button";
+ control.classList.remove("tap-ack");
+ void control.offsetWidth;
+ control.classList.add("tap-ack");
+ window.setTimeout(()=>control.classList.remove("tap-ack"),450);
+ const message="Tapped: "+label;
+ const t=document.querySelector("#toast");
+ if(t){t.textContent=message;t.classList.add("show");window.clearTimeout(window.__decnotradeTapTimer);window.__decnotradeTapTimer=window.setTimeout(()=>t.classList.remove("show"),1700);}
+}, true);
+
 function init(){renderChart();renderPortfolio();renderLessons();renderAnalytics();renderProductExtras();updateEstimate();calcRisk();runScenario();seedCandles(candleSymbol);startCandleFeed();$("#statLessons").innerHTML=state.completed.length+' <small>/ 6</small>'}
 init();
 if("serviceWorker" in navigator && location.protocol==="https:"){
