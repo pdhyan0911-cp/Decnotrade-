@@ -19,7 +19,30 @@ const glossary=[
 ["Candlestick","A chart symbol showing open, high, low and close for a time period."],["Volatility","How much and how quickly a value moves over time."],["Liquidity","How readily an asset can be bought or sold without a large price impact."],["Diversification","Spreading exposure to avoid relying on a single asset or idea."],["Limit order","An order with a specified maximum buy price or minimum sell price."],["Position size","The amount of an asset represented by a hypothetical or actual position."],["Portfolio","A collection of investments or practice holdings."],["P&L","Profit and loss; a measure of gains or losses over a stated period."],["Risk/reward","A comparison between a potential loss and a potential gain, both uncertain."],["Stop level","A planned price level used in an exercise to define when an idea may be invalid."]
 ];
 const blank=()=>({cash:1000000,positions:{},orders:[],realized:0,watchlist:["NIFTY","RELIANCE","TCS","INFY"],completed:[],journal:[],alerts:[],challengeCompleted:[],profile:{name:"Decnotrade learner",goal:"foundations"}});
-function load(){try{const s=JSON.parse(localStorage.getItem("decnotrade_v1"));if(s&&typeof s.cash==="number")return {...blank(),...s};}catch{}return blank()}
+function load(){
+ const base=blank();
+ try{
+  const raw=JSON.parse(localStorage.getItem("decnotrade_v1"));
+  if(!raw||typeof raw!=="object"||Array.isArray(raw))return base;
+  const cash=Number.isFinite(raw.cash)&&raw.cash>=0?raw.cash:base.cash;
+  const validSymbols=new Set(instruments.filter(x=>x.kind==="Equity").map(x=>x.symbol));
+  const positions=raw.positions&&typeof raw.positions==="object"&&!Array.isArray(raw.positions)
+   ?Object.fromEntries(Object.entries(raw.positions).filter(([symbol,p])=>validSymbols.has(symbol)&&p&&Number.isInteger(p.qty)&&p.qty>0&&p.qty<=1000000&&Number.isFinite(p.avg)&&p.avg>0).map(([symbol,p])=>[symbol,{qty:p.qty,avg:p.avg}]))
+   :base.positions;
+  const orders=Array.isArray(raw.orders)?raw.orders.filter(o=>o&&validSymbols.has(o.symbol)&&["BUY","SELL"].includes(o.side)&&Number.isInteger(o.qty)&&o.qty>0&&o.qty<=100000&&Number.isFinite(o.price)&&o.price>0&&typeof o.date==="string").slice(0,100):base.orders;
+  const validGoals=new Set(["foundations","charts","risk","discipline"]);
+  return {...base,...raw,
+   cash,positions,orders,
+   realized:Number.isFinite(raw.realized)?raw.realized:0,
+   watchlist:Array.isArray(raw.watchlist)?[...new Set(raw.watchlist.filter(x=>instruments.some(i=>i.symbol===x)))]:base.watchlist,
+   completed:Array.isArray(raw.completed)?[...new Set(raw.completed.filter(id=>lessons.some(l=>l.id===id)))]:base.completed,
+   journal:Array.isArray(raw.journal)?raw.journal.filter(x=>x&&typeof x.title==="string"&&typeof x.thesis==="string").slice(0,100):base.journal,
+   alerts:Array.isArray(raw.alerts)?raw.alerts.filter(a=>a&&instruments.some(i=>i.symbol===a.symbol)&&["above","below"].includes(a.condition)&&Number.isFinite(a.level)&&a.level>0).slice(0,100):base.alerts,
+   challengeCompleted:Array.isArray(raw.challengeCompleted)?[...new Set(raw.challengeCompleted.filter(x=>typeof x==="string"))]:base.challengeCompleted,
+   profile:raw.profile&&typeof raw.profile==="object"?{name:typeof raw.profile.name==="string"?raw.profile.name.slice(0,40):base.profile.name,goal:validGoals.has(raw.profile.goal)?raw.profile.goal:base.profile.goal}:base.profile
+  };
+ }catch{return base}
+}
 let state=load(),activeSymbol="NIFTY",activeRange="1D",toastTimer;
  let candleSymbol="RELIANCE",candleRange="1m",candleSeries=[],candleTimer=null;
 const save=()=>{try{localStorage.setItem("decnotrade_v1",JSON.stringify(state))}catch{}};
