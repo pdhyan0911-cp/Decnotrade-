@@ -129,6 +129,39 @@ $("#profileForm").addEventListener("submit",e=>{e.preventDefault();const name=$(
 $("#copyReferral").addEventListener("click",async()=>{const message="Join me on Decnotrade — a market learning workspace with beginner lessons and virtual practice: "+window.location.href+" | Share code: DEC-LEARN-2026";try{await navigator.clipboard.writeText(message);toast("Invite text copied.")}catch{const box=document.createElement("textarea");box.value=message;box.style.position="fixed";box.style.opacity="0";document.body.append(box);box.select();const ok=document.execCommand("copy");box.remove();toast(ok?"Invite text copied.":"Copy not available in this browser.")}});
 $("#shareReferral").addEventListener("click",async()=>{const data={title:"Decnotrade",text:"Explore market concepts and virtual practice with Decnotrade.",url:window.location.href};if(navigator.share){try{await navigator.share(data)}catch(e){if(e.name!=="AbortError")toast("Sharing is not available right now.")}}else{try{await navigator.clipboard.writeText(data.text+" "+data.url);toast("Share link copied.")}catch{toast("Use your browser's address bar to share the website.")}}});
 $("#resetAll").addEventListener("click",clearAll);
+$("#exportBackup").addEventListener("click",()=>{
+ const payload={app:"Decnotrade",formatVersion:1,exportedAt:new Date().toISOString(),data:state};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="decnotrade-backup-"+new Date().toISOString().slice(0,10)+".json";
+ document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);
+ toast("Backup exported. Keep the file private.");
+});
+$("#importBackup").addEventListener("click",()=>$("#backupFile").click());
+$("#backupFile").addEventListener("change",async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+  if(file.size>2*1024*1024)throw new Error("Backup file is too large.");
+  const parsed=JSON.parse(await file.text()),data=parsed?.data;
+  if(parsed?.app!=="Decnotrade"||parsed?.formatVersion!==1||!data||typeof data.cash!=="number"||!Number.isFinite(data.cash)||data.cash<0||!data.positions||typeof data.positions!=="object"||Array.isArray(data.positions)||!Array.isArray(data.orders)||!Array.isArray(data.completed)||!Array.isArray(data.journal)||!Array.isArray(data.watchlist)||!Array.isArray(data.alerts))throw new Error("This is not a valid Decnotrade backup.");
+  if(!confirm("Import this Decnotrade backup? It will replace the workspace data saved in this browser."))return;
+  const base=blank();
+  state={...base,...data,
+   cash:Math.max(0,data.cash),
+   positions:Object.fromEntries(Object.entries(data.positions).filter(([k,p])=>instruments.some(x=>x.symbol===k)&&p&&Number.isFinite(p.qty)&&p.qty>0&&Number.isFinite(p.avg)&&p.avg>=0).map(([k,p])=>[k,{qty:Math.floor(p.qty),avg:p.avg}])),
+   orders:data.orders.filter(o=>o&&instruments.some(x=>x.symbol===o.symbol)&&["BUY","SELL"].includes(o.side)&&Number.isInteger(o.qty)&&o.qty>0&&Number.isFinite(o.price)&&typeof o.date==="string").slice(0,100),
+   completed:data.completed.filter(id=>lessons.some(l=>l.id===id)),
+   journal:data.journal.filter(x=>x&&typeof x.title==="string"&&typeof x.thesis==="string").slice(0,100),
+   watchlist:[...new Set(data.watchlist.filter(s=>instruments.some(x=>x.symbol===s)))],
+   alerts:data.alerts.filter(a=>a&&instruments.some(x=>x.symbol===a.symbol)&&["above","below"].includes(a.condition)&&Number.isFinite(a.level)&&a.level>0).slice(0,100),
+   challengeCompleted:(Array.isArray(data.challengeCompleted)?data.challengeCompleted:[]).filter(id=>challenges.some(c=>c.id===id)),
+   profile:{...base.profile,...(data.profile&&typeof data.profile==="object"?data.profile:{})}
+  };
+  save();renderPortfolio();renderLessons();renderAnalytics();renderJournal();renderAlerts();renderProductExtras();updateEstimate();
+  toast("Backup imported successfully.");
+ }catch(err){toast(err.message==="Backup file is too large."?err.message:"Could not import this backup. Choose a valid Decnotrade JSON backup.");}
+ finally{e.target.value=""}
+});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#sidebar").classList.remove("open")});
 function init(){renderChart();renderPortfolio();renderLessons();renderAnalytics();renderProductExtras();updateEstimate();calcRisk();runScenario();seedCandles(candleSymbol);startCandleFeed();$("#statLessons").innerHTML=state.completed.length+' <small>/ 6</small>'}
 init();
