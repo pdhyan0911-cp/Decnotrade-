@@ -3,3 +3,93 @@
 @media(max-width:1200px){.sidebar{width:220px}.main{margin-left:220px}.page-wrap{padding:24px 24px}.topbar{padding:0 24px}.hero{padding:25px}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.portfolio-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.lesson-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-grid{grid-template-columns:minmax(0,1.3fr) minmax(240px,1fr)}}
 @media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .22s;box-shadow:none}.sidebar.open{transform:translateX(0);box-shadow:15px 0 45px #17291d20}.main{margin-left:0}.menu-toggle{display:block}.topbar{justify-content:flex-start}.crumb{flex:1}.top-actions{gap:10px}.page-wrap{padding:22px 18px}.hero{grid-template-columns:minmax(0,1fr) minmax(210px,.75fr);padding:22px}.dashboard-grid,.bottom-grid,.practice-grid,.assistant-layout,.journal-layout{grid-template-columns:minmax(0,1fr)}.hero h1{font-size:32px}.hero-art{min-height:190px}.watch-panel{min-width:0}.strategy-grid{grid-template-columns:1fr}.checklist-panel{grid-template-columns:1fr}.site-footer{flex-direction:column}}
 @media(max-width:600px){.topbar{height:58px;padding:0 13px}.practice-pill{font-size:8px;padding:6px 8px}.top-actions{gap:8px}.help-btn{display:none}.page-wrap{padding:18px 12px}.hero{grid-template-columns:1fr;padding:22px 18px}.hero-art{min-height:175px;grid-row:1}.hero h1{font-size:32px}.hero-actions{gap:13px;flex-wrap:wrap}.btn{font-size:10px;padding:10px 11px}.disclaimer{align-items:flex-start}.stats-grid,.stats-grid.three{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat-card{padding:13px 11px}.stat-card>strong{font-size:20px}.stat-bottom{font-size:8px}.section-heading{align-items:flex-start}.section-heading .tiny{max-width:105px;text-align:right;line-height:1.5}.market-strip{gap:5px}.index-tile{padding:9px 7px}.index-tile b{font-size:11px}.index-tile span,.index-tile small{font-size:8px}.panel{padding:14px}.market-panel{padding:14px 11px}.chart-head strong{font-size:18px}.range{padding:6px}.learning-cards,.lesson-grid,.glossary-grid,.settings-grid{grid-template-columns:1fr}.page-intro{align-items:flex-start;flex-direction:column;gap:10px;margin-bottom:17px}.page-intro h1{font-size:29px}.toolbar{align-items:flex-start;flex-direction:column}.search-box{min-width:100%}.portfolio-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.portfolio-summary>article{padding:12px}.portfolio-summary strong{font-size:17px}.portfolio-balance strong{font-size:21px}.form-grid{grid-template-columns:1fr}.scenario-result{grid-template-columns:1fr}.checklist{grid-template-columns:1fr}.path-banner{padding:18px;flex-direction:column;align-items:flex-start}.path-progress{width:100%}.lesson-grid{gap:8px}.lesson-card{min-height:0}.glossary-panel .panel-title{align-items:flex-start;flex-direction:column}.search-box.compact{min-width:100%}.chat-form{padding:11px}.chat-form .btn{gap:5px}.chat-messages{padding:13px;min-height:240px}.suggestions{padding:0 13px 12px}.site-footer{font-size:8px}.stats-grid.three .stat-card>strong{font-size:18px}}
+
+
+/* Decnotrade product modules: challenges, progress, profile and platform readiness */
+.side-label-spaced{margin-top:24px}
+.challenge-hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(22px,4vw,36px);border-radius:15px;background:#14251f;color:#f4f4e9;margin-bottom:15px;overflow:hidden;position:relative}
+.challenge-hero:after{content:"";position:absolute;width:240px;height:240px;border:1px solid #ffffff16;border-radius:50%;right:95px;top:-145px;box-shadow:0 0 0 28px #ffffff08,0 0 0 58px #ffffff05;pointer-events:none}
+.challenge-hero>div:first-child{max-width:560px;position:relative;z-index:1}
+.challenge-hero h2{font:800 clamp(21px,3vw,29px) Manrope;letter-spacing:-.8px;margin:10px 0}
+.challenge-hero p{font-size:12px;line-height:1.7;color:#c3d0c4;margin:0}
+.challenge-score{position:relative;z-index:1;min-width:135px;padding:18px;border:1px solid #ffffff25;background:#ffffff08;border-radius:12px;display:flex;flex-direction:column;gap:5px}
+.challenge-score strong{font:800 32px Manrope;color:#d5e4bd}
+.challenge-score span,.reward-total>span{font-size:9px;letter-spacing:1.1px;font-weight:800}
+.challenge-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:15px}
+.challenge-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px;display:flex;flex-direction:column;min-height:210px}
+.challenge-card.challenge-complete{background:#f7faf5;border-color:#d5e4d2}
+.challenge-card-top{display:flex;justify-content:space-between;align-items:center}
+.challenge-number{font:800 11px Manrope;color:#769078;background:#edf3e9;border-radius:8px;padding:8px 10px}
+.challenge-points{font-size:10px;font-weight:800;color:#5c7d50}
+.challenge-card h3{font:800 14px Manrope;margin:18px 0 7px;letter-spacing:-.2px}
+.challenge-card p{font-size:11px;line-height:1.7;color:#758075;margin:0 0 15px}
+.challenge-card-bottom{margin-top:auto}
+.challenge-card .btn{font-size:10px}
+.streak-row{display:flex;align-items:center;gap:28px;flex-wrap:wrap;padding-top:15px;border-top:1px solid var(--line)}
+.streak-row>div{display:flex;flex-direction:column;gap:5px;min-width:100px}
+.streak-row strong{font:800 21px Manrope}
+.streak-row span{font-size:10px;color:#778279}
+.streak-row .btn{margin-left:auto}
+.reward-overview{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:15px}
+.reward-total{background:#14251f;color:#f4f4e9;border-radius:13px;padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.reward-total strong{font:800 clamp(26px,4vw,38px) Manrope;letter-spacing:-1px}
+.reward-total p{margin:0;font-size:11px;line-height:1.7;color:#bdcbbf}
+.reward-total.light{background:#eaf0e6;color:#233b2d}
+.reward-total.light p{color:#647664}
+.badge-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:15px}
+.badge-card{display:flex;align-items:center;gap:10px;min-width:0;background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px}
+.badge-card.locked{opacity:.68;background:#f8f9f6}
+.badge-icon{width:37px;height:37px;flex-shrink:0;border-radius:10px;background:#eaf1e8;color:#426a4e;display:grid;place-items:center;font:800 12px Manrope}
+.badge-card.locked .badge-icon{background:#f0f1ed;color:#929a90}
+.badge-card>div{flex:1;min-width:0}
+.badge-card b{font-size:10px}
+.badge-card p{font-size:9px;line-height:1.5;color:#818b80;margin:4px 0 0}
+.badge-check{font-size:12px;color:#59805c}
+.milestone-list{display:flex;flex-direction:column}
+.milestone-row{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid #edf0e9}
+.milestone-row:last-child{border-bottom:0}
+.milestone-mark{width:27px;height:27px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:#f1f2ed;color:#8d978b;font-size:11px}
+.milestone-mark.earned{background:#e6f0e2;color:#3f7549}
+.milestone-row>div{flex:1;display:flex;flex-direction:column;gap:4px}
+.milestone-row b{font-size:10px}
+.milestone-row small{font-size:9px;color:#808a80}
+.milestone-status{font-size:9px;color:#778279}
+.referral-hero{display:flex;align-items:center;gap:22px;background:#14251f;color:#f4f4e9;border-radius:15px;padding:clamp(22px,4vw,34px);margin-bottom:15px}
+.referral-mark{width:70px;height:70px;flex-shrink:0;display:grid;place-items:center;background:#dbe7d3;color:#183b2d;border-radius:17px;font:800 24px Manrope}
+.referral-hero h2{font:800 25px Manrope;margin:8px 0;letter-spacing:.3px}
+.referral-hero p{font-size:11px;line-height:1.7;color:#c3d0c4;max-width:560px}
+.referral-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.referral-hero .btn-outline{border-color:#ffffff3b;color:#f4f4e9}
+.profile-layout{display:grid;grid-template-columns:minmax(230px,.75fr) minmax(0,1.25fr);gap:14px}
+.profile-card{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270px}
+.profile-avatar-large{width:75px;height:75px;display:grid;place-items:center;border-radius:24px;background:#e4eddf;color:#28543b;font:800 28px Manrope;margin-bottom:14px}
+.profile-card h2{margin:0;font:800 19px Manrope}
+.profile-card>p{font-size:11px}
+.profile-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;border-top:1px solid var(--line);margin-top:18px;padding-top:17px;width:100%}
+.profile-stat-row>div{display:flex;flex-direction:column;gap:5px}
+.profile-stat-row strong{font:800 18px Manrope}
+.profile-stat-row span{font-size:9px;color:#788478}
+.profile-form{display:flex;flex-direction:column;gap:9px}
+.profile-form .btn{align-self:flex-start;margin-top:6px}
+.admin-notice{display:flex;gap:14px;align-items:flex-start;padding:20px;border:1px solid #e7dcc0;background:#fbf7ec;border-radius:12px;margin-bottom:15px}
+.admin-lock{width:40px;height:40px;flex-shrink:0;display:grid;place-items:center;border-radius:11px;background:#eee4c9;color:#806d3f;font-size:20px}
+.admin-notice h2{font:800 15px Manrope;margin:2px 0 7px}
+.admin-notice p{font-size:11px;line-height:1.7;color:#7a735f;margin:0}
+.admin-status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-bottom:15px}
+.admin-status-grid .panel h2,.monetization-card h2{font:800 17px Manrope;margin:10px 0}
+.admin-status-grid .panel p,.monetization-card p{font-size:11px;line-height:1.7}
+.status-chip{display:inline-flex;align-items:center;gap:5px;border-radius:5px;padding:6px 8px;font-size:9px;font-weight:800;background:#f5eee0;color:#8d7242}
+.status-chip.complete{background:#e6f0e2;color:#3f7549}
+.monetization-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:15px}
+.monetization-card{display:flex;flex-direction:column;align-items:flex-start}
+.monetization-icon{width:43px;height:43px;display:grid;place-items:center;background:#e9f0e5;color:#315c3d;border-radius:12px;font:800 18px Manrope;margin-bottom:18px}
+.monetization-card .feature-list{margin:8px 0 15px}
+.monetization-card .inline-link{margin-top:16px}
+.monetization-card .status-chip{margin-top:auto}
+.monetization-card p.tiny{margin-top:10px}
+#view-admin .checklist{margin-top:14px}
+#view-admin .checklist label{opacity:.7}
+#view-referrals .dashboard-grid{grid-template-columns:1fr 1fr}
+#view-monetization>.panel{margin-top:0}
+@media(max-width:900px){.challenge-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.badge-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-layout{grid-template-columns:1fr}.referral-hero{align-items:flex-start}.referral-mark{width:55px;height:55px}.admin-status-grid,.monetization-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.challenge-hero{align-items:flex-start;flex-direction:column;gap:18px}.challenge-score{min-width:0;width:100%;padding:13px 15px}.challenge-score strong{font-size:26px}.challenge-grid,.badge-grid,.reward-overview{grid-template-columns:1fr}.challenge-card{min-height:0}.streak-row{gap:16px}.streak-row .btn{margin-left:0;width:100%}.referral-hero{flex-direction:column;gap:15px}.referral-hero h2{font-size:22px}.referral-actions{width:100%}.referral-actions .btn{flex:1}.admin-notice{padding:14px}.admin-status-grid{grid-template-columns:1fr}.profile-stat-row{gap:8px}.profile-stat-row strong{font-size:16px}#view-referrals .dashboard-grid{grid-template-columns:1fr}}
