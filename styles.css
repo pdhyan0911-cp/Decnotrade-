@@ -113,3 +113,7 @@
 .candle-legend i{display:inline-block;width:8px;height:8px;border-radius:2px}
 .candle-up{background:#27865c}.candle-down{background:#c55252}
 @media(max-width:600px){.live-practice-chart{padding:13px}.feed-status{font-size:8px}.candle-readout strong{font-size:19px}.candle-canvas-wrap canvas{height:260px}}
+
+/* Local workspace backup controls */
+.backup-actions{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+.backup-actions .btn{cursor:pointer}
