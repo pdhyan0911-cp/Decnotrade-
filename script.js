@@ -195,4 +195,7 @@ $("#backupFile").addEventListener("change",async e=>{
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#sidebar").classList.remove("open");$("#menuToggle").setAttribute("aria-expanded","false")}});
 function init(){renderChart();renderPortfolio();renderLessons();renderAnalytics();renderProductExtras();updateEstimate();calcRisk();runScenario();seedCandles(candleSymbol);startCandleFeed();$("#statLessons").innerHTML=state.completed.length+' <small>/ 6</small>'}
 init();
+if("serviceWorker" in navigator && location.protocol==="https:"){
+ window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}),{once:true});
+}
 })();
