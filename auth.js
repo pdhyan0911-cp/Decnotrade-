@@ -16,7 +16,7 @@
   const config = window.DECNOTRADE_FIREBASE_CONFIG || {};
   const configured = !!(config.apiKey && config.authDomain && config.projectId && config.appId &&
     !Object.values(config).some(v => typeof v === "string" && v.startsWith("YOUR_")));
-  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null, authInitialized = false;
+  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null, authInitialized = false, recaptchaVerifier = null, phoneConfirmation = null;
 
   function setStatus(message, error = false) {
     status.textContent = message;
@@ -162,6 +162,81 @@
       setStatus(messages[e.code] || (e.message || "Sign-in could not start. Check the Firebase provider setup and try again."), true);
     }
   }
+
+  function phoneErrorMessage(e) {
+    const messages = {
+      "auth/invalid-phone-number": "Enter a valid phone number with country code, for example +91 followed by your number.",
+      "auth/missing-phone-number": "Enter your phone number first.",
+      "auth/too-many-requests": "Too many attempts. Please wait and try again later.",
+      "auth/quota-exceeded": "Firebase SMS quota has been reached. Try later or check your Firebase plan.",
+      "auth/captcha-check-failed": "reCAPTCHA verification failed. Refresh the page and try again.",
+      "auth/operation-not-allowed": "Enable Phone sign-in in Firebase Authentication → Sign-in method."
+    };
+    return messages[e.code] || e.message || "Phone verification could not start. Check Firebase Phone provider setup.";
+  }
+  function setupRecaptcha() {
+    if (recaptchaVerifier) return recaptchaVerifier;
+    recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
+      size: "normal",
+      callback: () => {},
+      "expired-callback": () => {
+        setStatus("reCAPTCHA expired. Please verify it again.", true);
+      }
+    });
+    return recaptchaVerifier;
+  }
+  $("#sendPhoneCode").addEventListener("click", async () => {
+    if (!providerReady()) return;
+    const phone = $("#authPhone").value.trim();
+    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+      setStatus("Enter a phone number with country code, such as +91 followed by your number.", true);
+      $("#authPhone").focus();
+      return;
+    }
+    const sendButton = $("#sendPhoneCode");
+    sendButton.disabled = true;
+    try {
+      setStatus("Complete the reCAPTCHA, then Firebase will send an SMS code.");
+      const verifier = setupRecaptcha();
+      await verifier.render();
+      phoneConfirmation = await auth.signInWithPhoneNumber(phone, verifier);
+      $("#phoneCodeSection").hidden = false;
+      $("#authPhoneCode").focus();
+      setStatus("Verification code sent if SMS delivery is available. Enter it below to finish sign-in.");
+    } catch (e) {
+      if (recaptchaVerifier) {
+        try { recaptchaVerifier.clear(); } catch {}
+        recaptchaVerifier = null;
+      }
+      setStatus(phoneErrorMessage(e), true);
+    } finally {
+      sendButton.disabled = false;
+    }
+  });
+  $("#verifyPhoneCode").addEventListener("click", async () => {
+    const code = $("#authPhoneCode").value.trim();
+    if (!phoneConfirmation) {
+      setStatus("Request a verification code first.", true);
+      return;
+    }
+    if (!code) {
+      setStatus("Enter the SMS verification code.", true);
+      $("#authPhoneCode").focus();
+      return;
+    }
+    const verifyButton = $("#verifyPhoneCode");
+    verifyButton.disabled = true;
+    try {
+      setStatus("Verifying your phone number…");
+      await phoneConfirmation.confirm(code);
+      phoneConfirmation = null;
+      setStatus("Phone verified. You're signed in.");
+    } catch (e) {
+      setStatus(e.code === "auth/invalid-verification-code" ? "That code wasn't accepted. Check it and try again." : phoneErrorMessage(e), true);
+    } finally {
+      verifyButton.disabled = false;
+    }
+  });
 
   $("#googleSignIn").addEventListener("click", () => signInProvider("google"));
   $("#facebookSignIn").addEventListener("click", () => signInProvider("facebook"));
