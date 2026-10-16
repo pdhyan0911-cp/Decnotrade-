@@ -223,3 +223,5 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .auth-legal{font-size:9px;line-height:1.6;text-align:center;color:#8b958a;margin:14px 0 0}
 .auth-legal a{color:var(--green);text-decoration:underline}
 @media(max-width:560px){.top-actions{gap:8px}.account-btn{padding:8px 9px}.auth-shell{padding:20px}.auth-intro h2{font-size:23px}}
+
+.forgot-password{justify-self:center;border:0;background:transparent;color:var(--green);font-size:10px;font-weight:700;padding:5px;cursor:pointer}
