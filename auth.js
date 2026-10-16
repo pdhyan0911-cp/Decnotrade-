@@ -142,7 +142,15 @@
     if (providerName === "facebook") provider = new firebase.auth.FacebookAuthProvider();
     if (!provider) { setStatus("This sign-in option is not available.", true); return; }
     providerBusy = true;
-    providerButtons.forEach(sel => { const button = $(sel); button.disabled = true; button.setAttribute("aria-busy", "true"); });
+    const originalLabels = new Map();
+    providerButtons.forEach(sel => {
+      const button = $(sel);
+      if (!button) return;
+      originalLabels.set(button, button.innerHTML);
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+      if (button.id === providerName + "SignIn") button.innerHTML = '<span class="provider-mark">…</span> Opening sign-in…';
+    });
     const labels = { google: "Google", facebook: "Facebook" };
     try {
       setStatus("Opening " + labels[providerName] + " sign-in…");
@@ -150,7 +158,13 @@
       await auth.signInWithRedirect(provider);
     } catch (e) {
       providerBusy = false;
-      providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
+      providerButtons.forEach(sel => {
+        const button = $(sel);
+        if (!button) return;
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+        if (originalLabels.has(button)) button.innerHTML = originalLabels.get(button);
+      });
       const messages = {
         "auth/unauthorized-domain": "Add this website's Vercel domain in Firebase Authentication → Settings → Authorized domains.",
         "auth/operation-not-allowed": "This sign-in provider is not enabled in Firebase Authentication yet.",
@@ -194,6 +208,8 @@
     }
     const sendButton = $("#sendPhoneCode");
     sendButton.disabled = true;
+    const originalSendText = sendButton.textContent;
+    sendButton.textContent = "Preparing verification…";
     try {
       setStatus("Complete the reCAPTCHA, then Firebase will send an SMS code.");
       const verifier = setupRecaptcha();
@@ -210,6 +226,7 @@
       setStatus(phoneErrorMessage(e), true);
     } finally {
       sendButton.disabled = false;
+      sendButton.textContent = originalSendText;
     }
   });
   $("#verifyPhoneCode").addEventListener("click", async () => {
