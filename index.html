@@ -22,7 +22,7 @@
     </a>
     <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="main-nav"><span></span><span></span></button>
     <nav id="main-nav" class="main-nav" aria-label="Main navigation">
-      <a href="#learn">Learn</a><a href="#market">Market basics</a><a href="#about">Our approach</a>
+      <a href="#learn">Learn</a><a href="#market">Market basics</a><a href="#library">Glossary</a><a href="#about">Our approach</a>
       <a class="nav-cta" href="#learn">Start learning <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
@@ -89,9 +89,33 @@
         <button class="market-row" data-topic="risk"><span class="market-row-icon">◇</span><span><strong>Risk &amp; uncertainty</strong><small>Why no setup is guaranteed</small></span><span class="row-arrow">↗</span></button>
       </div>
     </section>
+    <section class="library-section" id="library">
+      <div class="section-wrap">
+        <div class="library-heading"><div><span class="eyebrow">THE LEARNING LIBRARY</span><h2>Make market language<br><span>feel less complicated.</span></h2></div><p>Look up a term, get a plain-language definition, and keep building your foundations.</p></div>
+        <label class="glossary-search"><span aria-hidden="true">⌕</span><input id="glossary-search" type="search" placeholder="Search terms like trend, volume, candle…" autocomplete="off" aria-label="Search market glossary"><kbd>SEARCH</kbd></label>
+        <div class="glossary-grid" id="glossary-grid">
+          <article class="glossary-card" data-term="candlestick candle open close high low wick body"><span class="glossary-letter">C</span><div><h3>Candlestick</h3><p>A chart symbol showing open, high, low and close for a selected period.</p><button data-topic="candles" class="glossary-more">Explore concept <span>↗</span></button></div></article>
+          <article class="glossary-card" data-term="trend uptrend downtrend swing high low market structure"><span class="glossary-letter">T</span><div><h3>Trend</h3><p>A broad direction inferred from a sequence of price swings over time.</p><button data-topic="trends" class="glossary-more">Explore concept <span>↗</span></button></div></article>
+          <article class="glossary-card" data-term="volume activity traded units market data"><span class="glossary-letter">V</span><div><h3>Volume</h3><p>A measure of trading activity, defined by the market and data provider.</p><button data-topic="volume" class="glossary-more">Explore concept <span>↗</span></button></div></article>
+          <article class="glossary-card" data-term="risk uncertainty loss probability risk management"><span class="glossary-letter">R</span><div><h3>Risk</h3><p>The uncertainty of outcomes, including the possibility of losing money.</p><button data-topic="risk" class="glossary-more">Explore concept <span>↗</span></button></div></article>
+          <article class="glossary-card" data-term="timeframe interval minute hour daily weekly chart"><span class="glossary-letter">T</span><div><h3>Timeframe</h3><p>The interval represented by each candle or data point on a chart.</p><button data-topic="chart-reading" class="glossary-more">Explore concept <span>↗</span></button></div></article>
+          <article class="glossary-card" data-term="range sideways support resistance price zone"><span class="glossary-letter">M</span><div><h3>Trading range</h3><p>A period when price moves within a broad zone instead of a clear direction.</p><button data-topic="trends" class="glossary-more">Explore concept <span>↗</span></button></div></article>
+        </div>
+        <p class="glossary-empty" id="glossary-empty" hidden>No matching terms. Try a shorter search, such as “risk” or “trend”.</p>
+      </div>
+    </section>
+    <section class="faq-section section-wrap" id="faq">
+      <div class="faq-intro"><span class="eyebrow">GOOD QUESTIONS, CLEAR ANSWERS</span><h2>Before you begin.</h2><p>What Decrotrade does—and what it doesn't.</p></div>
+      <div class="faq-list">
+        <details><summary>Is Decrotrade suitable for beginners?<span>+</span></summary><p>Yes. The lessons start with basic chart vocabulary and explain concepts in plain language. Learn at your own pace and revisit topics as needed.</p></details>
+        <details><summary>Does this website show live prices or trading signals?<span>+</span></summary><p>No. The chart is illustrative, not connected to live market feeds. Decrotrade does not provide trade signals or execute trades.</p></details>
+        <details><summary>Can I make trades or deposit money here?<span>+</span></summary><p>No. This website is for education only. It does not accept deposits, connect to a broker, or support real-money or demo trading.</p></details>
+        <details><summary>Does Decrotrade guarantee profits?<span>+</span></summary><p>No. Markets are uncertain. Educational material cannot guarantee results and is not personal financial advice.</p></details>
+      </div>
+    </section>
     <section class="risk-banner section-wrap" id="risk"><div class="risk-banner-mark">!</div><div><span class="eyebrow">A NOTE WORTH REMEMBERING</span><h2>Knowledge first. Risk always.</h2><p>Decrotrade is an educational project, not financial advice. Examples are illustrative, markets involve risk, and learning content does not guarantee results. No real-money trading is provided here.</p></div><a href="#learn" class="text-link">Keep learning <span>→</span></a></section>
   </main>
-  <footer class="site-footer"><div class="footer-main"><a class="brand footer-brand" href="#home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 29V11h9c7 0 11 3 11 9s-4 9-11 9H5Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M27 9v22M31 14v13M35 18v5" stroke="#bd6a43" stroke-width="3" stroke-linecap="round"/></svg></span><span>decro<span>trade</span></span></a><p>Learn the market with clarity, curiosity and care.</p><div class="footer-links"><a href="#learn">Learning paths</a><a href="#about">Our approach</a><a href="#risk">Disclaimer</a><a href="mailto:hello@decrotrade.com">Contact</a></div></div><div class="footer-bottom"><span>© <span id="year"></span> Decrotrade. Learn responsibly.</span><span>Educational content only · No live market data</span></div></footer>
+  <footer class="site-footer"><div class="footer-main"><a class="brand footer-brand" href="#home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 29V11h9c7 0 11 3 11 9s-4 9-11 9H5Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M27 9v22M31 14v13M35 18v5" stroke="#bd6a43" stroke-width="3" stroke-linecap="round"/></svg></span><span>decro<span>trade</span></span></a><p>Learn the market with clarity, curiosity and care.</p><div class="footer-links"><a href="#learn">Learning paths</a><a href="#about">Our approach</a><a href="#faq">FAQs</a><a href="disclaimer.html">Disclaimer</a><a href="privacy.html">Privacy</a><a href="mailto:hello@decrotrade.com">Contact</a></div></div><div class="footer-bottom"><span>© <span id="year"></span> Decrotrade. Learn responsibly.</span><span>Educational content only · No live market data</span></div></footer>
   <div class="modal-backdrop" id="lesson-modal" hidden>
     <section class="lesson-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <button class="modal-close" aria-label="Close lesson">×</button>
