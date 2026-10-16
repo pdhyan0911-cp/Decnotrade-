@@ -129,22 +129,33 @@
     }
     return true;
   }
+  let providerBusy = false;
+  const providerButtons = ["#googleSignIn", "#facebookSignIn", "#githubSignIn"];
   async function signInProvider(providerName) {
-    if (!providerReady()) return;
+    if (!providerReady() || providerBusy) return;
     let provider;
     if (providerName === "google") provider = new firebase.auth.GoogleAuthProvider();
     if (providerName === "facebook") provider = new firebase.auth.FacebookAuthProvider();
     if (providerName === "github") provider = new firebase.auth.GithubAuthProvider();
-    if (!provider) return;
+    if (!provider) { setStatus("This sign-in option is not available.", true); return; }
+    providerBusy = true;
+    providerButtons.forEach(sel => { const button = $(sel); button.disabled = true; button.setAttribute("aria-busy", "true"); });
+    const labels = { google: "Google", facebook: "Facebook", github: "GitHub" };
     try {
-      setStatus("Opening " + providerName + " sign-in…");
-      await auth.signInWithPopup(provider);
+      setStatus("Connecting securely to " + labels[providerName] + "…");
+      // Redirect is more reliable than popups on mobile browsers and Android webviews.
+      await auth.signInWithRedirect(provider);
     } catch (e) {
-      setStatus(e.code === "auth/unauthorized-domain"
-        ? "This website domain must be added in Firebase Authentication → Settings → Authorized domains."
-        : (e.code === "auth/operation-not-allowed"
-          ? "Enable this sign-in provider in Firebase Authentication first."
-          : (e.code === "auth/popup-closed-by-user" ? "Sign-in was cancelled." : "Sign-in failed: " + (e.message || "Please try again."))), true);
+      providerBusy = false;
+      providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
+      const messages = {
+        "auth/unauthorized-domain": "Add this website's Vercel domain in Firebase Authentication → Settings → Authorized domains.",
+        "auth/operation-not-allowed": "This sign-in provider is not enabled in Firebase Authentication yet.",
+        "auth/account-exists-with-different-credential": "This email already uses another sign-in method. Sign in with that method first.",
+        "auth/cancelled-popup-request": "Another sign-in request is already running. Please try again.",
+        "auth/network-request-failed": "Connection failed. Check your internet and try again."
+      };
+      setStatus(messages[e.code] || (e.message || "Sign-in could not start. Check the Firebase provider setup and try again."), true);
     }
   }
 
@@ -206,11 +217,24 @@
       if (!firebase.apps.length) firebase.initializeApp(config);
       auth = firebase.auth();
       db = firebase.firestore();
+      auth.getRedirectResult().catch(e => {
+        const messages = {
+          "auth/unauthorized-domain": "This website domain is not authorized in Firebase Authentication.",
+          "auth/operation-not-allowed": "Enable this provider in Firebase Authentication → Sign-in method.",
+          "auth/network-request-failed": "Connection failed while returning from sign-in. Please retry."
+        };
+        setStatus(messages[e.code] || "Sign-in did not finish. Please choose a sign-in option and try again.", true);
+      }).finally(() => {
+        providerBusy = false;
+        providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
+      });
       auth.onAuthStateChanged(async user => {
         currentUser = user || null;
         const b = $("#accountBtn");
         if (user) {
           b.textContent = (user.displayName || user.email || "Account").split("@")[0].slice(0, 18);
+          providerBusy = false;
+          providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
           const g = guestInfo();
           await syncWorkspace(readLocalState(), g.valid);
           if (!dialog.hidden) closeDialog();
