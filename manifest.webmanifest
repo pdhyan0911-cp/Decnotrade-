@@ -1,0 +1,19 @@
+{
+  "name": "Decnotrade — Market Learning Studio",
+  "short_name": "Decnotrade",
+  "description": "Learn market concepts and practise with virtual funds.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101f1b",
+  "theme_color": "#101f1b",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
