@@ -188,7 +188,7 @@
   $("#sendPhoneCode").addEventListener("click", async () => {
     if (!providerReady()) return;
     const phone = $("#authPhone").value.trim();
-    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
       setStatus("Enter a phone number with country code, such as +91 followed by your number.", true);
       $("#authPhone").focus();
       return;
