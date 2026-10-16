@@ -128,7 +128,14 @@
   }
   function providerReady() {
     if (!configured || !window.firebase || !firebase.apps || !firebase.apps.length || !auth) {
-      setStatus("This sign-in button is ready, but account login cannot start until the real Firebase web configuration is added and the provider is enabled. No fake login or password collection is used.", true);
+      const message = "Sign-in button tapped, but Firebase is not connected on this page yet. Check that the latest Vercel deployment is Ready, then enable the sign-in provider in Firebase Authentication.";
+      setStatus(message, true);
+      const statusNode = $("#authStatus");
+      if (statusNode) {
+        statusNode.style.display = "block";
+        statusNode.style.visibility = "visible";
+        statusNode.style.opacity = "1";
+      }
       return false;
     }
     return true;
