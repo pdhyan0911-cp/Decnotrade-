@@ -174,11 +174,6 @@
     }
   });
   window.addEventListener("decnotrade:state", e => queueSync(e.detail));
-  window.addEventListener("decnotrade:cloud-loaded", e => {
-    // The main workspace reads localStorage on page load. Refresh visible panels after account restore.
-    if (e.detail && typeof e.detail === "object") setTimeout(() => location.reload(), 80);
-  });
-
   if (configured && window.firebase) {
     try {
       if (!firebase.apps.length) firebase.initializeApp(config);
