@@ -29,6 +29,7 @@
     if (backdrop) backdrop.classList.remove("is-visible");
     if (menu) menu.setAttribute("aria-expanded", "false");
     window.scrollTo({top:0,behavior:"auto"});
+    if (name === "practice") requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
     return true;
   }
   document.addEventListener("click", event => {
