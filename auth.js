@@ -418,8 +418,9 @@
           providerBusy = false;
           providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
           const g = guestInfo();
-          await syncWorkspace(readLocalState(), g.valid);
+          // Open the dashboard immediately after authentication; cloud sync runs in the background.
           if (!dialog.hidden) closeDialog();
+          void syncWorkspace(readLocalState(), g.valid);
         } else {
           b.textContent = guestInfo().valid ? "Guest · " + remainingLabel(guestInfo().remaining) : "Sign in";
           if (authInitialized && !guestInfo().valid && !suppressSignedOutDialogOnce) showDialog();
