@@ -16,7 +16,7 @@
   const config = window.DECNOTRADE_FIREBASE_CONFIG || {};
   const configured = !!(config.apiKey && config.authDomain && config.projectId && config.appId &&
     !Object.values(config).some(v => typeof v === "string" && v.startsWith("YOUR_")));
-  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null, authInitialized = false, recaptchaVerifier = null, phoneConfirmation = null;
+  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null, authInitialized = false, recaptchaVerifier = null, phoneConfirmation = null, suppressSignedOutDialogOnce = false;
 
   function setStatus(message, error = false) {
     status.textContent = message;
@@ -294,12 +294,14 @@
       if (createMode) {
         const credential = await auth.createUserWithEmailAndPassword(email, password);
         await credential.user.sendEmailVerification();
+        suppressSignedOutDialogOnce = true;
         await auth.signOut();
         setStatus("Account created. Check your inbox and spam folder for the verification email, open its link, then return here and sign in. Your account will not open until the email is verified.");
       } else {
         const credential = await auth.signInWithEmailAndPassword(email, password);
         if (!credential.user.emailVerified) {
           try { await credential.user.sendEmailVerification(); } catch {}
+          suppressSignedOutDialogOnce = true;
           await auth.signOut();
           setStatus("Please verify your email first. We sent a verification link if delivery is available. Open it from your inbox, then sign in again.", true);
         }
@@ -345,7 +347,8 @@
           if (!dialog.hidden) closeDialog();
         } else {
           b.textContent = guestInfo().valid ? "Guest · " + remainingLabel(guestInfo().remaining) : "Sign in";
-          if (authInitialized && !guestInfo().valid) showDialog();
+          if (authInitialized && !guestInfo().valid && !suppressSignedOutDialogOnce) showDialog();
+          suppressSignedOutDialogOnce = false;
           updateGuestButton();
         }
         authInitialized = true;
