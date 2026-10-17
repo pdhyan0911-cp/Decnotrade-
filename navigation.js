@@ -45,18 +45,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".view").forEach(section => {
     });
-    const menu = document.getElementById("menuToggle");
-    const sidebar = document.getElementById("sidebar");
-    const backdrop = document.getElementById("sidebarBackdrop");
-    if (menu && sidebar) menu.addEventListener("click", () => {
-      const open = sidebar.classList.toggle("open");
-      if (backdrop) backdrop.classList.toggle("is-visible", open);
-      menu.setAttribute("aria-expanded", String(open));
-    });
-    if (backdrop && sidebar) backdrop.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-      backdrop.classList.remove("is-visible");
-      if (menu) menu.setAttribute("aria-expanded", "false");
-    });
+    // The hamburger and backdrop are already handled by script.js.
+    // Avoid duplicate click listeners that toggle the sidebar twice.
   });
 })();
