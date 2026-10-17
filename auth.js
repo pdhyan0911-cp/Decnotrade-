@@ -187,45 +187,101 @@
     };
     return messages[e.code] || e.message || "Phone verification could not start. Check Firebase Phone provider setup.";
   }
+  let phoneCaptchaSolved = false;
+  let recaptchaRendering = false;
   function setupRecaptcha() {
     if (recaptchaVerifier) return recaptchaVerifier;
+    phoneCaptchaSolved = false;
     recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
       size: "normal",
-      callback: () => {},
+      callback: () => {
+        phoneCaptchaSolved = true;
+        $("#sendPhoneCode").disabled = false;
+        setStatus("Human verification complete. Tap Send verification code to receive an SMS.");
+      },
       "expired-callback": () => {
-        setStatus("reCAPTCHA expired. Please verify it again.", true);
+        phoneCaptchaSolved = false;
+        $("#sendPhoneCode").disabled = true;
+        setStatus("The CAPTCHA expired. Please complete the human verification again.", true);
       }
     });
     return recaptchaVerifier;
   }
+  async function showPhoneCaptcha() {
+    if (!providerReady() || recaptchaRendering || recaptchaVerifier) return;
+    const phone = $("#authPhone").value.trim();
+    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+      $("#sendPhoneCode").disabled = true;
+      setStatus("Enter your full phone number with country code first, for example +91 followed by your number.", true);
+      return;
+    }
+    recaptchaRendering = true;
+    $("#sendPhoneCode").disabled = true;
+    try {
+      const verifier = setupRecaptcha();
+      await verifier.render();
+      setStatus("Complete the CAPTCHA below. If Google shows pictures, select the matching pictures and press Verify.");
+    } catch (e) {
+      if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch {} }
+      recaptchaVerifier = null;
+      phoneCaptchaSolved = false;
+      setStatus(phoneErrorMessage(e), true);
+    } finally {
+      recaptchaRendering = false;
+    }
+  }
+  $("#authPhone").addEventListener("change", showPhoneCaptcha);
+  $("#authPhone").addEventListener("blur", showPhoneCaptcha);
+  $("#authPhone").addEventListener("input", () => {
+    const phone = $("#authPhone").value.trim();
+    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+      $("#sendPhoneCode").disabled = true;
+      if (recaptchaVerifier) {
+        try { recaptchaVerifier.clear(); } catch {}
+        recaptchaVerifier = null;
+      }
+      phoneCaptchaSolved = false;
+      $("#recaptcha-container").replaceChildren();
+    } else if (!recaptchaVerifier) {
+      $("#sendPhoneCode").disabled = true;
+    }
+  });
+  $("#sendPhoneCode").disabled = true;
   $("#sendPhoneCode").addEventListener("click", async () => {
     if (!providerReady()) return;
     const phone = $("#authPhone").value.trim();
-    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
       setStatus("Enter a phone number with country code, such as +91 followed by your number.", true);
       $("#authPhone").focus();
+      return;
+    }
+    if (!recaptchaVerifier || !phoneCaptchaSolved) {
+      setStatus("Complete the CAPTCHA first. If a picture challenge appears, select the matching pictures and tap Verify.", true);
+      await showPhoneCaptcha();
       return;
     }
     const sendButton = $("#sendPhoneCode");
     sendButton.disabled = true;
     const originalSendText = sendButton.textContent;
-    sendButton.textContent = "Preparing verification…";
+    sendButton.textContent = "Sending code…";
     try {
-      setStatus("Complete the reCAPTCHA, then Firebase will send an SMS code.");
-      const verifier = setupRecaptcha();
-      await verifier.render();
-      phoneConfirmation = await auth.signInWithPhoneNumber(phone, verifier);
+      phoneConfirmation = await auth.signInWithPhoneNumber(phone, recaptchaVerifier);
       $("#phoneCodeSection").hidden = false;
       $("#authPhoneCode").focus();
-      setStatus("Verification code sent if SMS delivery is available. Enter it below to finish sign-in.");
+      setStatus("SMS request submitted. If Firebase and SMS delivery are configured, enter the code sent to your phone.");
+      // Firebase consumes the CAPTCHA token for this request; prepare a fresh challenge for a resend.
+      try { recaptchaVerifier.clear(); } catch {}
+      recaptchaVerifier = null;
+      phoneCaptchaSolved = false;
+      $("#recaptcha-container").replaceChildren();
     } catch (e) {
-      if (recaptchaVerifier) {
-        try { recaptchaVerifier.clear(); } catch {}
-        recaptchaVerifier = null;
-      }
+      if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch {} }
+      recaptchaVerifier = null;
+      phoneCaptchaSolved = false;
+      $("#recaptcha-container").replaceChildren();
       setStatus(phoneErrorMessage(e), true);
     } finally {
-      sendButton.disabled = false;
+      sendButton.disabled = true;
       sendButton.textContent = originalSendText;
     }
   });
