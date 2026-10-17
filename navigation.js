@@ -6,7 +6,6 @@
     if (!target) return false;
     document.querySelectorAll(".view").forEach(section => {
       section.classList.toggle("active", section === target);
-      section.hidden = section !== target;
     });
     document.querySelectorAll(".nav-link[data-view]").forEach(button => {
       const active = button.dataset.view === name;
@@ -44,7 +43,6 @@
   }, true);
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".view").forEach(section => {
-      section.hidden = !section.classList.contains("active");
     });
     const menu = document.getElementById("menuToggle");
     const sidebar = document.getElementById("sidebar");
