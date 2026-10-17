@@ -386,3 +386,13 @@ button:active:not(:disabled),[role="button"]:active:not([aria-disabled="true"]){
 .adsterra-skyscraper{width:min(100%,180px);min-height:320px}
 .welcome-start{position:relative;z-index:5;pointer-events:auto;touch-action:manipulation}
 .welcome-copy,.welcome-content{position:relative;z-index:2}
+
+
+/* Calm, accessible comeback-reminder preferences */
+.notification-preferences { grid-column: 1 / -1; }
+.notification-toggle { display:flex; align-items:flex-start; gap:12px; padding:15px 16px; border:1px solid var(--line, #d8e2d9); border-radius:14px; background:rgba(244,248,242,.72); cursor:pointer; }
+.notification-toggle input { width:19px; height:19px; margin-top:2px; accent-color:#537a61; flex:0 0 auto; }
+.notification-toggle span { display:grid; gap:5px; }
+.notification-toggle b { color:var(--text, #23352b); font-size:.95rem; }
+.notification-toggle small { color:var(--muted, #69786d); line-height:1.5; }
+#comebackReminderStatus[data-error="true"] { color:#a23b35; }
