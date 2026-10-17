@@ -18,7 +18,7 @@
   const config = window.DECNOTRADE_FIREBASE_CONFIG || {};
   const configured = !!(config.apiKey && config.authDomain && config.projectId && config.appId &&
     !Object.values(config).some(v => typeof v === "string" && v.startsWith("YOUR_")));
-  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, cloudSyncReady = false, syncTimer = null, authInitialized = false, recaptchaVerifier = null, phoneConfirmation = null, suppressSignedOutDialogOnce = false;
+  let auth = null, db = null, currentUser = null, createMode = false, syncing = false, syncTimer = null, authInitialized = false, recaptchaVerifier = null, phoneConfirmation = null, suppressSignedOutDialogOnce = false;
 
   function setStatus(message, error = false) {
     status.textContent = message;
