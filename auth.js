@@ -161,6 +161,78 @@
       } finally { syncing = false; }
     }, 100);
   }
+  const reminderPrefKey = "decnotrade_comeback_reminders_v1";
+  function reminderStatus(message, error = false) {
+    const el = $("#comebackReminderStatus");
+    if (el) { el.textContent = message; el.dataset.error = error ? "true" : "false"; }
+  }
+  function setReminderControl(enabled, disabled = false) {
+    const input = $("#comebackReminders");
+    if (!input) return;
+    input.checked = !!enabled;
+    input.disabled = !!disabled;
+  }
+  async function saveReminderPreference(enabled) {
+    if (!currentUser || !db) {
+      localStorage.setItem(reminderPrefKey, enabled ? "1" : "0");
+      reminderStatus("Preference saved on this device only. Sign in with a verified email to enable email reminders.");
+      return;
+    }
+    if (enabled && (!currentUser.email || !currentUser.emailVerified)) {
+      setReminderControl(false);
+      reminderStatus("Verify your account email first, then enable reminders again.", true);
+      return;
+    }
+    setReminderControl(enabled, true);
+    try {
+      const ref = db.collection("users").doc(currentUser.uid);
+      await ref.set({
+        email: currentUser.email || null,
+        notificationPrefs: {
+          emailEnabled: !!enabled,
+          consentUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        },
+        lastActiveAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      localStorage.setItem(reminderPrefKey, enabled ? "1" : "0");
+      reminderStatus(enabled ? "Email reminders are enabled. One gentle reminder may arrive after 48 hours away." : "Email reminders are turned off.");
+    } catch {
+      setReminderControl(!enabled);
+      reminderStatus("Could not save this setting. Check your connection and Firestore rules.", true);
+    } finally { setReminderControl(enabled, false); }
+  }
+  async function loadReminderPreference() {
+    const input = $("#comebackReminders");
+    if (!input) return;
+    if (!currentUser || !db) {
+      setReminderControl(localStorage.getItem(reminderPrefKey) === "1", false);
+      reminderStatus("Sign in with a verified email to enable email reminders.");
+      return;
+    }
+    try {
+      const snap = await db.collection("users").doc(currentUser.uid).get();
+      const enabled = !!(snap.exists && snap.data().notificationPrefs && snap.data().notificationPrefs.emailEnabled);
+      setReminderControl(enabled, false);
+      reminderStatus(currentUser.emailVerified ? (enabled ? "Email reminders are enabled." : "Email reminders are off. Turn them on if you want a gentle nudge.") : "Verify your email before enabling reminders.");
+    } catch {
+      setReminderControl(false, false);
+      reminderStatus("Could not load reminder preferences.", true);
+    }
+  }
+  async function recordActivity() {
+    if (!currentUser || !db || document.visibilityState === "hidden") return;
+    try {
+      await db.collection("users").doc(currentUser.uid).set({
+        email: currentUser.email || null,
+        lastActiveAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } catch { /* Activity tracking must never block learning. */ }
+  }
+  const reminderControl = $("#comebackReminders");
+  if (reminderControl) reminderControl.addEventListener("change", () => saveReminderPreference(reminderControl.checked));
+  window.addEventListener("focus", recordActivity);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") recordActivity(); });
+
   function providerReady() {
     if (!configured || !window.firebase || !firebase.apps || !firebase.apps.length || !auth) {
       setStatus("This sign-in button is ready, but account login cannot start until the real Firebase web configuration is added and the provider is enabled. No fake login or password collection is used.", true);
@@ -442,6 +514,8 @@
       auth.onAuthStateChanged(async user => {
         currentUser = user || null;
         const b = $("#accountBtn");
+        loadReminderPreference();
+        if (user) recordActivity();
         if (user) {
           b.textContent = (user.displayName || user.email || "Account").split("@")[0].slice(0, 18);
           const emailPasswordAccount = user.providerData && user.providerData.some(p => p.providerId === "password");
