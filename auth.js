@@ -210,7 +210,7 @@
   async function showPhoneCaptcha() {
     if (!providerReady() || recaptchaRendering || recaptchaVerifier) return;
     const phone = $("#authPhone").value.trim();
-    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
       $("#sendPhoneCode").disabled = true;
       setStatus("Enter your full phone number with country code first, for example +91 followed by your number.", true);
       return;
@@ -234,7 +234,7 @@
   $("#authPhone").addEventListener("blur", showPhoneCaptcha);
   $("#authPhone").addEventListener("input", () => {
     const phone = $("#authPhone").value.trim();
-    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
       $("#sendPhoneCode").disabled = true;
       if (recaptchaVerifier) {
         try { recaptchaVerifier.clear(); } catch {}
@@ -250,7 +250,7 @@
   $("#sendPhoneCode").addEventListener("click", async () => {
     if (!providerReady()) return;
     const phone = $("#authPhone").value.trim();
-    if (!/^\\+[1-9]\\d{7,14}$/.test(phone)) {
+    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
       setStatus("Enter a phone number with country code, such as +91 followed by your number.", true);
       $("#authPhone").focus();
       return;
