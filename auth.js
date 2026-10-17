@@ -5,10 +5,11 @@
   const welcome = $("#welcomeScreen");
   const appShell = $("#appShell");
   if (!dialog || !welcome || !appShell) return;
-  // Always begin new/unsigned visitors on the designed welcome screen; Start opens the separate login page.
-  welcome.hidden = false;
+  // Restore an active guest session directly to the dashboard after refresh.
+  const restoreGuestSession = guestInfo().valid;
+  welcome.hidden = restoreGuestSession;
   dialog.hidden = true;
-  appShell.hidden = true;
+  appShell.hidden = !restoreGuestSession;
   const status = $("#authStatus");
   const guestKey = "decnotrade_guest_started_v1";
   const localKey = "decnotrade_v1";
@@ -418,8 +419,8 @@
           providerBusy = false;
           providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
           const g = guestInfo();
-          // Open the dashboard immediately after authentication; cloud sync runs in the background.
-          if (!dialog.hidden) closeDialog();
+          // Restore the dashboard on reload for authenticated users; cloud sync runs in the background.
+          closeDialog();
           void syncWorkspace(readLocalState(), g.valid);
         } else {
           b.textContent = guestInfo().valid ? "Guest · " + remainingLabel(guestInfo().remaining) : "Sign in";
