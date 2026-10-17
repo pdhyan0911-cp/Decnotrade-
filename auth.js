@@ -56,6 +56,7 @@
     dialog.hidden = true;
     welcome.hidden = true;
     appShell.hidden = false;
+    requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
     window.scrollTo({ top: 0, behavior: "auto" });
   }
   function returnToWelcome() {
