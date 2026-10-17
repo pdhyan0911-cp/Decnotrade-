@@ -133,6 +133,9 @@ function renderProductExtras(){
 }
 function clearAll(){if(!confirm("Reset all Decnotrade data saved in this browser? This clears your practice balance, orders, notes, reminders and lesson progress."))return;state=blank();save();renderPortfolio();renderLessons();renderAnalytics();renderJournal();renderAlerts();toast("Local practice data reset.")}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(!b)return;e.preventDefault();const view=b.dataset.view;if(view)go(view);});
+// Ensure the dashboard home/brand control always returns to the Overview after login.
+const dashboardHome = $("#sidebar .brand");
+if (dashboardHome) dashboardHome.addEventListener("click", e => { e.preventDefault(); go("overview"); });
 $("#menuToggle").addEventListener("click",()=>{const open=$("#sidebar").classList.toggle("open");$("#sidebarBackdrop").classList.toggle("is-visible",open);$("#menuToggle").setAttribute("aria-expanded",String(open))});$("#sidebarBackdrop").addEventListener("click",()=>{$("#sidebar").classList.remove("open");$("#sidebarBackdrop").classList.remove("is-visible");$("#menuToggle").setAttribute("aria-expanded","false")});
 $("#helpBtn").addEventListener("click",()=>$("#helpDialog").showModal());$("#closeHelp").addEventListener("click",()=>$("#helpDialog").close());$("#helpDone").addEventListener("click",()=>$("#helpDialog").close());
 $("#dismissDisclaimer").addEventListener("click",()=>$(".disclaimer").remove());
