@@ -439,9 +439,10 @@
     }
   } else {
     $("#accountBtn").textContent = guestInfo().valid ? "Guest · " + remainingLabel(guestInfo().remaining) : "Sign in";
-    welcome.hidden = false;
+    // Keep an active guest on the overview after refresh, even before Firebase is configured.
+    welcome.hidden = !restoreGuestSession;
     dialog.hidden = true;
-    appShell.hidden = true;
+    appShell.hidden = !restoreGuestSession;
     setStatus("Secure account login is prepared, but it needs your Firebase project configuration before Google, Facebook and email sign-in can work.", true);
   }
 })();
