@@ -141,7 +141,7 @@
         }, { merge: true });
       } catch { setStatus("Cloud sync paused. Check your Firebase Firestore setup.", true); }
       finally { syncing = false; }
-    }, 300);
+    }, 100);
   }
   function providerReady() {
     if (!configured || !window.firebase || !firebase.apps || !firebase.apps.length || !auth) {
@@ -434,9 +434,9 @@
           providerBusy = false;
           providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
           const g = guestInfo();
-          // Restore the dashboard on reload for authenticated users; cloud sync runs in the background.
+          // Restore this account's cloud workspace before allowing new practice activity.
+          await syncWorkspace(readLocalState(), g.valid);
           closeDialog();
-          void syncWorkspace(readLocalState(), g.valid);
         } else {
           b.textContent = guestInfo().valid ? "Guest · " + remainingLabel(guestInfo().remaining) : "Sign in";
           if (authInitialized && !guestInfo().valid && !suppressSignedOutDialogOnce) showDialog();
