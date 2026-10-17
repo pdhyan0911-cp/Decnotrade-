@@ -189,6 +189,7 @@
   }
   let phoneCaptchaSolved = false;
   let recaptchaRendering = false;
+
   function setupRecaptcha() {
     if (recaptchaVerifier) return recaptchaVerifier;
     phoneCaptchaSolved = false;
@@ -197,92 +198,104 @@
       callback: () => {
         phoneCaptchaSolved = true;
         $("#sendPhoneCode").disabled = false;
-        setStatus("Human verification complete. Tap Send verification code to receive an SMS.");
+        $("#sendPhoneCode").textContent = "Send verification code";
+        setStatus("CAPTCHA complete. Tap Send verification code again to receive your SMS.");
       },
       "expired-callback": () => {
         phoneCaptchaSolved = false;
         $("#sendPhoneCode").disabled = true;
-        setStatus("The CAPTCHA expired. Please complete the human verification again.", true);
+        setStatus("CAPTCHA expired. Complete the human check again.", true);
       }
     });
     return recaptchaVerifier;
   }
+
+  function validPhoneNumber() {
+    return /^\+[1-9]\d{7,14}$/.test($("#authPhone").value.trim());
+  }
+
   async function showPhoneCaptcha() {
     if (!providerReady() || recaptchaRendering || recaptchaVerifier) return;
-    const phone = $("#authPhone").value.trim();
-    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
-      $("#sendPhoneCode").disabled = true;
-      setStatus("Enter your full phone number with country code first, for example +91 followed by your number.", true);
+    if (!validPhoneNumber()) {
+      setStatus("Enter a valid phone number with country code first, such as +91 followed by your number.", true);
+      $("#authPhone").focus();
       return;
     }
     recaptchaRendering = true;
     $("#sendPhoneCode").disabled = true;
+    $("#sendPhoneCode").textContent = "Loading CAPTCHA…";
     try {
       const verifier = setupRecaptcha();
       await verifier.render();
-      setStatus("Complete the CAPTCHA below. If Google shows pictures, select the matching pictures and press Verify.");
+      $("#sendPhoneCode").textContent = "Send verification code";
+      setStatus("Complete the CAPTCHA below. If picture tiles appear, select the matching pictures and press Verify. Then tap Send verification code again.");
     } catch (e) {
       if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch {} }
       recaptchaVerifier = null;
       phoneCaptchaSolved = false;
+      $("#sendPhoneCode").textContent = "Send verification code";
+      $("#sendPhoneCode").disabled = !validPhoneNumber();
       setStatus(phoneErrorMessage(e), true);
     } finally {
       recaptchaRendering = false;
     }
   }
-  $("#authPhone").addEventListener("change", showPhoneCaptcha);
-  $("#authPhone").addEventListener("blur", showPhoneCaptcha);
+
   $("#authPhone").addEventListener("input", () => {
-    const phone = $("#authPhone").value.trim();
-    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+    if (!validPhoneNumber()) {
       $("#sendPhoneCode").disabled = true;
-      if (recaptchaVerifier) {
-        try { recaptchaVerifier.clear(); } catch {}
-        recaptchaVerifier = null;
-      }
+      if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch {} }
+      recaptchaVerifier = null;
       phoneCaptchaSolved = false;
       $("#recaptcha-container").replaceChildren();
+      $("#sendPhoneCode").textContent = "Send verification code";
     } else if (!recaptchaVerifier) {
-      $("#sendPhoneCode").disabled = true;
+      $("#sendPhoneCode").disabled = false;
     }
   });
+
   $("#sendPhoneCode").disabled = true;
   $("#sendPhoneCode").addEventListener("click", async () => {
     if (!providerReady()) return;
-    const phone = $("#authPhone").value.trim();
-    if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
-      setStatus("Enter a phone number with country code, such as +91 followed by your number.", true);
+    if (!validPhoneNumber()) {
+      setStatus("Enter a valid phone number with country code, such as +91 followed by your number.", true);
       $("#authPhone").focus();
       return;
     }
-    if (!recaptchaVerifier || !phoneCaptchaSolved) {
-      setStatus("Complete the CAPTCHA first. If a picture challenge appears, select the matching pictures and tap Verify.", true);
+
+    // First click displays CAPTCHA. After the user solves it, the second click sends the SMS.
+    if (!recaptchaVerifier) {
       await showPhoneCaptcha();
       return;
     }
+    if (!phoneCaptchaSolved) {
+      setStatus("Complete the CAPTCHA first. Then tap Send verification code again.", true);
+      return;
+    }
+
     const sendButton = $("#sendPhoneCode");
     sendButton.disabled = true;
-    const originalSendText = sendButton.textContent;
-    sendButton.textContent = "Sending code…";
+    sendButton.textContent = "Sending SMS…";
     try {
-      phoneConfirmation = await auth.signInWithPhoneNumber(phone, recaptchaVerifier);
+      phoneConfirmation = await auth.signInWithPhoneNumber($("#authPhone").value.trim(), recaptchaVerifier);
       $("#phoneCodeSection").hidden = false;
+      $("#authPhoneCode").value = "";
       $("#authPhoneCode").focus();
-      setStatus("SMS request submitted. If Firebase and SMS delivery are configured, enter the code sent to your phone.");
-      // Firebase consumes the CAPTCHA token for this request; prepare a fresh challenge for a resend.
+      setStatus("SMS request sent. Enter the verification code from your phone to sign in.");
       try { recaptchaVerifier.clear(); } catch {}
       recaptchaVerifier = null;
       phoneCaptchaSolved = false;
       $("#recaptcha-container").replaceChildren();
+      sendButton.textContent = "Send verification code";
+      sendButton.disabled = !validPhoneNumber();
     } catch (e) {
       if (recaptchaVerifier) { try { recaptchaVerifier.clear(); } catch {} }
       recaptchaVerifier = null;
       phoneCaptchaSolved = false;
       $("#recaptcha-container").replaceChildren();
+      sendButton.textContent = "Try verification again";
+      sendButton.disabled = !validPhoneNumber();
       setStatus(phoneErrorMessage(e), true);
-    } finally {
-      sendButton.disabled = true;
-      sendButton.textContent = originalSendText;
     }
   });
   $("#verifyPhoneCode").addEventListener("click", async () => {
