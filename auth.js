@@ -340,6 +340,11 @@
         const b = $("#accountBtn");
         if (user) {
           b.textContent = (user.displayName || user.email || "Account").split("@")[0].slice(0, 18);
+          const emailPasswordAccount = user.providerData && user.providerData.some(p => p.providerId === "password");
+          if (emailPasswordAccount && !user.emailVerified) {
+            b.textContent = "Verify email";
+            return;
+          }
           providerBusy = false;
           providerButtons.forEach(sel => { const button = $(sel); button.disabled = false; button.removeAttribute("aria-busy"); });
           const g = guestInfo();
