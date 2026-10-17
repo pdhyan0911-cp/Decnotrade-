@@ -291,8 +291,19 @@
     const email = $("#authEmail").value.trim(), password = $("#authPassword").value;
     try {
       setStatus(createMode ? "Creating your account…" : "Signing in…");
-      if (createMode) await auth.createUserWithEmailAndPassword(email, password);
-      else await auth.signInWithEmailAndPassword(email, password);
+      if (createMode) {
+        const credential = await auth.createUserWithEmailAndPassword(email, password);
+        await credential.user.sendEmailVerification();
+        await auth.signOut();
+        setStatus("Account created. Check your inbox and spam folder for the verification email, open its link, then return here and sign in. Your account will not open until the email is verified.");
+      } else {
+        const credential = await auth.signInWithEmailAndPassword(email, password);
+        if (!credential.user.emailVerified) {
+          try { await credential.user.sendEmailVerification(); } catch {}
+          await auth.signOut();
+          setStatus("Please verify your email first. We sent a verification link if delivery is available. Open it from your inbox, then sign in again.", true);
+        }
+      }
     } catch (err) {
       const messages = {
         "auth/email-already-in-use":"An account already exists for this email. Try signing in.",
