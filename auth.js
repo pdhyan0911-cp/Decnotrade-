@@ -97,12 +97,25 @@
     return merged;
   }
   async function syncWorkspace(state, importingGuest = false) {
-    if (!currentUser || !db || !state || syncing) return;
+    if (!currentUser || !db || syncing) return;
     syncing = true;
     try {
       const ref = db.collection("users").doc(currentUser.uid);
       const snap = await ref.get();
       const remote = snap.exists ? (snap.data().workspace || {}) : null;
+
+      // If browser storage was cleared, restore this account's saved workspace from Firestore.
+      if (!state || typeof state !== "object") {
+        if (remote && typeof remote === "object") {
+          localStorage.setItem(localKey, JSON.stringify(remote));
+          window.dispatchEvent(new CustomEvent("decnotrade:cloud-loaded", { detail: remote }));
+          setStatus("Your saved practice account has been restored.");
+        } else {
+          setStatus("Account connected. Your practice workspace will be saved to this account.");
+        }
+        return;
+      }
+
       const merged = mergeWorkspace(state, remote, importingGuest);
       localStorage.setItem(localKey, JSON.stringify(merged));
       window.dispatchEvent(new CustomEvent("decnotrade:cloud-loaded", { detail: merged }));
@@ -117,7 +130,8 @@
     if (!currentUser || !db) return;
     clearTimeout(syncTimer);
     syncTimer = setTimeout(async () => {
-      if (syncing) return;
+      // Retry shortly if an account restore or another cloud write is still running.
+      if (syncing) { queueSync(state); return; }
       syncing = true;
       try {
         await db.collection("users").doc(currentUser.uid).set({
@@ -127,7 +141,7 @@
         }, { merge: true });
       } catch { setStatus("Cloud sync paused. Check your Firebase Firestore setup.", true); }
       finally { syncing = false; }
-    }, 700);
+    }, 300);
   }
   function providerReady() {
     if (!configured || !window.firebase || !firebase.apps || !firebase.apps.length || !auth) {
