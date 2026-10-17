@@ -5,15 +5,16 @@
   const welcome = $("#welcomeScreen");
   const appShell = $("#appShell");
   if (!dialog || !welcome || !appShell) return;
+  const guestKey = "decnotrade_guest_started_v1";
+  const localKey = "decnotrade_v1";
+  const hours48 = 48 * 60 * 60 * 1000;
   // Restore an active guest session directly to the dashboard after refresh.
-  const restoreGuestSession = guestInfo().valid;
+  const restoreGuestSession = Number(localStorage.getItem(guestKey)) > 0 &&
+    Number(localStorage.getItem(guestKey)) + hours48 > Date.now();
   welcome.hidden = restoreGuestSession;
   dialog.hidden = true;
   appShell.hidden = !restoreGuestSession;
   const status = $("#authStatus");
-  const guestKey = "decnotrade_guest_started_v1";
-  const localKey = "decnotrade_v1";
-  const hours48 = 48 * 60 * 60 * 1000;
   const config = window.DECNOTRADE_FIREBASE_CONFIG || {};
   const configured = !!(config.apiKey && config.authDomain && config.projectId && config.appId &&
     !Object.values(config).some(v => typeof v === "string" && v.startsWith("YOUR_")));
