@@ -219,10 +219,14 @@
       reminderStatus("Could not load reminder preferences.", true);
     }
   }
-  async function recordActivity() {
-    if (!currentUser || !db || document.visibilityState === "hidden") return;
+  let lastActivityWrite = 0;
+  async function recordActivity(force = false) {
+    const now = Date.now();
+    if (!currentUser || !db || document.visibilityState === "hidden" || (!force && now - lastActivityWrite < 5 * 60 * 1000)) return;
+    lastActivityWrite = now;
+    const accountId = currentUser.uid;
     try {
-      await db.collection("users").doc(currentUser.uid).set({
+      await db.collection("users").doc(accountId).set({
         email: currentUser.email || null,
         lastActiveAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
@@ -230,8 +234,10 @@
   }
   const reminderControl = $("#comebackReminders");
   if (reminderControl) reminderControl.addEventListener("change", () => saveReminderPreference(reminderControl.checked));
-  window.addEventListener("focus", recordActivity);
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") recordActivity(); });
+  window.addEventListener("focus", () => recordActivity(true));
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") recordActivity(true); });
+  document.addEventListener("pointerdown", () => recordActivity());
+  document.addEventListener("keydown", () => recordActivity());
 
   function providerReady() {
     if (!configured || !window.firebase || !firebase.apps || !firebase.apps.length || !auth) {
