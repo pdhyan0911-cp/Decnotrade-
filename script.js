@@ -19,7 +19,7 @@ const lessons=[
 const glossary=[
 ["Candlestick","A chart symbol showing open, high, low and close for a time period."],["Volatility","How much and how quickly a value moves over time."],["Liquidity","How readily an asset can be bought or sold without a large price impact."],["Diversification","Spreading exposure to avoid relying on a single asset or idea."],["Limit order","An order with a specified maximum buy price or minimum sell price."],["Position size","The amount of an asset represented by a hypothetical or actual position."],["Portfolio","A collection of investments or practice holdings."],["P&L","Profit and loss; a measure of gains or losses over a stated period."],["Risk/reward","A comparison between a potential loss and a potential gain, both uncertain."],["Stop level","A planned price level used in an exercise to define when an idea may be invalid."]
 ];
-const blank=()=>({cash:1000000,positions:{},orders:[],realized:0,watchlist:["NIFTY","RELIANCE","TCS","INFY"],completed:[],journal:[],alerts:[],challengeCompleted:[],challengeStarted:null,profile:{name:"Decnotrade learner",goal:"foundations"}});
+const blank=()=>({cash:100000,positions:{},orders:[],realized:0,watchlist:["NIFTY","RELIANCE","TCS","INFY"],completed:[],journal:[],alerts:[],challengeCompleted:[],challengeStarted:null,profile:{name:"Decnotrade learner",goal:"foundations"}});
 function load(){
  const base=blank();
  try{
@@ -155,7 +155,7 @@ function updateEstimate(){const s=$("#tradeSymbol").value,q=Math.max(0,Number($(
 $("#orderForm").addEventListener("submit",e=>{e.preventDefault();order("BUY",$("#tradeSymbol").value,Number($("#tradeQty").value))});
 $("#sellSelected").addEventListener("click",()=>order("SELL",$("#tradeSymbol").value,Number($("#tradeQty").value)));
 $("#positionsContainer").addEventListener("click",e=>{const b=e.target.closest("[data-sell]");if(b){const p=state.positions[b.dataset.sell];if(p)order("SELL",b.dataset.sell,p.qty)}});
-$("#resetPractice").addEventListener("click",()=>{if(!confirm("Reset the virtual balance, positions and order history? Your journal and lessons will remain."))return;state.cash=1000000;state.positions={};state.orders=[];state.realized=0;save();renderPortfolio();renderAnalytics();toast("Practice account reset.")});
+$("#resetPractice").addEventListener("click",()=>{if(!confirm("Reset the virtual balance, positions and order history? Your journal and lessons will remain."))return;state.cash=100000;state.positions={};state.orders=[];state.realized=0;save();renderPortfolio();renderAnalytics();toast("Practice account reset.")});
 $("#calculateRisk").addEventListener("click",calcRisk);$("#runScenario").addEventListener("click",runScenario);
 $("#lessonGrid").addEventListener("click",e=>{const b=e.target.closest("[data-lesson]");if(b)showLesson(b.dataset.lesson)});$("#overviewLearning").addEventListener("click",e=>{const b=e.target.closest("[data-lesson]");if(b){go("academy");showLesson(b.dataset.lesson)}});
 $("#glossarySearch").addEventListener("input",renderGlossary);
