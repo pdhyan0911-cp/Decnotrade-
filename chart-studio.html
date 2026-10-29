@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f5ef"><title>Chart Studio · Decnotrade</title>
+<link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./styles.css">
+<style>
+:root{--studio-ink:#142b23;--studio-muted:#738078;--studio-line:#e1e6de;--studio-green:#16845b;--studio-red:#cf5b62}
+.studio-page{max-width:1400px;margin:auto;padding:22px 18px 40px}.studio-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.studio-head h1{margin:4px 0;font-size:clamp(25px,4vw,38px);letter-spacing:-1.2px}.studio-head p{margin:0;color:var(--studio-muted);font-size:14px}.studio-back{white-space:nowrap;text-decoration:none;border:1px solid var(--studio-line);border-radius:12px;padding:10px 13px;color:var(--studio-ink);font-weight:700;background:#fff}.studio-panel{background:#fff;border:1px solid var(--studio-line);border-radius:20px;padding:18px;box-shadow:0 4px 18px #162a1c08}.studio-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--studio-line)}.studio-controls label{font-size:12px;font-weight:700;color:var(--studio-muted)}.studio-controls select,.studio-controls input{padding:10px 12px;border:1px solid var(--studio-line);border-radius:10px;background:#fbfcf9;color:var(--studio-ink);font:inherit}.studio-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.studio-price strong{font-size:25px;letter-spacing:-.6px}.studio-price span{font-size:12px;color:var(--studio-muted)}.studio-toolbar{display:flex;gap:7px;flex-wrap:wrap;padding:14px 0}.tool-btn{border:1px solid var(--studio-line);background:#fff;color:#415047;border-radius:10px;padding:9px 11px;font-size:13px;font-weight:650;cursor:pointer;touch-action:manipulation}.tool-btn.active{background:#e4f2e8;border-color:#a9d4b8;color:#176d4b}.tool-btn.danger{color:#b54b51}.studio-tools-extra{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}.studio-tools-extra input[type=color]{width:38px;height:36px;padding:3px}.studio-tools-extra input[type=range]{width:88px;padding:0}.studio-canvas-wrap{width:100%;height:min(64vh,590px);min-height:330px;position:relative;border:1px solid #e5e9e2;border-radius:14px;overflow:hidden;background:#fbfcfa}.studio-canvas-wrap canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.studio-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--studio-muted)}.studio-note{margin-top:15px;padding:12px 14px;border-radius:12px;background:#f3f6ef;color:#66736a;font-size:12px;line-height:1.5}.studio-actions{display:flex;gap:8px;flex-wrap:wrap}.studio-status{color:var(--studio-green);font-weight:700}.studio-mobile-hint{display:none}
+@media(max-width:620px){.studio-page{padding:14px 10px 28px}.studio-panel{padding:12px;border-radius:15px}.studio-head{align-items:flex-start}.studio-head p{max-width:230px}.studio-back{font-size:12px;padding:9px}.studio-canvas-wrap{height:53vh;min-height:300px}.studio-toolbar{gap:6px}.tool-btn{padding:9px;font-size:12px}.studio-tools-extra{margin-left:0;width:100%}.studio-mobile-hint{display:inline}.studio-price strong{font-size:22px}}
+</style>
+</head>
+<body>
+<main class="studio-page">
+<header class="studio-head"><div><span class="eyebrow">DECNOTRADE · PRACTICE TOOLS</span><h1>Chart Studio</h1><p>Draw lines and shapes on a simulated candlestick chart.</p></div><a class="studio-back" href="./index.html#practice">← Back to practice</a></header>
+<section class="studio-panel">
+<div class="studio-controls"><div><label for="studioSymbol">INSTRUMENT</label><br><select id="studioSymbol"><option value="RELIANCE">RELIANCE</option><option value="TCS">TCS</option><option value="INFY">INFY</option><option value="HDFCBANK">HDFCBANK</option><option value="ITC">ITC</option><option value="TATAMOTORS">TATAMOTORS</option><option value="AAPL">AAPL · Apple</option><option value="MSFT">MSFT · Microsoft</option><option value="NVDA">NVDA · NVIDIA</option><option value="AMZN">AMZN · Amazon</option><option value="GOOGL">GOOGL · Alphabet</option><option value="META">META · Meta</option><option value="TSLA">TSLA · Tesla</option></select></div><div class="studio-price"><strong id="studioLast">₹1,421.50</strong><span>SIMULATED SAMPLE PRICE · NOT LIVE DATA</span></div></div>
+<div class="studio-toolbar" role="toolbar" aria-label="Chart drawing tools">
+<button class="tool-btn active" data-tool="select" type="button">↖ Select</button><button class="tool-btn" data-tool="trend" type="button">／ Trend line</button><button class="tool-btn" data-tool="horizontal" type="button">— Horizontal</button><button class="tool-btn" data-tool="vertical" type="button">│ Vertical</button><button class="tool-btn" data-tool="rectangle" type="button">▱ Rectangle</button><button class="tool-btn" data-tool="circle" type="button">◯ Circle</button><button class="tool-btn" data-tool="brush" type="button">✎ Brush</button><button class="tool-btn" data-tool="text" type="button">T Text</button>
+<div class="studio-tools-extra"><label for="studioColor">Color</label><input id="studioColor" type="color" value="#16845b" aria-label="Drawing color"><label for="studioWidth">Width</label><input id="studioWidth" type="range" min="1" max="6" value="2" aria-label="Drawing line width"><button id="studioUndo" class="tool-btn" type="button">↶ Undo</button><button id="studioClear" class="tool-btn danger" type="button">Clear</button></div></div>
+<div class="studio-canvas-wrap"><canvas id="studioCanvas" aria-label="Simulated candlestick chart drawing area"></canvas></div>
+<div class="studio-foot"><span id="studioToolHelp">Select a drawing tool, then drag on the chart.</span><span id="studioStatus" class="studio-status">Drawings save on this device</span><div class="studio-actions"><button id="studioSave" class="tool-btn" type="button">Save drawings</button><button id="studioReset" class="tool-btn" type="button">Reset chart</button></div></div>
+<div class="studio-note">Educational simulation only. Candles and prices are generated sample data, not live exchange quotes. Your drawings are saved locally on this device for each selected instrument. On touchscreens, drag a finger to draw.</div>
+</section></main>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id),canvas=$("studioCanvas"),ctx=canvas.getContext("2d");
+const prices={RELIANCE:1421.5,TCS:3845,INFY:1612.25,HDFCBANK:1748.8,ITC:438.6,TATAMOTORS:714.2,AAPL:252.3,MSFT:513.6,NVDA:181.2,AMZN:227.4,GOOGL:245.1,META:714.8,TSLA:438.7};
+const currency=s=>["AAPL","MSFT","NVDA","AMZN","GOOGL","META","TSLA"].includes(s)?"$":"₹";
+let symbol=new URLSearchParams(location.search).get("symbol")||"RELIANCE";
+if(!prices[symbol])symbol="RELIANCE";$("studioSymbol").value=symbol;
+let tool="select",candles=[],drawings=[],draft=null,start=null,dragging=false,selected=null;
+const storageKey=()=> "decnotrade-chart-drawings-v1-"+symbol;
+function load(){try{drawings=JSON.parse(localStorage.getItem(storageKey())||"[]");if(!Array.isArray(drawings))drawings=[]}catch(e){drawings=[]}}
+function seed(){let p=prices[symbol],out=[];for(let i=0;i<56;i++){let drift=(Math.sin(i*.49)+Math.cos(i*.19))*.0035,open=p;p*=1+drift+(Math.random()-.5)*.012;let close=p,hi=Math.max(open,close)*(1+Math.random()*.006),lo=Math.min(open,close)*(1-Math.random()*.006);out.push({open,close,high:hi,low:lo})}candles=out;$("studioLast").textContent=currency(symbol)+p.toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function dims(){const r=canvas.getBoundingClientRect(),d=window.devicePixelRatio||1;canvas.width=Math.round(r.width*d);canvas.height=Math.round(r.height*d);ctx.setTransform(d,0,0,d,0,0);return {w:r.width,h:r.height}}
+function chartBounds(w,h){return {l:14,r:w-62,t:18,b:h-28}}
+function project(p,b,min,max){return {x:b.l+p.x*(b.r-b.l),y:b.b-(p.y-min)/(max-min)*(b.b-b.t)}}
+function render(){const {w,h}=dims();if(!w||!h)return;ctx.clearRect(0,0,w,h);ctx.fillStyle="#fbfcfa";ctx.fillRect(0,0,w,h);const b=chartBounds(w,h),all=candles.flatMap(c=>[c.high,c.low]),min=Math.min(...all),max=Math.max(...all),span=max-min||1;ctx.font="11px system-ui";ctx.lineWidth=1;
+for(let i=0;i<=5;i++){let y=b.t+(b.b-b.t)*i/5;ctx.strokeStyle="#e8ece6";ctx.beginPath();ctx.moveTo(b.l,y);ctx.lineTo(b.r,y);ctx.stroke();let v=max-span*i/5;ctx.fillStyle="#748077";ctx.fillText(currency(symbol)+v.toFixed(2),b.r+6,y+4)}
+for(let i=0;i<12;i++){let x=b.l+(b.r-b.l)*i/11;ctx.strokeStyle="#eff1ed";ctx.beginPath();ctx.moveTo(x,b.t);ctx.lineTo(x,b.b);ctx.stroke()}
+const step=(b.r-b.l)/candles.length,cw=Math.max(3,step*.56);candles.forEach((c,i)=>{let x=b.l+step*(i+.5),yo=project({x:0,y:c.open},b,min,max).y,yc=project({x:0,y:c.close},b,min,max).y,yh=project({x:0,y:c.high},b,min,max).y,yl=project({x:0,y:c.low},b,min,max).y,up=c.close>=c.open;ctx.strokeStyle=up?"#16845b":"#cf5b62";ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.moveTo(x,yh);ctx.lineTo(x,yl);ctx.stroke();ctx.fillRect(x-cw/2,Math.min(yo,yc),cw,Math.max(1,Math.abs(yc-yo)))});
+const point=(x,y)=>({x:(x-b.l)/(b.r-b.l),y:max-(y-b.t)/(b.b-b.t)*span});
+function xy(p){return {x:b.l+p.x*(b.r-b.l),y:b.b-(p.y-min)/(max-min||1)*(b.b-b.t)}}
+[...drawings,...(draft?[draft]:[])].forEach((d,i)=>drawShape(d,xy,i===selected));}
+function drawShape(d,xy,isSelected){if(!d)return;ctx.save();ctx.strokeStyle=d.color||"#16845b";ctx.fillStyle=d.color||"#16845b";ctx.lineWidth=d.width||2;ctx.lineCap="round";ctx.lineJoin="round";if(isSelected)ctx.setLineDash([5,4]);const a=xy(d.a),z=xy(d.b||d.a);
+if(d.type==="trend"){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(z.x,z.y);ctx.stroke()}
+else if(d.type==="horizontal"){ctx.beginPath();ctx.moveTo(14,a.y);ctx.lineTo(canvas.clientWidth-62,a.y);ctx.stroke()}
+else if(d.type==="vertical"){ctx.beginPath();ctx.moveTo(a.x,18);ctx.lineTo(a.x,canvas.clientHeight-28);ctx.stroke()}
+else if(d.type==="rectangle"){ctx.strokeRect(a.x,a.y,z.x-a.x,z.y-a.y)}
+else if(d.type==="circle"){ctx.beginPath();ctx.ellipse((a.x+z.x)/2,(a.y+z.y)/2,Math.abs(z.x-a.x)/2,Math.abs(z.y-a.y)/2,0,0,Math.PI*2);ctx.stroke()}
+else if(d.type==="brush"&&d.points){ctx.beginPath();d.points.forEach((p,i)=>{const q=xy(p);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.stroke()}
+else if(d.type==="text"){ctx.font="bold 14px system-ui";ctx.fillText(d.text||"Note",a.x,a.y)}
+ctx.restore()}
+function eventPoint(e){const r=canvas.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+function normPoint(pos){const {w,h}=dims(),b=chartBounds(w,h),all=candles.flatMap(c=>[c.high,c.low]),min=Math.min(...all),max=Math.max(...all);return {x:Math.max(0,Math.min(1,(pos.x-b.l)/(b.r-b.l))),y:max-(pos.y-b.t)/(b.b-b.t)*(max-min)}}
+function setTool(t){tool=t;document.querySelectorAll("[data-tool]").forEach(b=>b.classList.toggle("active",b.dataset.tool===t));const hints={select:"Select mode: choose a drawing to remove it with Undo or Clear.",trend:"Drag between two points to draw a trend line.",horizontal:"Tap or click the chart to place a horizontal price level.",vertical:"Tap or click the chart to place a vertical time marker.",rectangle:"Drag to outline a price zone.",circle:"Drag to draw an ellipse.",brush:"Draw freely with your finger or mouse.",text:"Tap or click the chart and enter a short note."};$("studioToolHelp").textContent=hints[t]||"Choose a tool and draw on the chart."}
+document.querySelectorAll("[data-tool]").forEach(b=>b.addEventListener("click",()=>setTool(b.dataset.tool)));
+canvas.addEventListener("pointerdown",e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);const pos=eventPoint(e),p=normPoint(pos);if(tool==="select"){selected=-1;render();return}if(tool==="text"){const value=prompt("Enter a short chart note:");if(value&&value.trim()){drawings.push({type:"text",a:p,text:value.trim().slice(0,100),color:$("studioColor").value,width:+$("studioWidth").value});save(false);render()}return}start=p;dragging=true;draft={type:tool,a:p,b:p,color:$("studioColor").value,width:+$("studioWidth").value};if(tool==="brush")draft.points=[p];render()});
+canvas.addEventListener("pointermove",e=>{if(!dragging||!draft)return;draft.b=normPoint(eventPoint(e));if(tool==="brush")draft.points.push(draft.b);render()});
+function finish(){if(!dragging||!draft)return;dragging=false;drawings.push(draft);draft=null;selected=null;save(false);render()}
+canvas.addEventListener("pointerup",finish);canvas.addEventListener("pointercancel",finish);
+function save(show=true){try{localStorage.setItem(storageKey(),JSON.stringify(drawings));$("studioStatus").textContent=show?"Saved on this device":"Drawings save on this device"}catch(e){$("studioStatus").textContent="Could not save locally; storage may be full"}}
+$("studioSave").addEventListener("click",()=>save(true));
+$("studioUndo").addEventListener("click",()=>{drawings.pop();save(false);render()});
+$("studioClear").addEventListener("click",()=>{if(!drawings.length)return;if(confirm("Clear all drawings for "+symbol+"?")){drawings=[];save(false);render()}});
+$("studioReset").addEventListener("click",()=>{seed();render()});
+$("studioSymbol").addEventListener("change",()=>{symbol=$("studioSymbol").value;const u=new URL(location.href);u.searchParams.set("symbol",symbol);history.replaceState(null,"",u);load();seed();selected=null;render()});
+window.addEventListener("resize",render);load();seed();render();
+})();
+</script>
+</body></html>
