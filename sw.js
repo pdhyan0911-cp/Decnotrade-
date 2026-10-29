@@ -1,8 +1,9 @@
 "use strict";
-const CACHE_NAME = "decnotrade-static-v17";
+const CACHE_NAME = "decnotrade-static-v18";
 const APP_SHELL = [
   "./",
   "./index.html",
+  "./chart-studio.html",
   "./styles.css",
   "./script.js",
   "./balance-cap.js",
