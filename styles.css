@@ -388,3 +388,5 @@ button:active:not(:disabled),[role="button"]:active:not([aria-disabled="true"]){
 .welcome-copy,.welcome-content{position:relative;z-index:2}
 
 
+
+.chart-head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.chart-studio-launch{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border-radius:10px;border:1px solid #b7d8c1;background:#e8f4e9;color:#176d4b;text-decoration:none;font-size:13px;font-weight:750;white-space:nowrap}.chart-studio-launch:hover{background:#dcefe0}@media(max-width:560px){.chart-head-actions{gap:6px}.chart-studio-launch{padding:7px 9px}.chart-studio-launch span{display:none}}
