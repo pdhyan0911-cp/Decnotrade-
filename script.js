@@ -78,7 +78,7 @@ function renderCandleTimeframe(){
 function seedCandles(symbol){
  const base=price(symbol),random=seededRandom([...symbol].reduce((n,c)=>((n*31+c.charCodeAt(0))>>>0),2166136261));
  let last=base;baseCandleSeries=[];
- for(let i=0;i<600;i++){
+ for(let i=0;i<3840;i++){
   const open=last,close=Math.max(.01,open+(random()-.5)*base*.0018);
   const high=Math.max(open,close)+random()*base*.0007,low=Math.max(.01,Math.min(open,close)-random()*base*.0007);
   baseCandleSeries.push({open,high,low,close});last=close;
@@ -109,7 +109,7 @@ function candleTick(){
  candleTickCount++;
  if(candleTickCount>=6){
   candleTickCount=0;baseCandleSeries.push({open:next,high:next,low:next,close:next});
-  if(baseCandleSeries.length>600)baseCandleSeries.shift();
+  if(baseCandleSeries.length>3840)baseCandleSeries.shift();
  }
  simulatedPrices[candleSymbol]=next;renderCandleTimeframe();updateEstimate();renderPortfolio({light:true})
 }
