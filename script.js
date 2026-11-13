@@ -66,7 +66,7 @@ function seededRandom(seed){
  return ()=>{value=(value*1664525+1013904223)>>>0;return value/4294967296}
 }
 function renderCandleTimeframe(){
- const minutes=({"1m":1,"5m":5,"15m":15,"30m":30,"1h":60})[candleRange]||1;
+ const minutes=({"1m":60,"5m":30,"15m":15,"30m":5,"1h":1})[candleRange]||1;
  const grouped=[];
  for(let i=0;i+minutes<=baseCandleSeries.length;i+=minutes){
   const slice=baseCandleSeries.slice(i,i+minutes);
