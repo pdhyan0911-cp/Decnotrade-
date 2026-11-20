@@ -35,6 +35,7 @@
         if (attribute.name === "type" || attribute.name.startsWith("data-consent-")) continue;
         live.setAttribute(attribute.name, attribute.value);
       }
+      live.async = blocked.hasAttribute("async");
       if (blocked.dataset.consentSrc) live.src = blocked.dataset.consentSrc;
       live.textContent = blocked.textContent;
       blocked.replaceWith(live);
