@@ -412,11 +412,11 @@
       }
     } catch (err) {
       const messages = {
-        "auth/email-already-in-use":"An account already exists for this email. Try signing in.",
+        "auth/email-already-in-use":"Could not create an account with these details. Try signing in or use password reset.",
         "auth/weak-password":"Choose a stronger password with at least 6 characters.",
         "auth/invalid-email":"Enter a valid email address.",
         "auth/invalid-credential":"Email or password is incorrect.",
-        "auth/user-not-found":"No account was found. Choose Create account to register.",
+        "auth/user-not-found":"Email or password is incorrect.",
         "auth/wrong-password":"Email or password is incorrect."
       };
       setStatus(messages[err.code] || "Could not sign in. Please try again.", true);
