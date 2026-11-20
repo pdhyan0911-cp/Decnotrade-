@@ -207,7 +207,7 @@
         "auth/cancelled-popup-request": "Another sign-in request is already running. Please try again.",
         "auth/network-request-failed": "Connection failed. Check your internet and try again."
       };
-      setStatus(messages[e.code] || (e.message || "Sign-in could not start. Check the Firebase provider setup and try again."), true);
+      setStatus(messages[e.code] || "Sign-in could not start. Check your connection and try again.", true);
     }
   }
 
@@ -220,7 +220,7 @@
       "auth/captcha-check-failed": "reCAPTCHA verification failed. Refresh the page and try again.",
       "auth/operation-not-allowed": "Enable Phone sign-in in Firebase Authentication → Sign-in method."
     };
-    return messages[e.code] || e.message || "Phone verification could not start. Check Firebase Phone provider setup.";
+    return messages[e.code] || "Phone verification could not start. Check your connection and try again.";
   }
   let phoneCaptchaSolved = false;
   let recaptchaRendering = false;
@@ -378,7 +378,7 @@
     const email = $("#authEmail").value.trim();
     if (!email) { setStatus("Enter your email address first, then tap Forgot password.", true); $("#authEmail").focus(); return; }
     try { await auth.sendPasswordResetEmail(email); setStatus("If an account exists for that email, Firebase will send a password-reset link."); }
-    catch (e) { setStatus(e.message || "Could not request a password reset.", true); }
+    catch { setStatus("Could not request a password reset. Check the address and try again.", true); }
   });
   $("#authModeToggle").addEventListener("click", () => {
     createMode = !createMode;
@@ -419,7 +419,7 @@
         "auth/user-not-found":"No account was found. Choose Create account to register.",
         "auth/wrong-password":"Email or password is incorrect."
       };
-      setStatus(messages[err.code] || err.message || "Could not sign in. Please try again.", true);
+      setStatus(messages[err.code] || "Could not sign in. Please try again.", true);
     }
   });
   window.addEventListener("decnotrade:state", e => queueSync(e.detail));
