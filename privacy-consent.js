@@ -71,7 +71,7 @@
     banner.setAttribute("aria-labelledby", "dcConsentTitle");
     banner.innerHTML = `
       <h2 id="dcConsentTitle">Your privacy choices</h2>
-      <p>Optional advertising scripts and ad storage stay off unless you accept. Reject is just as easy as Accept. The workspace also loads Firebase to support account sign-in and session restoration. You can change this choice later from the footer. <a class="dc-consent-policy" href="/privacy.html">Privacy notice</a>.</p>
+      <p>Optional advertising scripts and ad storage stay off unless you accept. Reject is just as easy as Accept. The main workspace loads Firebase for account sign-in and session restoration. This choice controls optional advertising, not account functionality. You can change this choice later from the footer. <a class="dc-consent-policy" href="/privacy.html">Privacy notice</a>.</p>
       <div class="dc-consent-actions">
         <button class="dc-consent-reject" type="button" data-choice="reject">Reject optional advertising</button>
         <button class="dc-consent-accept" type="button" data-choice="accept">Accept optional advertising</button>
